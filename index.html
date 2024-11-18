@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Map Planner</title>
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body>
+        <div class="container">
+            <div class="controls">
+                <div class="control-group">
+                    <label for="map-select">Select Map:</label>
+                    <select id="map-select">
+                        <option value="">Choose a map...</option>
+                        <!-- Map options will be added here -->
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label>Tools:</label>
+                    <div class="tools">
+                        <button id="draw-btn" class="active">Draw</button>
+                        <button id="text-btn">Text</button>
+                        <button id="icon-btn">Place Icon</button>
+                        <button id="erase-btn">Erase</button>
+                        <button id="clear-btn">Clear All</button>
+                        <input
+                            type="color"
+                            id="color-picker"
+                            class="color-picker"
+                            value="#000000"
+                        />
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>Icons:</label>
+                    <div class="icons-grid">
+                        <!-- Icon placeholders - replace with actual icons -->
+                        <div class="icon-item">1</div>
+                        <div class="icon-item">2</div>
+                        <div class="icon-item">3</div>
+                        <div class="icon-item">4</div>
+                        <!-- Add more icons as needed -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="canvas-container">
+                <canvas id="canvas"></canvas>
+            </div>
+        </div>
+    </body>
+</html>
