@@ -1,0 +1,2 @@
+# SquadPlanner
+A Squad Planner. 
