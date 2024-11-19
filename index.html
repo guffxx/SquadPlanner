@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map Planning Tool</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h2>Map Selection</h2>
+            <div class="map-selectors">
+                <div class="selector-group">
+                    <label>Select Map</label>
+                    <select id="mapSelect">
+                        <option value="">Choose map...</option>
+                        <option value="assets/maps/AlBasrah_AAS_1.png">Al Basrah - AAS v1</option>
+                        <option value="assets/maps/BlackCoast_AAS_1.png">Black Coast - AAS v1</option>
+                        <option value="assets/maps/BlackCoast_AAS_2.png">Black Coast - AAS v2</option>
+                        <option value="assets/maps/Fallujah_AAS_1.png">Fallujah - AAS v1</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="tools">
+                <h3>Drawing Tools</h3>
+                <div class="color-picker">
+                    <input type="radio" name="color" id="redColor" value="red" checked hidden>
+                    <label for="redColor" class="color-btn red active" data-color="red"></label>
+                    
+                    <input type="radio" name="color" id="blueColor" value="blue" hidden>
+                    <label for="blueColor" class="color-btn blue" data-color="blue"></label>
+                </div>
+                
+                <button id="clearCanvas">Clear All</button>
+                <button id="downloadMap">Download Map</button>
+            </div>
+        </div>
+        
+        <div class="canvas-container">
+            <canvas id="mapCanvas"></canvas>
+        </div>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>
