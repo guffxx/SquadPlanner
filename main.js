@@ -66,11 +66,17 @@ document.addEventListener('DOMContentLoaded', () => {
         
         isDrawing = true;
         const pos = getMousePos(e);
+        ctx.beginPath();
+        ctx.moveTo(pos.x, pos.y);
+        ctx.strokeStyle = document.querySelector('input[name="color"]:checked').value;
+        ctx.lineWidth = 3;
+        ctx.lineCap = 'round';
+        
         drawingData.push({
             type: 'start',
             x: pos.x,
             y: pos.y,
-            color: document.querySelector('input[name="color"]:checked').value
+            color: ctx.strokeStyle
         });
     }
 
@@ -78,14 +84,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!isDrawing || !currentMap) return;
 
         const pos = getMousePos(e);
+        ctx.lineTo(pos.x, pos.y);
+        ctx.stroke();
+        
         drawingData.push({
             type: 'draw',
             x: pos.x,
             y: pos.y,
-            color: document.querySelector('input[name="color"]:checked').value
+            color: ctx.strokeStyle
         });
-
-        redrawAll();
     }
 
     function stopDrawing() {
@@ -98,9 +105,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function getMousePos(e) {
         const rect = canvas.getBoundingClientRect();
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
         return {
-            x: e.clientX - rect.left,
-            y: e.clientY - rect.top
+            x: (e.clientX - rect.left) * scaleX,
+            y: (e.clientY - rect.top) * scaleY
         };
     }
 
@@ -115,9 +124,6 @@ document.addEventListener('DOMContentLoaded', () => {
         let currentPath = null;
         drawingData.forEach(point => {
             if (point.type === 'start') {
-                if (currentPath) {
-                    ctx.stroke();
-                }
                 currentPath = point;
                 ctx.beginPath();
                 ctx.moveTo(point.x, point.y);
@@ -127,8 +133,6 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (point.type === 'draw') {
                 ctx.lineTo(point.x, point.y);
                 ctx.stroke();
-                ctx.beginPath();
-                ctx.moveTo(point.x, point.y);
             }
         });
     }
