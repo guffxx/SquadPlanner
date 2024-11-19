@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize canvas and context
     const canvas = document.getElementById('mapCanvas');
     const ctx = canvas.getContext('2d');
     const mapSelect = document.getElementById('mapSelect');
@@ -10,13 +11,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // State
     let isDrawing = false;
     let currentMap = null;
-    let scale = 1;
-    let offsetX = 0;
-    let offsetY = 0;
-    let lastX = 0;
-    let lastY = 0;
-    let isDragging = false;
+    let drawingData = [];
+    let currentColor = 'red';
 
+    // Draw initial placeholder
     function drawPlaceholder() {
         ctx.fillStyle = 'var(--text-color)';
         ctx.font = '24px Arial';
@@ -27,16 +25,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     drawPlaceholder();
 
-    // Map loading
+    // Load map
     mapSelect.addEventListener('change', (e) => {
         if (!e.target.value) {
             canvas.width = 400;
             canvas.height = 100;
             drawPlaceholder();
             currentMap = null;
-            scale = 1;
-            offsetX = 0;
-            offsetY = 0;
+            drawingData = [];
             return;
         }
 
@@ -44,132 +40,106 @@ document.addEventListener('DOMContentLoaded', () => {
         img.onload = () => {
             canvas.width = img.width;
             canvas.height = img.height;
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
             currentMap = img;
-            redrawCanvas();
+            
+            // Load saved drawings if they exist
+            const savedData = localStorage.getItem(e.target.value);
+            if (savedData) {
+                drawingData = JSON.parse(savedData);
+                redrawAll();
+            } else {
+                drawingData = [];
+            }
         };
         img.src = e.target.value;
     });
 
-    function redrawCanvas() {
-        ctx.save();
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        // Apply transformations
-        ctx.translate(offsetX, offsetY);
-        ctx.scale(scale, scale);
+    // Drawing functionality
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mouseout', stopDrawing);
 
-        // Draw map
-        if (currentMap) {
-            ctx.drawImage(currentMap, 0, 0, currentMap.width, currentMap.height);
-        }
+    function startDrawing(e) {
+        if (!currentMap) return;
         
-        ctx.restore();
+        isDrawing = true;
+        const pos = getMousePos(e);
+        drawingData.push({
+            type: 'start',
+            x: pos.x,
+            y: pos.y,
+            color: document.querySelector('input[name="color"]:checked').value
+        });
     }
 
-    // Zoom functionality
-    canvas.addEventListener('wheel', (e) => {
-        e.preventDefault();
-        if (!currentMap) return;
+    function draw(e) {
+        if (!isDrawing || !currentMap) return;
 
-        const rect = canvas.getBoundingClientRect();
-        const mouseX = e.clientX - rect.left;
-        const mouseY = e.clientY - rect.top;
+        const pos = getMousePos(e);
+        drawingData.push({
+            type: 'draw',
+            x: pos.x,
+            y: pos.y,
+            color: document.querySelector('input[name="color"]:checked').value
+        });
 
-        // Calculate real position before zoom
-        const pointX = (mouseX - offsetX) / scale;
-        const pointY = (mouseY - offsetY) / scale;
+        redrawAll();
+    }
 
-        // Adjust scale
-        const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
-        scale *= zoomFactor;
-        scale = Math.min(Math.max(0.5, scale), 4); // Limit zoom between 0.5x and 4x
-
-        // Adjust offset to zoom into mouse position
-        offsetX = mouseX - pointX * scale;
-        offsetY = mouseY - pointY * scale;
-
-        redrawCanvas();
-    });
-
-    // Pan functionality
-    canvas.addEventListener('mousedown', (e) => {
-        if (e.button === 1 || e.button === 2) { // Middle or right click for panning
-            isDragging = true;
-            lastX = e.clientX;
-            lastY = e.clientY;
-        } else if (e.button === 0) { // Left click for drawing
-            isDrawing = true;
-            const pos = getMousePos(e);
-            ctx.beginPath();
-            ctx.moveTo(pos.x, pos.y);
+    function stopDrawing() {
+        if (isDrawing && currentMap) {
+            // Save drawing data
+            localStorage.setItem(mapSelect.value, JSON.stringify(drawingData));
         }
-    });
-
-    canvas.addEventListener('mousemove', (e) => {
-        if (isDragging) {
-            const deltaX = e.clientX - lastX;
-            const deltaY = e.clientY - lastY;
-            offsetX += deltaX;
-            offsetY += deltaY;
-            lastX = e.clientX;
-            lastY = e.clientY;
-            redrawCanvas();
-        } else if (isDrawing) {
-            draw(e);
-        }
-    });
-
-    canvas.addEventListener('mouseup', (e) => {
-        if (e.button === 1 || e.button === 2) {
-            isDragging = false;
-        } else if (e.button === 0) {
-            isDrawing = false;
-            ctx.beginPath();
-        }
-    });
-
-    canvas.addEventListener('mouseout', () => {
         isDrawing = false;
-        isDragging = false;
-        ctx.beginPath();
-    });
-
-    // Prevent context menu on right click
-    canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+    }
 
     function getMousePos(e) {
         const rect = canvas.getBoundingClientRect();
         return {
-            x: (e.clientX - rect.left - offsetX) / scale,
-            y: (e.clientY - rect.top - offsetY) / scale
+            x: e.clientX - rect.left,
+            y: e.clientY - rect.top
         };
     }
 
-    function draw(e) {
-        if (!isDrawing) return;
+    function redrawAll() {
+        if (!currentMap) return;
 
-        const pos = getMousePos(e);
-        
-        ctx.save();
-        ctx.translate(offsetX, offsetY);
-        ctx.scale(scale, scale);
-        
-        ctx.lineWidth = 3 / scale;
-        ctx.lineCap = 'round';
-        ctx.strokeStyle = document.querySelector('input[name="color"]:checked').value;
+        // Clear and draw map
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(currentMap, 0, 0, canvas.width, canvas.height);
 
-        ctx.lineTo(pos.x, pos.y);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(pos.x, pos.y);
-        
-        ctx.restore();
+        // Redraw all lines
+        let currentPath = null;
+        drawingData.forEach(point => {
+            if (point.type === 'start') {
+                if (currentPath) {
+                    ctx.stroke();
+                }
+                currentPath = point;
+                ctx.beginPath();
+                ctx.moveTo(point.x, point.y);
+                ctx.strokeStyle = point.color;
+                ctx.lineWidth = 3;
+                ctx.lineCap = 'round';
+            } else if (point.type === 'draw') {
+                ctx.lineTo(point.x, point.y);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(point.x, point.y);
+            }
+        });
     }
 
     // Clear canvas
     document.getElementById('clearCanvas').addEventListener('click', () => {
         if (currentMap) {
-            redrawCanvas();
+            drawingData = [];
+            localStorage.removeItem(mapSelect.value);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(currentMap, 0, 0, canvas.width, canvas.height);
         }
     });
 
@@ -178,8 +148,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!currentMap) return;
         
         const link = document.createElement('a');
-        link.download = 'modified-map.png';
+        link.download = `${mapSelect.options[mapSelect.selectedIndex].text}.png`;
         link.href = canvas.toDataURL('image/png');
         link.click();
+    });
+
+    // Color selection
+    document.querySelectorAll('.color-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        });
     });
 });

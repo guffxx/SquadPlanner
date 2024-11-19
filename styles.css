@@ -1,7 +1,7 @@
 :root {
-    --dark-bg: #1a1a1a;
-    --darker-bg: #121212;
-    --border-color: #333333;
+    --dark-bg: #2b2b2b;
+    --darker-bg: #1f1f1f;  /* Slightly darker than main dark */
+    --accent: #ffc409;
     --text-color: #ffffff;
 }
 
@@ -26,11 +26,11 @@ body {
     background-color: var(--dark-bg);
     width: 250px;
     padding: 20px;
-    border-right: 1px solid var(--border-color);
+    border-right: 1px solid var(--accent);
 }
 
 h2, h3 {
-    color: var(--text-color);
+    color: var(--accent);
     margin-bottom: 15px;
 }
 
@@ -44,13 +44,15 @@ select, button {
     margin: 5px 0;
     background-color: var(--darker-bg);
     color: var(--text-color);
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--accent);
     border-radius: 4px;
     cursor: pointer;
+    transition: all 0.2s ease;
 }
 
 select:hover, button:hover {
     background-color: var(--dark-bg);
+    border-color: var(--text-color);
 }
 
 .color-picker {
@@ -94,11 +96,6 @@ select:hover, button:hover {
     max-height: 100%;
 }
 
-button.active {
-    background-color: var(--border-color);
-    color: var(--text-color);
-}
-
 .map-selectors {
     margin-bottom: 30px;
 }
@@ -109,7 +106,7 @@ button.active {
 
 .selector-group label {
     display: block;
-    color: var(--text-color);
+    color: var(--accent);
     margin-bottom: 5px;
     font-size: 14px;
 }
@@ -119,34 +116,10 @@ select:disabled {
     cursor: not-allowed;
 }
 
-.mode-buttons {
-    display: flex;
-    gap: 10px;
-    margin: 10px 0;
+button:active {
+    transform: scale(0.98);
 }
 
-.mode-btn {
-    flex: 1;
-    padding: 10px;
-    text-align: center;
-    background-color: var(--darker-bg);
-    color: var(--text-color);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.mode-btn:hover {
-    background-color: var(--dark-bg);
-}
-
-input[type="radio"]:checked + .mode-btn {
-    background-color: var(--border-color);
-    color: var(--text-color);
-    transform: scale(1.1);
-    border-color: var(--text-color);
-}
-
-.color-btn {
-    cursor: pointer;
+button#clearCanvas, button#downloadMap {
+    margin-top: 15px;
 }
