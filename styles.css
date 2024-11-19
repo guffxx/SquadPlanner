@@ -14,7 +14,8 @@
 body {
     background-color: var(--darker-bg);
     color: var(--text-color);
-    font-family: Arial, sans-serif;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 16px; /* Base font size */
 }
 
 .container {
@@ -29,9 +30,16 @@ body {
     border-right: 1px solid var(--accent);
 }
 
-h2, h3 {
+h2 {
     color: var(--accent);
     margin-bottom: 15px;
+    font-size: 1.4em; /* Larger heading */
+}
+
+h3 {
+    color: var(--accent);
+    margin-bottom: 15px;
+    font-size: 1.2em; /* Larger subheading */
 }
 
 .tools {
@@ -48,6 +56,7 @@ select, button {
     border-radius: 4px;
     cursor: pointer;
     transition: all 0.2s ease;
+    font-size: 1em; /* Larger button/select text */
 }
 
 select:hover, button:hover {
@@ -110,7 +119,7 @@ select:hover, button:hover {
     display: block;
     color: var(--accent);
     margin-bottom: 5px;
-    font-size: 14px;
+    font-size: 1em; /* Slightly larger label */
 }
 
 select:disabled {
@@ -138,10 +147,31 @@ button#clearCanvas, button#downloadMap {
 .tool-btn {
     flex: 1;
     padding: 8px;
-    font-size: 0.9em;
+    font-size: 1em; /* Larger tool button text */
 }
 
 .tool-btn.active {
     background-color: var(--accent);
     color: var(--darker-bg);
+}
+
+.tip-text {
+    margin-top: 20px;
+    padding: 15px;
+    border-top: 1px solid var(--accent);
+    font-size: 1em; /* Larger tip text */
+    color: var(--text-color);
+    opacity: 0.8;
+    line-height: 1.4; /* Better line spacing */
+}
+
+.tip-text p {
+    margin-bottom: 8px;
+}
+
+.tip-text .signature {
+    margin-top: 12px;
+    color: var(--accent);
+    font-style: italic;
+    font-size: 1.1em; /* Larger signature */
 }

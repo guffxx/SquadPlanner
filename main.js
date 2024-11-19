@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let eraserRadius = 10;
     let isErasing = false;
     let lastMousePos = { x: 0, y: 0 };
+    let isRightClickPanning = false;
 
     // Draw initial placeholder
     function drawPlaceholder() {
@@ -70,98 +71,47 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Drawing functionality
-    canvas.addEventListener('mousedown', startDrawing);
-    canvas.addEventListener('mousemove', draw);
-    canvas.addEventListener('mouseup', stopDrawing);
-    canvas.addEventListener('mouseout', stopDrawing);
+    canvas.addEventListener('contextmenu', (e) => e.preventDefault()); // Prevent context menu
+    canvas.addEventListener('mousedown', handleMouseDown);
+    canvas.addEventListener('mousemove', handleMouseMove);
+    canvas.addEventListener('mouseup', handleMouseUp);
+    canvas.addEventListener('mouseout', handleMouseUp);
 
-    function startDrawing(e) {
+    function handleMouseDown(e) {
         if (!currentMap) return;
         
-        if (currentTool === 'draw') {
-            isDrawing = true;
-            const pos = getMousePos(e);
-            const currentColor = document.querySelector('input[name="color"]:checked').value;
-            
-            // Save current transformation state
-            ctx.save();
-            
-            // Apply transformations for drawing
-            ctx.translate(offsetX, offsetY);
-            ctx.scale(scale, scale);
-            
-            // Start the path with correct color
-            ctx.beginPath();
-            ctx.moveTo(pos.x, pos.y);
-            ctx.strokeStyle = currentColor;
-            ctx.lineWidth = 3 / scale;
-            ctx.lineCap = 'round';
-            
-            // Restore the transformation state
-            ctx.restore();
-            
-            drawingData.push({
-                type: 'start',
-                x: pos.x,
-                y: pos.y,
-                color: currentColor
-            });
-        } else if (currentTool === 'erase') {
-            isDrawing = true;
-            const pos = getMousePos(e);
-            eraseAtPoint(pos);
-        } else if (currentTool === 'pan') {
-            isPanning = true;
+        // Right click (Pan)
+        if (e.button === 2) {
+            e.preventDefault();
+            isRightClickPanning = true;
             canvas.style.cursor = 'grabbing';
-            const rect = canvas.getBoundingClientRect();
             lastPanPoint = {
-                x: e.clientX - rect.left,
-                y: e.clientY - rect.top
+                x: e.clientX - canvas.getBoundingClientRect().left,
+                y: e.clientY - canvas.getBoundingClientRect().top
             };
+            return;
+        }
+        
+        // Left click
+        if (e.button === 0) {
+            if (currentTool === 'draw') {
+                startDrawing(e);
+            } else if (currentTool === 'erase') {
+                startErasing(e);
+            } else if (currentTool === 'pan') {
+                startPanning(e);
+            }
         }
     }
 
-    function draw(e) {
+    function handleMouseMove(e) {
         if (!currentMap) return;
 
         const pos = getMousePos(e);
-        lastMousePos = pos; // Store last mouse position for eraser preview
+        lastMousePos = pos;
 
-        if (currentTool === 'draw' && isDrawing) {
-            const currentColor = document.querySelector('input[name="color"]:checked').value;
-            
-            // Save current transformation state
-            ctx.save();
-            
-            // Apply transformations for drawing
-            ctx.translate(offsetX, offsetY);
-            ctx.scale(scale, scale);
-            
-            // Set the correct color before drawing
-            ctx.strokeStyle = currentColor;
-            ctx.lineWidth = 3 / scale;
-            ctx.lineCap = 'round';
-            
-            // Draw the line
-            ctx.lineTo(pos.x, pos.y);
-            ctx.stroke();
-            
-            // Start a new path to prevent connecting lines
-            ctx.beginPath();
-            ctx.moveTo(pos.x, pos.y);
-            
-            // Restore the transformation state
-            ctx.restore();
-            
-            drawingData.push({
-                type: 'draw',
-                x: pos.x,
-                y: pos.y,
-                color: currentColor
-            });
-        } else if (currentTool === 'erase' && isDrawing) {
-            eraseAtPoint(pos);
-        } else if (currentTool === 'pan' && isPanning) {
+        // Handle right-click panning
+        if (isRightClickPanning) {
             const rect = canvas.getBoundingClientRect();
             const currentPoint = {
                 x: e.clientX - rect.left,
@@ -173,16 +123,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
             lastPanPoint = currentPoint;
             redrawAll();
+            return;
         }
 
-        // Redraw and show eraser preview if eraser tool is selected
-        if (currentTool === 'erase' && !isDrawing) {
+        // Handle regular tool actions
+        if (currentTool === 'draw' && isDrawing) {
+            draw(e);
+        } else if (currentTool === 'erase') {
+            if (isDrawing) {
+                eraseAtPoint(pos);
+            }
             redrawAll();
             drawEraserPreview(pos);
+        } else if (currentTool === 'pan' && isPanning) {
+            pan(e);
         }
     }
 
-    function stopDrawing() {
+    function handleMouseUp(e) {
+        // Handle right-click pan release
+        if (isRightClickPanning) {
+            isRightClickPanning = false;
+            canvas.style.cursor = currentTool === 'pan' ? 'grab' : 
+                                 currentTool === 'erase' ? 'none' : 'crosshair';
+            return;
+        }
+
+        // Handle regular tool release
         if (currentTool === 'draw') {
             if (isDrawing && currentMap) {
                 localStorage.setItem(mapSelect.value, JSON.stringify(drawingData));
@@ -190,7 +157,6 @@ document.addEventListener('DOMContentLoaded', () => {
             isDrawing = false;
         } else if (currentTool === 'erase') {
             isDrawing = false;
-            // Redraw with eraser preview at last position
             if (currentMap) {
                 redrawAll();
                 drawEraserPreview(lastMousePos);
@@ -199,6 +165,61 @@ document.addEventListener('DOMContentLoaded', () => {
             isPanning = false;
             canvas.style.cursor = 'grab';
         }
+    }
+
+    function startDrawing(e) {
+        isDrawing = true;
+        const pos = getMousePos(e);
+        const currentColor = document.querySelector('input[name="color"]:checked').value;
+        
+        ctx.save();
+        ctx.translate(offsetX, offsetY);
+        ctx.scale(scale, scale);
+        
+        ctx.beginPath();
+        ctx.moveTo(pos.x, pos.y);
+        ctx.strokeStyle = currentColor;
+        ctx.lineWidth = 3 / scale;
+        ctx.lineCap = 'round';
+        
+        ctx.restore();
+        
+        drawingData.push({
+            type: 'start',
+            x: pos.x,
+            y: pos.y,
+            color: currentColor
+        });
+    }
+
+    function startErasing(e) {
+        isDrawing = true;
+        const pos = getMousePos(e);
+        eraseAtPoint(pos);
+    }
+
+    function startPanning(e) {
+        isPanning = true;
+        canvas.style.cursor = 'grabbing';
+        const rect = canvas.getBoundingClientRect();
+        lastPanPoint = {
+            x: e.clientX - rect.left,
+            y: e.clientY - rect.top
+        };
+    }
+
+    function pan(e) {
+        const rect = canvas.getBoundingClientRect();
+        const currentPoint = {
+            x: e.clientX - rect.left,
+            y: e.clientY - rect.top
+        };
+
+        offsetX += (currentPoint.x - lastPanPoint.x);
+        offsetY += (currentPoint.y - lastPanPoint.y);
+
+        lastPanPoint = currentPoint;
+        redrawAll();
     }
 
     function getMousePos(e) {
