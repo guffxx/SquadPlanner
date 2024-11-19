@@ -88,12 +88,14 @@ select:hover, button:hover {
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
 }
 
 #mapCanvas {
     background-color: var(--dark-bg);
     max-width: 100%;
     max-height: 100%;
+    cursor: crosshair;
 }
 
 .map-selectors {
@@ -122,4 +124,24 @@ button:active {
 
 button#clearCanvas, button#downloadMap {
     margin-top: 15px;
+}
+
+.tool-selector {
+    margin: 20px 0;
+}
+
+.tool-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.tool-btn {
+    flex: 1;
+    padding: 8px;
+    font-size: 0.9em;
+}
+
+.tool-btn.active {
+    background-color: var(--accent);
+    color: var(--darker-bg);
 }
