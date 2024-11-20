@@ -245,3 +245,21 @@ select:disabled {
     margin-bottom: 10px;
 }
 
+/* Add these styles for the delete line button */
+#deleteLineBtn {
+    margin-top: 10px;
+    width: 100%;
+    padding: 8px;
+    background-color: var(--darker-bg);
+    color: var(--text-color);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#deleteLineBtn:hover {
+    background-color: var(--dark-bg);
+    opacity: 1;
+}
+

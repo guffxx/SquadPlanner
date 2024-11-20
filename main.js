@@ -8,6 +8,8 @@ let markers = [];
 let isPlacingHab = false;
 let drawingCanvas = document.createElement('canvas');
 let drawingCtx = drawingCanvas.getContext('2d');
+let drawingHistory = []; // Store each line as a separate path
+let currentPath = []; // Store the current line being drawn
 
 // Initialize canvas size
 canvas.width = 400;
@@ -76,6 +78,10 @@ function loadMap(src) {
         // Hide placeholder text
         document.querySelector('.placeholder-text').style.display = 'none';
         redrawMarkers(); // Redraw any existing markers
+        
+        // Reset drawing history
+        drawingHistory = [];
+        currentPath = [];
     };
     
     currentImage.onerror = function(e) {
@@ -109,6 +115,15 @@ function draw(e) {
     
     const [currentX, currentY] = getMousePos(canvas, e);
     
+    // Add point to current path
+    currentPath.push({
+        x: currentX,
+        y: currentY,
+        color: currentColor,
+        lastX: lastX,
+        lastY: lastY
+    });
+    
     drawingCtx.beginPath();
     drawingCtx.moveTo(lastX, lastY);
     drawingCtx.lineTo(currentX, currentY);
@@ -118,17 +133,16 @@ function draw(e) {
     drawingCtx.stroke();
     
     // Update main canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    if (currentImage) {
-        ctx.drawImage(currentImage, 0, 0);
-    }
-    ctx.drawImage(drawingCanvas, 0, 0);
-    redrawMarkers();
+    redrawCanvas();
     
     [lastX, lastY] = [currentX, currentY];
 }
 
 function stopDrawing() {
+    if (isDrawing && currentPath.length > 0) {
+        drawingHistory.push([...currentPath]);
+        currentPath = [];
+    }
     isDrawing = false;
 }
 
@@ -152,9 +166,12 @@ document.getElementById('habMarkerBtn').addEventListener('click', function() {
 });
 
 // Delete marker functionality
+document.getElementById('deleteMarkerBtn').textContent = 'Delete Last HAB';
 document.getElementById('deleteMarkerBtn').addEventListener('click', function() {
-    markers = []; // Clear only the HAB markers
-    redrawCanvas();
+    if (markers.length > 0) {
+        markers.pop(); // Remove the last HAB marker
+        redrawCanvas();
+    }
 });
 
 function redrawCanvas() {
@@ -181,6 +198,8 @@ function redrawMarkers() {
 // Clear canvas functionality - modified to clear everything
 document.getElementById('clearCanvas').addEventListener('click', function() {
     markers = []; // Clear HAB markers
+    drawingHistory = []; // Clear drawing history
+    currentPath = []; // Clear current path
     drawingCtx.clearRect(0, 0, canvas.width, canvas.height); // Clear drawings
     if (currentImage) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -238,4 +257,32 @@ function placeHABMarker(event) {
         // Store marker data if needed
         markers.push({ x, y, type: 'HAB', width: markerWidth, height: markerHeight });
     };
+}
+
+// Add delete line button functionality
+document.getElementById('deleteLineBtn').addEventListener('click', function() {
+    if (drawingHistory.length > 0) {
+        drawingHistory.pop(); // Remove the last line
+        redrawDrawings(); // Redraw all remaining lines
+        redrawCanvas();
+    }
+});
+
+// Add function to redraw all drawings
+function redrawDrawings() {
+    drawingCtx.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
+    
+    drawingHistory.forEach(path => {
+        path.forEach((point, index) => {
+            if (index > 0) {
+                drawingCtx.beginPath();
+                drawingCtx.moveTo(path[index - 1].x, path[index - 1].y);
+                drawingCtx.lineTo(point.x, point.y);
+                drawingCtx.strokeStyle = point.color;
+                drawingCtx.lineWidth = 4;
+                drawingCtx.lineCap = 'round';
+                drawingCtx.stroke();
+            }
+        });
+    });
 }
