@@ -240,4 +240,39 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.classList.add('active');
         });
     });
+
+    document.getElementById('imageUpload').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const img = new Image();
+                img.onload = () => {
+                    // Calculate dimensions to fit the canvas container
+                    const container = document.querySelector('.canvas-container');
+                    const maxWidth = container.clientWidth - 40; // Account for padding
+                    const maxHeight = container.clientHeight - 40;
+                    
+                    let width = img.width;
+                    let height = img.height;
+                    
+                    // Scale down if image is too large
+                    if (width > maxWidth || height > maxHeight) {
+                        const ratio = Math.min(maxWidth / width, maxHeight / height);
+                        width *= ratio;
+                        height *= ratio;
+                    }
+                    
+                    canvas.width = width;
+                    canvas.height = height;
+                    state.map.current = img;
+                    state.map.offset = { x: 0, y: 0 };
+                    state.drawing.data = [];
+                    drawUtils.redrawCanvas();
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
 });
