@@ -17,7 +17,7 @@ body {
     color: var(--text-color);
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('../assets/images/Squad_Img.webp');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('assets/images/Squad_Img.webp');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -96,9 +96,14 @@ select:disabled {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    border: none;
+    border: 3px solid transparent;
     cursor: pointer;
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.color-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 .color-btn.red { background-color: #ff0000; }
@@ -230,10 +235,9 @@ select:disabled {
 }
 
 .marker-icon {
-    width: 36px;
-    height: 36px;
+    width: 48px;
+    height: 48px;
     object-fit: contain;
-    filter: none;
 }
 
 .marker-btn.active {
