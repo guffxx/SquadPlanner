@@ -139,16 +139,34 @@ document.getElementById('habMarkerBtn').addEventListener('click', function() {
 
 // Delete marker functionality
 document.getElementById('deleteMarkerBtn').addEventListener('click', function() {
-    markers = [];
+    markers = []; // Clear only the HAB markers
     redrawCanvas();
 });
 
 function redrawCanvas() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
     if (currentImage) {
+        // Store the current canvas content in a temporary canvas to preserve drawings
+        const tempCanvas = document.createElement('canvas');
+        const tempCtx = tempCanvas.getContext('2d');
+        tempCanvas.width = canvas.width;
+        tempCanvas.height = canvas.height;
+        
+        // Copy current canvas content (includes drawings)
+        tempCtx.drawImage(canvas, 0, 0);
+        
+        // Clear and redraw base image
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
+        
+        // Restore the drawings (everything except markers)
+        ctx.drawImage(tempCanvas, 0, 0);
+        
+        // Redraw markers on top
+        redrawMarkers();
+    } else {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        redrawMarkers();
     }
-    redrawMarkers();
 }
 
 function redrawMarkers() {
@@ -163,10 +181,16 @@ function redrawMarkers() {
     });
 }
 
-// Clear canvas functionality
+// Clear canvas functionality - modified to clear everything
 document.getElementById('clearCanvas').addEventListener('click', function() {
-    markers = [];
-    redrawCanvas();
+    markers = []; // Clear HAB markers
+    if (currentImage) {
+        // Reset to just the background image
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
+    } else {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
 });
 
 // Download functionality
