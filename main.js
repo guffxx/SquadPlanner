@@ -124,6 +124,7 @@ function draw(e) {
         lastY: lastY
     });
     
+    // Draw on drawing canvas
     drawingCtx.beginPath();
     drawingCtx.moveTo(lastX, lastY);
     drawingCtx.lineTo(currentX, currentY);
@@ -132,7 +133,7 @@ function draw(e) {
     drawingCtx.lineCap = 'round';
     drawingCtx.stroke();
     
-    // Update main canvas
+    // Update display
     redrawCanvas();
     
     [lastX, lastY] = [currentX, currentY];
@@ -176,20 +177,36 @@ document.getElementById('deleteMarkerBtn').addEventListener('click', function() 
 
 function redrawCanvas() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Draw base image
     if (currentImage) {
         ctx.drawImage(currentImage, 0, 0);
     }
+    
+    // Draw lines
     ctx.drawImage(drawingCanvas, 0, 0);
+    
+    // Draw markers with tint
     redrawMarkers();
 }
 
 function redrawMarkers() {
     markers.forEach(marker => {
         if (marker.type === 'HAB') {
+            // Draw tint effect first
+            ctx.save();
+            ctx.fillStyle = marker.tintColor;
+            ctx.globalAlpha = marker.tintAlpha;
+            ctx.beginPath();
+            ctx.arc(marker.x, marker.y, marker.tintRadius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+
+            // Draw HAB marker
             const habImage = new Image();
             habImage.src = 'assets/icons/HAB.webp';
             habImage.onload = () => {
-                ctx.drawImage(habImage, marker.x - 24, marker.y - 24, 48, 48);
+                ctx.drawImage(habImage, marker.x - marker.width/2, marker.y - marker.height/2, marker.width, marker.height);
             };
         }
     });
@@ -236,25 +253,19 @@ function placeHABMarker(event) {
         const markerWidth = 48;  
         const markerHeight = 48; 
         
-        // Draw the marker with red tint
-        ctx.save();
+        // Store marker data with tint information
+        markers.push({ 
+            x, 
+            y, 
+            type: 'HAB', 
+            width: markerWidth, 
+            height: markerHeight,
+            tintColor: 'red',
+            tintAlpha: 0.5,
+            tintRadius: markerWidth/2
+        });
         
-        // Apply red tint
-        ctx.fillStyle = 'red';
-        ctx.globalAlpha = 0.5;
-        // Create circular tint
-        ctx.beginPath();
-        ctx.arc(x, y, markerWidth/2, 0, Math.PI * 2);
-        ctx.fill();
-        
-        // Draw the marker image
-        ctx.globalAlpha = 1;
-        ctx.drawImage(marker, x - markerWidth/2, y - markerHeight/2, markerWidth, markerHeight);
-        
-        ctx.restore();
-        
-        // Store marker data if needed
-        markers.push({ x, y, type: 'HAB', width: markerWidth, height: markerHeight });
+        redrawCanvas();
     };
 }
 
