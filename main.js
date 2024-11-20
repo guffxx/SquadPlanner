@@ -91,17 +91,7 @@ canvas.addEventListener('mouseout', stopDrawing);
 function startDrawing(e) {
     if (isPlacingHab) {
         // Place HAB marker
-        const rect = canvas.getBoundingClientRect();
-        const x = (e.clientX - rect.left) * (canvas.width / rect.width);
-        const y = (e.clientY - rect.top) * (canvas.height / rect.height);
-        
-        markers.push({
-            x: x,
-            y: y,
-            type: 'HAB',
-            color: currentColor
-        });
-        redrawCanvas();
+        placeHABMarker(e);
     } else {
         isDrawing = true;
         [lastX, lastY] = getMousePos(canvas, e);
@@ -193,3 +183,35 @@ window.addEventListener('resize', function() {
         redrawCanvas();
     }
 });
+
+function placeHABMarker(event) {
+    const rect = canvas.getBoundingClientRect();
+    const x = (event.clientX - rect.left) * (canvas.width / rect.width);
+    const y = (event.clientY - rect.top) * (canvas.height / rect.height);
+
+    const marker = new Image();
+    marker.src = 'assets/icons/HAB.webp';
+    
+    marker.onload = function() {
+        // Make the marker 1.5x larger (original size was 32x32)
+        const markerWidth = 48;  // 32 * 1.5
+        const markerHeight = 48; // 32 * 1.5
+        
+        // Draw the marker with red tint
+        ctx.save();
+        
+        // Apply red tint
+        ctx.fillStyle = 'red';
+        ctx.globalAlpha = 0.5;
+        ctx.fillRect(x - markerWidth/2, y - markerHeight/2, markerWidth, markerHeight);
+        
+        // Draw the marker image
+        ctx.globalAlpha = 1;
+        ctx.drawImage(marker, x - markerWidth/2, y - markerHeight/2, markerWidth, markerHeight);
+        
+        ctx.restore();
+        
+        // Store marker data if needed
+        markers.push({ x, y, type: 'HAB', width: markerWidth, height: markerHeight });
+    };
+}
