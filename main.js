@@ -167,7 +167,6 @@ document.getElementById('habMarkerBtn').addEventListener('click', function() {
 });
 
 // Delete marker functionality
-document.getElementById('deleteMarkerBtn').textContent = 'Delete Last HAB';
 document.getElementById('deleteMarkerBtn').addEventListener('click', function() {
     if (markers.length > 0) {
         markers.pop(); // Remove the last HAB marker
@@ -213,11 +212,11 @@ function redrawMarkers() {
 }
 
 // Clear canvas functionality - modified to clear everything
-document.getElementById('clearCanvas').addEventListener('click', function() {
+document.getElementById('clearAll').addEventListener('click', function() {
     markers = []; // Clear HAB markers
     drawingHistory = []; // Clear drawing history
     currentPath = []; // Clear current path
-    drawingCtx.clearRect(0, 0, canvas.width, canvas.height); // Clear drawings
+    drawingCtx.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height); // Clear drawings
     if (currentImage) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(currentImage, 0, 0);
@@ -227,7 +226,7 @@ document.getElementById('clearCanvas').addEventListener('click', function() {
 });
 
 // Download functionality
-document.getElementById('downloadMap').addEventListener('click', function() {
+document.getElementById('downloadNow').addEventListener('click', function() {
     const link = document.createElement('a');
     link.download = 'squad-map-plan.png';
     link.href = canvas.toDataURL();
