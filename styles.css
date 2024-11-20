@@ -242,8 +242,6 @@ select:disabled {
 }
 
 .button-container {
-    display: flex;
-    flex-direction: column;  /* Change to column to stack buttons */
     gap: 10px;
     margin-bottom: 10px;    /* Increase to 10px space above the tip section */
 }
