@@ -59,69 +59,27 @@ function loadMap(src) {
     currentImage.onload = function() {
         console.log('Image loaded successfully');
         
-        // Calculate the available space
-        const containerWidth = canvas.parentElement.clientWidth - 40; // 40px for padding
-        const containerHeight = canvas.parentElement.clientHeight - 40;
+        // Set canvas size to match image size
+        canvas.width = currentImage.width;
+        canvas.height = currentImage.height;
         
-        // Get image dimensions
-        const imgWidth = currentImage.width;
-        const imgHeight = currentImage.height;
-        
-        // Calculate aspect ratio
-        const aspectRatio = imgWidth / imgHeight;
-        
-        // Calculate new dimensions while maintaining aspect ratio
-        let newWidth = containerWidth;
-        let newHeight = containerWidth / aspectRatio;
-        
-        // If height is too big, scale based on height instead
-        if (newHeight > containerHeight) {
-            newHeight = containerHeight;
-            newWidth = containerHeight * aspectRatio;
-        }
-        
-        // Set canvas size to these new dimensions
-        canvas.width = newWidth;
-        canvas.height = newHeight;
-        
-        // Clear and draw the image
+        // Draw image
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(currentImage, 0, 0, newWidth, newHeight);
+        ctx.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
         
         // Hide placeholder text
         document.querySelector('.placeholder-text').style.display = 'none';
-        
-        // Redraw any existing markers
-        redrawMarkers();
-        
-        console.log('Map rendered with dimensions:', newWidth, 'x', newHeight);
+        redrawMarkers(); // Redraw any existing markers
     };
     
     currentImage.onerror = function(e) {
         console.error('Error loading image:', e);
         console.error('Failed to load:', src);
-        alert('Failed to load map image. Please check if the file exists and try again.');
-        
-        // Reset canvas and show placeholder
-        canvas.width = 400;
-        canvas.height = 400;
-        document.querySelector('.placeholder-text').style.display = 'block';
-        document.querySelector('.placeholder-text').textContent = 'Error loading map';
+        alert('Failed to load map image. Please check the console for details.');
     };
     
-    // Add loading state
-    canvas.style.opacity = '0.5';
-    document.querySelector('.placeholder-text').style.display = 'block';
-    document.querySelector('.placeholder-text').textContent = 'Loading map...';
-    
-    // Load the image
     currentImage.src = src;
-    
-    // Remove loading state when image loads
-    currentImage.onload = function() {
-        canvas.style.opacity = '1';
-        this.onload(); // Call the original onload function
-    }.bind(currentImage);
+    console.log('Set image source to:', src);
 }
 
 // Drawing functionality
