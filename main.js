@@ -242,8 +242,7 @@ function placeHABMarker(event) {
         // Apply red tint
         ctx.fillStyle = 'red';
         ctx.globalAlpha = 0.5;
-        ctx.fillRect(x - markerWidth/2, y - markerHeight/2, markerWidth, markerHeight);
-        // Create a circular tint instead of rectangular
+        // Create circular tint
         ctx.beginPath();
         ctx.arc(x, y, markerWidth/2, 0, Math.PI * 2);
         ctx.fill();
