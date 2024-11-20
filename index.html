@@ -8,25 +8,32 @@
 </head>
 <body>
     <div class="container">
-        <div class="sidebar">
-            <h2>Map Selection</h2>
-            <div class="map-selectors">
+        <aside class="sidebar">
+            <section class="map-selection">
+                <h2>Map Selection</h2>
                 <div class="selector-group">
-                    <label>Select Map</label>
+                    <label for="mapSelect">Select Map</label>
                     <select id="mapSelect">
                         <option value="">Choose map...</option>
                         <option value="assets/maps/AlBasrah_AAS_1.png">Al Basrah: AAS v1</option>
+                        <option value="assets/maps/Anvil_AAS_1.png">Anvil: AAS v1</option>
                         <option value="assets/maps/BlackCoast_AAS_1.png">Black Coast: AAS v1</option>
                         <option value="assets/maps/BlackCoast_AAS_2.png">Black Coast: AAS v2</option>
                         <option value="assets/maps/Fallujah_AAS_1.png">Fallujah: AAS v1</option>
+                        <option value="assets/maps/GooseBay_AAS_1.png">Goose Bay: AAS v1</option>
+                        <option value="assets/maps/Gorodok_AAS_2.png">Gorodok: AAS v2</option>
+                        <option value="assets/maps/Harju_AAS_1.png">Harju: AAS v1</option>
+                        <option value="assets/maps/Harju_AAS_2.png">Harju: AAS v2</option>
+                        <option value="assets/maps/Harju_AAS_3.png">Harju: AAS v3</option>
+                        <option value="assets/maps/Kuban_AAS_1.png">Kuban: AAS v1</option>
                         <option value="assets/maps/Narva_AAS_1.png">Narva: AAS v1</option>
                         <option value="assets/maps/Narva_AAS_2.png">Narva: AAS v2</option>
                         <option value="assets/maps/Narva_AAS_3.png">Narva: AAS v3</option>
                     </select>
                 </div>
-            </div>
+            </section>
             
-            <div class="tools">
+            <section class="drawing-tools">
                 <h3>Drawing Tools</h3>
                 <div class="color-picker">
                     <input type="radio" name="color" id="redColor" value="red" checked hidden>
@@ -36,29 +43,25 @@
                     <label for="blueColor" class="color-btn blue" data-color="blue"></label>
                 </div>
                 
-                <div class="tool-selector">
-                    <h3>Tools</h3>
-                    <div class="tool-buttons">
-                        <button id="drawTool" class="tool-btn active">Draw</button>
-                        <button id="eraseTool" class="tool-btn">Erase</button>
-                        <button id="panTool" class="tool-btn">Pan</button>
-                    </div>
+                <div class="action-buttons">
+                    <button id="clearCanvas">Clear All</button>
+                    <button id="downloadMap">Download Map</button>
                 </div>
-                
-                <button id="clearCanvas">Clear All</button>
-                <button id="downloadMap">Download Map</button>
+            </section>
 
+            <section class="tip-section">
                 <div class="tip-text">
-                    <p><strong>Right click to drag the map, and scroll wheel to zoom in and out.</strong></p>
-                    <p><strong>This is a WIP.</strong></p>
+                    <p>Right click to drag the map.</p>
+                    <p>This is a WIP.</p>
                     <p class="signature">- guFF</p>
                 </div>
-            </div>
-        </div>
+            </section>
+        </aside>
         
-        <div class="canvas-container">
+        <main class="canvas-container">
             <canvas id="mapCanvas"></canvas>
-        </div>
+            <div class="placeholder-text">Select a map from the left</div>
+        </main>
     </div>
     <script src="main.js"></script>
 </body>

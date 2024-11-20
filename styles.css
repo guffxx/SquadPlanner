@@ -1,10 +1,12 @@
 :root {
     --dark-bg: #2b2b2b;
-    --darker-bg: #1f1f1f;  /* Slightly darker than main dark */
+    --darker-bg: #1f1f1f;
     --accent: #ffc409;
     --text-color: #ffffff;
+    --shadow-glow: 0 0 10px -3px var(--accent);
 }
 
+/* Base Styles */
 * {
     margin: 0;
     padding: 0;
@@ -14,36 +16,53 @@
 body {
     background-color: var(--darker-bg);
     color: var(--text-color);
-    font-family: Helvetica, Arial, sans-serif;
-    font-size: 16px; /* Base font size */
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
 }
 
+/* Layout */
 .container {
     display: flex;
     height: 100vh;
 }
 
+/* Sidebar */
 .sidebar {
     background-color: var(--dark-bg);
     width: 250px;
     padding: 20px;
     border-right: 1px solid var(--accent);
+    box-shadow: var(--shadow-glow);
+    display: flex;
+    flex-direction: column;
 }
 
-h2 {
+.sidebar section {
+    margin-bottom: 30px;
+}
+
+.sidebar section:last-child {
+    margin-top: auto;
+    margin-bottom: 0;
+}
+
+/* Headings */
+h2, h3 {
     color: var(--accent);
     margin-bottom: 15px;
-    font-size: 1.4em; /* Larger heading */
+    font-weight: 500;
 }
 
-h3 {
-    color: var(--accent);
+/* Form Controls */
+.selector-group {
     margin-bottom: 15px;
-    font-size: 1.2em; /* Larger subheading */
 }
 
-.tools {
-    margin-top: 30px;
+.selector-group label {
+    display: block;
+    color: var(--accent);
+    margin-bottom: 5px;
+    font-size: 14px;
 }
 
 select, button {
@@ -56,7 +75,7 @@ select, button {
     border-radius: 4px;
     cursor: pointer;
     transition: all 0.2s ease;
-    font-size: 1em; /* Larger button/select text */
+    box-shadow: var(--shadow-glow);
 }
 
 select:hover, button:hover {
@@ -64,10 +83,16 @@ select:hover, button:hover {
     border-color: var(--text-color);
 }
 
+select:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Color Picker */
 .color-picker {
     display: flex;
     gap: 10px;
-    margin: 10px 0;
+    margin: 15px 0;
 }
 
 .color-btn {
@@ -76,28 +101,25 @@ select:hover, button:hover {
     border-radius: 50%;
     border: none;
     cursor: pointer;
+    transition: transform 0.2s ease;
 }
 
-.color-btn.red {
-    background-color: #ff0000;
-}
-
-.color-btn.blue {
-    background-color: #0000ff;
-}
+.color-btn.red { background-color: #ff0000; }
+.color-btn.blue { background-color: #0000ff; }
 
 .color-btn.active {
     border: 3px solid var(--text-color);
     transform: scale(1.1);
 }
 
+/* Canvas Area */
 .canvas-container {
     flex-grow: 1;
     padding: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    position: relative;
 }
 
 #mapCanvas {
@@ -107,62 +129,27 @@ select:hover, button:hover {
     cursor: crosshair;
 }
 
-.map-selectors {
-    margin-bottom: 30px;
-}
-
-.selector-group {
-    margin-bottom: 15px;
-}
-
-.selector-group label {
-    display: block;
+.placeholder-text {
+    position: absolute;
     color: var(--accent);
-    margin-bottom: 5px;
-    font-size: 1em; /* Slightly larger label */
+    font-size: 32px;
+    pointer-events: none;
+    display: none;
+    text-shadow: 0 0 5px var(--accent);
+    background-color: var(--dark-bg);
+    padding: 20px 40px;
+    border-radius: 8px;
+    border: 1px solid var(--accent);
+    box-shadow: var(--shadow-glow);
 }
 
-select:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-button:active {
-    transform: scale(0.98);
-}
-
-button#clearCanvas, button#downloadMap {
-    margin-top: 15px;
-}
-
-.tool-selector {
-    margin: 20px 0;
-}
-
-.tool-buttons {
-    display: flex;
-    gap: 5px;
-}
-
-.tool-btn {
-    flex: 1;
-    padding: 8px;
-    font-size: 1em; /* Larger tool button text */
-}
-
-.tool-btn.active {
-    background-color: var(--accent);
-    color: var(--darker-bg);
-}
-
+/* Tip Section */
 .tip-text {
-    margin-top: 20px;
-    padding: 15px;
-    border-top: 1px solid var(--accent);
-    font-size: 1em; /* Larger tip text */
     color: var(--text-color);
-    opacity: 0.8;
-    line-height: 1.4; /* Better line spacing */
+    font-size: 14px;
+    line-height: 1.4;
+    padding-top: 15px;
+    border-top: 1px solid var(--accent);
 }
 
 .tip-text p {
@@ -170,8 +157,12 @@ button#clearCanvas, button#downloadMap {
 }
 
 .tip-text .signature {
-    margin-top: 12px;
     color: var(--accent);
     font-style: italic;
-    font-size: 1.1em; /* Larger signature */
+    margin-top: 12px;
+}
+
+/* Utility Classes */
+.canvas-container:has(#mapCanvas[width="400"]) .placeholder-text {
+    display: block;
 }
