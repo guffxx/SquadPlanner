@@ -149,10 +149,8 @@ select:disabled {
     margin-bottom: 20px;
 }
 
-.marker-buttons {
-    display: flex;
-    flex-direction: column;  /* Stack buttons vertically */
-    gap: 10px;              /* Space between buttons */
+.marker-buttons { /* Stack buttons vertically */
+    gap: 5px;              /* Space between buttons */
 }
 
 .marker-btn {
@@ -244,7 +242,7 @@ select:disabled {
 .button-container {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 5px;
     margin-top: auto;
     margin-bottom: 10px;
 }
