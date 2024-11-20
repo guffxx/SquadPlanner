@@ -19,6 +19,7 @@
                     <h3>Select Map</h3>
                     <select id="mapSelect">
                         <option value="">Choose map...</option>
+                        <option value="custom">Upload Custom Map...</option>
                         <option value="assets/maps/AlBasrah_AAS_1.png">Al Basrah: AAS v1</option>
                         <option value="assets/maps/Anvil_AAS_1.png">Anvil: AAS v1</option>
                         <option value="assets/maps/BlackCoast_AAS_1.png">Black Coast: AAS v1</option>
@@ -34,17 +35,14 @@
                         <option value="assets/maps/Narva_AAS_2.png">Narva: AAS v2</option>
                         <option value="assets/maps/Narva_AAS_3.png">Narva: AAS v3</option>
                     </select>
-                </div>
-                <div class="selector-group">
-                    <h3>Upload Custom Map</h3>
-                    <input type="file" id="imageUpload" accept="image/*" class="file-input">
+                    <input type="file" id="imageUpload" accept="image/*" class="file-input" hidden>
                 </div>
             </section>
             
             <section class="drawing-tools">
                 <h3>Color Picker</h3>
                 <div class="color-picker">
-                    <input type="radio" name="color" çid="redColor" value="red" checked hidden>
+                    <input type="radio" name="color" id="redColor" value="red" checked hidden>
                     <label for="redColor" class="color-btn red active" data-color="red"></label>
                     
                     <input type="radio" name="color" id="blueColor" value="blue" hidden>
@@ -55,6 +53,19 @@
                     
                     <input type="radio" name="color" id="yellowColor" value="yellow" hidden>
                     <label for="yellowColor" class="color-btn yellow" data-color="yellow"></label>
+                </div>
+            </section>
+
+            <section class="marker-tools">
+                <h3>Map Markers</h3>
+                <div class="marker-options">
+                    <div class="marker-buttons">
+                        <button id="habMarkerBtn" class="marker-btn">
+                            <img src="assets/icons/HAB.webp" alt="HAB" class="marker-icon">
+                            Place HAB
+                        </button>
+                        <button id="deleteMarkerBtn" class="marker-btn">Delete Marker</button>
+                    </div>
                 </div>
             </section>
 

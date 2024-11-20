@@ -11,8 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const state = {
         drawing: {
             isActive: false,
-            data: [],
-            currentColor: 'red'
+            data: []
         },
         map: {
             current: null,
@@ -21,6 +20,11 @@ document.addEventListener('DOMContentLoaded', () => {
         pan: {
             isActive: false,
             lastPoint: { x: 0, y: 0 }
+        },
+        markers: {
+            isPlacing: false,
+            list: [],
+            selected: null
         }
     };
 
@@ -41,26 +45,17 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!state.map.current) return;
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // Apply transformations
             ctx.save();
             ctx.translate(state.map.offset.x, state.map.offset.y);
-            
-            // Draw map
             ctx.drawImage(state.map.current, 0, 0, canvas.width, canvas.height);
-
-            // Draw stored lines
             this.drawStoredLines();
-            
+            this.drawMarkers();
             ctx.restore();
         },
 
         drawStoredLines() {
-            let currentPath = null;
             state.drawing.data.forEach(point => {
                 if (point.type === 'start') {
-                    if (currentPath) ctx.stroke();
-                    currentPath = point;
                     ctx.beginPath();
                     ctx.moveTo(point.x, point.y);
                     ctx.strokeStyle = point.color;
@@ -72,6 +67,40 @@ document.addEventListener('DOMContentLoaded', () => {
                     ctx.beginPath();
                     ctx.moveTo(point.x, point.y);
                 }
+            });
+        },
+
+        drawMarkers() {
+            state.markers.list.forEach(marker => {
+                const img = new Image();
+                img.src = 'assets/icons/HAB.webp';
+                
+                // Save context to apply color filter
+                ctx.save();
+                
+                // Create temporary canvas for coloring
+                const tempCanvas = document.createElement('canvas');
+                const tempCtx = tempCanvas.getContext('2d');
+                tempCanvas.width = 72;  // Reduced by 25% from 96 to 72
+                tempCanvas.height = 72; // Reduced by 25% from 96 to 72
+                
+                // Draw and color the image
+                img.onload = () => {
+                    tempCtx.filter = 'brightness(0) saturate(100%) invert(12%) sepia(96%) saturate(6829%) hue-rotate(360deg) brightness(103%) contrast(115%)'; // Pure red
+                    tempCtx.drawImage(img, 0, 0, 72, 72);
+                    
+                    // Draw the colored image onto main canvas
+                    ctx.drawImage(tempCanvas, marker.x - 36, marker.y - 36, 72, 72); // Reduced by 25% (36 from 48)
+                    
+                    // Draw selection box if selected
+                    if (state.markers.selected === marker) {
+                        ctx.strokeStyle = 'var(--accent)';
+                        ctx.lineWidth = 2;
+                        ctx.strokeRect(marker.x - 38, marker.y - 38, 76, 76); // Adjusted for new size
+                    }
+                };
+                
+                ctx.restore();
             });
         }
     };
@@ -90,12 +119,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 canvas.height = img.height;
                 state.map.offset = { x: 0, y: 0 };
                 state.map.current = img;
-                this.loadSavedDrawings(imagePath);
+                this.loadSavedData(imagePath);
                 drawUtils.redrawCanvas();
-            };
-            img.onerror = () => {
-                console.error(`Failed to load map: ${imagePath}`);
-                this.reset();
             };
             img.src = imagePath;
         },
@@ -105,22 +130,31 @@ document.addEventListener('DOMContentLoaded', () => {
             canvas.height = 100;
             state.map.current = null;
             state.drawing.data = [];
+            state.markers.list = [];
             state.map.offset = { x: 0, y: 0 };
         },
 
-        loadSavedDrawings(mapPath) {
+        loadSavedData(mapPath) {
             const savedData = localStorage.getItem(mapPath);
             if (savedData) {
                 try {
-                    state.drawing.data = JSON.parse(savedData);
-                    drawUtils.redrawCanvas();
+                    const data = JSON.parse(savedData);
+                    state.drawing.data = data.drawings || [];
+                    state.markers.list = data.markers || [];
                 } catch (e) {
-                    console.error('Failed to load saved drawings');
-                    state.drawing.data = [];
+                    this.reset();
                 }
             } else {
-                state.drawing.data = [];
+                this.reset();
             }
+        },
+
+        saveData() {
+            const mapPath = document.getElementById('mapSelect').value;
+            localStorage.setItem(mapPath, JSON.stringify({
+                drawings: state.drawing.data,
+                markers: state.markers.list
+            }));
         }
     };
 
@@ -155,124 +189,86 @@ document.addEventListener('DOMContentLoaded', () => {
 
         stopDrawing() {
             if (state.drawing.isActive && state.map.current) {
-                localStorage.setItem(
-                    document.getElementById('mapSelect').value,
-                    JSON.stringify(state.drawing.data)
-                );
+                mapHandler.saveData();
             }
             state.drawing.isActive = false;
         },
 
-        startPan(e) {
-            if (e.button === 2) {
-                state.pan.isActive = true;
-                state.pan.lastPoint = { x: e.clientX, y: e.clientY };
-                canvas.style.cursor = 'grabbing';
+        handleMarkers(e) {
+            if (state.markers.isPlacing) {
+                const pos = drawUtils.getMousePos(e);
+                state.markers.list.push({ x: pos.x, y: pos.y });
+                state.markers.isPlacing = false;
+                document.getElementById('habMarkerBtn').classList.remove('active');
+                mapHandler.saveData();
+                drawUtils.redrawCanvas();
+            } else {
+                const pos = drawUtils.getMousePos(e);
+                state.markers.selected = state.markers.list.find(marker => {
+                    const dx = marker.x - pos.x;
+                    const dy = marker.y - pos.y;
+                    return Math.sqrt(dx * dx + dy * dy) < 24;
+                });
+                drawUtils.redrawCanvas();
             }
-        },
-
-        pan(e) {
-            if (!state.pan.isActive) return;
-            
-            const deltaX = e.clientX - state.pan.lastPoint.x;
-            const deltaY = e.clientY - state.pan.lastPoint.y;
-            
-            state.map.offset.x += deltaX;
-            state.map.offset.y += deltaY;
-            
-            state.pan.lastPoint = { x: e.clientX, y: e.clientY };
-            drawUtils.redrawCanvas();
-        },
-
-        stopPan() {
-            state.pan.isActive = false;
-            canvas.style.cursor = 'crosshair';
         }
     };
 
     // Event listeners
-    document.getElementById('mapSelect').addEventListener('change', e => mapHandler.load(e.target.value));
-    
-    canvas.addEventListener('mousedown', e => {
-        if (e.button === 2) handlers.startPan(e);
-        else handlers.startDrawing(e);
+    document.getElementById('mapSelect').addEventListener('change', e => {
+        if (e.target.value === 'custom') {
+            document.getElementById('imageUpload').click();
+            e.target.value = '';
+        } else {
+            mapHandler.load(e.target.value);
+        }
     });
 
-    canvas.addEventListener('mousemove', e => {
-        if (state.pan.isActive) handlers.pan(e);
-        else handlers.draw(e);
-    });
-
-    canvas.addEventListener('mouseup', e => {
-        if (e.button === 2) handlers.stopPan();
-        else handlers.stopDrawing();
-    });
-
+    canvas.addEventListener('mousedown', e => e.button === 2 ? handlers.startPan(e) : handlers.startDrawing(e));
+    canvas.addEventListener('mousemove', e => state.pan.isActive ? handlers.pan(e) : handlers.draw(e));
+    canvas.addEventListener('mouseup', e => e.button === 2 ? handlers.stopPan() : handlers.stopDrawing());
     canvas.addEventListener('mouseout', () => {
         handlers.stopPan();
         handlers.stopDrawing();
     });
-
+    canvas.addEventListener('click', handlers.handleMarkers);
     canvas.addEventListener('contextmenu', e => e.preventDefault());
 
-    // Button handlers
+    // Initialize event listeners
     document.getElementById('clearCanvas').addEventListener('click', () => {
         if (state.map.current) {
+            // Only clear drawings and markers, not the map
             state.drawing.data = [];
+            state.markers.list = [];
+            state.markers.selected = null;
+            
+            // Remove saved data
             localStorage.removeItem(document.getElementById('mapSelect').value);
+            
+            // Redraw the map without drawings/markers
             drawUtils.redrawCanvas();
         }
     });
 
     document.getElementById('downloadMap').addEventListener('click', () => {
         if (!state.map.current) return;
-        const mapSelect = document.getElementById('mapSelect');
         const link = document.createElement('a');
-        link.download = `${mapSelect.options[mapSelect.selectedIndex].text}.png`;
+        link.download = `${document.getElementById('mapSelect').options[document.getElementById('mapSelect').selectedIndex].text}.png`;
         link.href = canvas.toDataURL('image/png');
         link.click();
     });
 
-    // Color selection
-    document.querySelectorAll('.color-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-        });
+    document.getElementById('habMarkerBtn').addEventListener('click', () => {
+        state.markers.isPlacing = !state.markers.isPlacing;
+        document.getElementById('habMarkerBtn').classList.toggle('active');
     });
 
-    document.getElementById('imageUpload').addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                const img = new Image();
-                img.onload = () => {
-                    // Calculate dimensions to fit the canvas container
-                    const container = document.querySelector('.canvas-container');
-                    const maxWidth = container.clientWidth - 40; // Account for padding
-                    const maxHeight = container.clientHeight - 40;
-                    
-                    let width = img.width;
-                    let height = img.height;
-                    
-                    // Scale down if image is too large
-                    if (width > maxWidth || height > maxHeight) {
-                        const ratio = Math.min(maxWidth / width, maxHeight / height);
-                        width *= ratio;
-                        height *= ratio;
-                    }
-                    
-                    canvas.width = width;
-                    canvas.height = height;
-                    state.map.current = img;
-                    state.map.offset = { x: 0, y: 0 };
-                    state.drawing.data = [];
-                    drawUtils.redrawCanvas();
-                };
-                img.src = event.target.result;
-            };
-            reader.readAsDataURL(file);
+    document.getElementById('deleteMarkerBtn').addEventListener('click', () => {
+        if (state.markers.selected) {
+            state.markers.list = state.markers.list.filter(m => m !== state.markers.selected);
+            state.markers.selected = null;
+            mapHandler.saveData();
+            drawUtils.redrawCanvas();
         }
     });
 });
