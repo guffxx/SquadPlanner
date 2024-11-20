@@ -41,6 +41,7 @@ body {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    height: 100%;
 }
 
 .sidebar section {
@@ -217,7 +218,6 @@ select:disabled {
 .tip-section {
     padding-top: 15px;
     border-top: 1px solid var(--accent);
-    margin-top: auto;
 }
 
 .tip-text {
@@ -242,7 +242,10 @@ select:disabled {
 }
 
 .button-container {
+    display: flex;
+    flex-direction: column;
     gap: 10px;
-    margin-bottom: 10px;    /* Increase to 10px space above the tip section */
+    margin-top: auto;
+    margin-bottom: 10px;
 }
 
