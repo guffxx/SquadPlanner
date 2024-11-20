@@ -107,7 +107,7 @@ function draw(e) {
     ctx.moveTo(lastX, lastY);
     ctx.lineTo(currentX, currentY);
     ctx.strokeStyle = currentColor;
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 4;
     ctx.lineCap = 'round';
     ctx.stroke();
     
