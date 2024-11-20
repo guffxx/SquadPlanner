@@ -241,3 +241,9 @@ select:disabled {
     display: block;
 }
 
+.button-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
