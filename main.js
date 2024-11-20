@@ -6,6 +6,8 @@ let isDrawing = false;
 let currentImage = null;
 let markers = [];
 let isPlacingHab = false;
+let drawingCanvas = document.createElement('canvas');
+let drawingCtx = drawingCanvas.getContext('2d');
 
 // Initialize canvas size
 canvas.width = 400;
@@ -63,6 +65,10 @@ function loadMap(src) {
         canvas.width = currentImage.width;
         canvas.height = currentImage.height;
         
+        // Set drawing canvas size to match
+        drawingCanvas.width = canvas.width;
+        drawingCanvas.height = canvas.height;
+        
         // Draw image
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
@@ -103,13 +109,21 @@ function draw(e) {
     
     const [currentX, currentY] = getMousePos(canvas, e);
     
-    ctx.beginPath();
-    ctx.moveTo(lastX, lastY);
-    ctx.lineTo(currentX, currentY);
-    ctx.strokeStyle = currentColor;
-    ctx.lineWidth = 4;
-    ctx.lineCap = 'round';
-    ctx.stroke();
+    drawingCtx.beginPath();
+    drawingCtx.moveTo(lastX, lastY);
+    drawingCtx.lineTo(currentX, currentY);
+    drawingCtx.strokeStyle = currentColor;
+    drawingCtx.lineWidth = 4;
+    drawingCtx.lineCap = 'round';
+    drawingCtx.stroke();
+    
+    // Update main canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (currentImage) {
+        ctx.drawImage(currentImage, 0, 0);
+    }
+    ctx.drawImage(drawingCanvas, 0, 0);
+    redrawMarkers();
     
     [lastX, lastY] = [currentX, currentY];
 }
@@ -144,29 +158,12 @@ document.getElementById('deleteMarkerBtn').addEventListener('click', function() 
 });
 
 function redrawCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     if (currentImage) {
-        // Store the current canvas content in a temporary canvas to preserve drawings
-        const tempCanvas = document.createElement('canvas');
-        const tempCtx = tempCanvas.getContext('2d');
-        tempCanvas.width = canvas.width;
-        tempCanvas.height = canvas.height;
-        
-        // Copy current canvas content (includes drawings)
-        tempCtx.drawImage(canvas, 0, 0);
-        
-        // Clear and redraw base image
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
-        
-        // Restore the drawings (everything except markers)
-        ctx.drawImage(tempCanvas, 0, 0);
-        
-        // Redraw markers on top
-        redrawMarkers();
-    } else {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        redrawMarkers();
+        ctx.drawImage(currentImage, 0, 0);
     }
+    ctx.drawImage(drawingCanvas, 0, 0);
+    redrawMarkers();
 }
 
 function redrawMarkers() {
@@ -184,10 +181,10 @@ function redrawMarkers() {
 // Clear canvas functionality - modified to clear everything
 document.getElementById('clearCanvas').addEventListener('click', function() {
     markers = []; // Clear HAB markers
+    drawingCtx.clearRect(0, 0, canvas.width, canvas.height); // Clear drawings
     if (currentImage) {
-        // Reset to just the background image
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
+        ctx.drawImage(currentImage, 0, 0);
     } else {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
