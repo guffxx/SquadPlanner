@@ -193,9 +193,8 @@ function placeHABMarker(event) {
     marker.src = 'assets/icons/HAB.webp';
     
     marker.onload = function() {
-        // Make the marker 1.5x larger (original size was 32x32)
-        const markerWidth = 48;  // 32 * 1.5
-        const markerHeight = 48; // 32 * 1.5
+        const markerWidth = 52;  
+        const markerHeight = 52; 
         
         // Draw the marker with red tint
         ctx.save();
@@ -204,6 +203,7 @@ function placeHABMarker(event) {
         ctx.fillStyle = 'red';
         ctx.globalAlpha = 0.5;
         ctx.fillRect(x - markerWidth/2, y - markerHeight/2, markerWidth, markerHeight);
+        ctx.color = 'red';
         
         // Draw the marker image
         ctx.globalAlpha = 1;
