@@ -193,8 +193,8 @@ function placeHABMarker(event) {
     marker.src = 'assets/icons/HAB.webp';
     
     marker.onload = function() {
-        const markerWidth = 52;  
-        const markerHeight = 52; 
+        const markerWidth = 48;  
+        const markerHeight = 48; 
         
         // Draw the marker with red tint
         ctx.save();
@@ -203,7 +203,10 @@ function placeHABMarker(event) {
         ctx.fillStyle = 'red';
         ctx.globalAlpha = 0.5;
         ctx.fillRect(x - markerWidth/2, y - markerHeight/2, markerWidth, markerHeight);
-        ctx.color = 'red';
+        // Create a circular tint instead of rectangular
+        ctx.beginPath();
+        ctx.arc(x, y, markerWidth/2, 0, Math.PI * 2);
+        ctx.fill();
         
         // Draw the marker image
         ctx.globalAlpha = 1;
