@@ -113,7 +113,7 @@ select:disabled {
 }
 
 /* Color Picker */
-.color-picker {
+.marker-color-picker {
     display: flex;
     gap: 10px;
     margin: 15px 0;
@@ -145,16 +145,16 @@ select:disabled {
 .color-btn.yellow { background-color: #ffff00; }
 
 /* Marker Tools */
-.marker-tools {
+.icon-tools {
     margin-bottom: 20px;
 }
 
-.marker-buttons { /* Stack buttons vertically */
-    gap: 5px;              /* Space between buttons */
+.icon-buttons {
+    gap: 5px;
 }
 
-.marker-btn {
-    width: 100%;            /* Full width */
+.icon-btn {
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -167,21 +167,21 @@ select:disabled {
     transition: all 0.2s ease;
 }
 
-.marker-icon {
-    width: 32px;
-    height: 32px;
-    margin-right: 8px;
-}
-
-.marker-btn.active {
+.icon-btn.active {
     background-color: var(--accent);
     color: var(--darker-bg);
     opacity: 1;
 }
 
-.marker-btn:hover {
+.icon-btn:hover {
     opacity: 1;
     background-color: var(--dark-bg);
+}
+
+.marker-icon {
+    width: 32px;
+    height: 32px;
+    margin-right: 8px;
 }
 
 /* Canvas Area */

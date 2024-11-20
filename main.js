@@ -20,7 +20,7 @@ let lastX = 0;
 let lastY = 0;
 
 // Event Listeners for color picker
-document.querySelectorAll('.color-btn').forEach(btn => {
+document.querySelectorAll('.marker-color-picker .color-btn').forEach(btn => {
     btn.addEventListener('click', function() {
         // Remove active class from all buttons
         document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
