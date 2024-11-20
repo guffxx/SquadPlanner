@@ -192,7 +192,7 @@ select:disabled {
     justify-content: center;
     align-items: center;
     position: relative;
-    background-color: rgba(43, 43, 43, 0.50);
+    background-color: rgba(43, 43, 43, 0.25);
 }
 
 #mapCanvas {
