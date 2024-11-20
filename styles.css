@@ -17,6 +17,10 @@ body {
     color: var(--text-color);
     font-family: Arial, sans-serif;
     line-height: 1.6;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('../assets/images/Squad_Img.webp');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
 }
 
 /* Layout */
@@ -33,7 +37,6 @@ body {
     border-right: 1px solid var(--accent);
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
 }
 
 .sidebar section {
@@ -95,10 +98,28 @@ select:disabled {
     border: none;
     cursor: pointer;
     transition: transform 0.2s ease;
+    display: block;
 }
 
-.color-btn.red { background-color: #ff0000; }
-.color-btn.blue { background-color: #0000ff; }
+.color-btn.red { 
+    background-color: #ff0000; 
+    display: block;
+}
+
+.color-btn.blue { 
+    background-color: #0000ff; 
+    display: block;
+}
+
+.color-btn.green { 
+    background-color: #00ff00; 
+    display: block;
+}
+
+.color-btn.yellow { 
+    background-color: #ffff00; 
+    display: block;
+}
 
 .color-btn.active {
     border: 3px solid var(--text-color);
@@ -113,10 +134,10 @@ select:disabled {
     justify-content: center;
     align-items: center;
     position: relative;
+    background-color: rgba(43, 43, 43, 0.50);
 }
 
 #mapCanvas {
-    background-color: var(--dark-bg);
     max-width: 100%;
     max-height: 100%;
     cursor: crosshair;
@@ -125,14 +146,12 @@ select:disabled {
 .placeholder-text {
     position: absolute;
     color: var(--accent);
-    font-size: 32px;
+    font-size: 28px;
     pointer-events: none;
     display: none;
     text-shadow: 0 0 5px var(--accent);
-    background-color: var(--dark-bg);
     padding: 20px 40px;
     border-radius: 8px;
-    border: 1px solid var(--accent);
 }
 
 /* Tip Section */
