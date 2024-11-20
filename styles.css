@@ -17,10 +17,13 @@ body {
     color: var(--text-color);
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('assets/images/Squad_Img.webp');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), 
+                      url('assets/images/Squad_Img.webp');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
+    min-height: 100vh;
+    overflow: hidden;
 }
 
 /* Layout */
@@ -37,10 +40,30 @@ body {
     border-right: 1px solid var(--accent);
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
 }
 
 .sidebar section {
     margin-bottom: 20px;
+}
+
+/* Logo Section */
+.logo-section {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.squad-logo {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.logo-section p {
+    font-size: 28px;
+    color: var(--accent);
+    font-family: sans-serif;
+    margin-top: -20px;
 }
 
 /* Headings */
@@ -56,28 +79,22 @@ h2, h3 {
     margin-bottom: 20px;
 }
 
-.selector-group label {
-    display: block;
-    color: var(--accent);
-    margin-bottom: 5px;
-    font-size: 14px;
-}
-
-select, button {
+select, button, .file-input {
     width: 100%;
     padding: 10px;
     margin: 5px 0;
     background-color: var(--darker-bg);
     color: var(--text-color);
     cursor: pointer;
-    transition: background-color 0.2s ease;
-    opacity: 0.75;
     border: none;
     border-radius: 4px;
+    opacity: 0.75;
+    transition: all 0.2s ease;
 }
 
 select:hover, button:hover {
     background-color: var(--dark-bg);
+    opacity: 1;
 }
 
 select:disabled {
@@ -85,11 +102,21 @@ select:disabled {
     cursor: not-allowed;
 }
 
+.file-input::-webkit-file-upload-button {
+    background-color: var(--darker-bg);
+    color: var(--text-color);
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
 /* Color Picker */
 .color-picker {
     display: flex;
     gap: 10px;
     margin: 15px 0;
+    justify-content: center;
 }
 
 .color-btn {
@@ -106,14 +133,56 @@ select:disabled {
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
+.color-btn.active {
+    border: 3px solid var(--text-color);
+    transform: scale(1.1);
+}
+
 .color-btn.red { background-color: #ff0000; }
 .color-btn.blue { background-color: #0000ff; }
 .color-btn.green { background-color: #00ff00; }
 .color-btn.yellow { background-color: #ffff00; }
 
-.color-btn.active {
-    border: 3px solid var(--text-color);
-    transform: scale(1.1);
+/* Marker Tools */
+.marker-tools {
+    margin-bottom: 20px;
+}
+
+.marker-buttons {
+    display: flex;
+    flex-direction: column;  /* Stack buttons vertically */
+    gap: 10px;              /* Space between buttons */
+}
+
+.marker-btn {
+    width: 100%;            /* Full width */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background-color: var(--darker-bg);
+    color: var(--text-color);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.marker-icon {
+    width: 32px;
+    height: 32px;
+    margin-right: 8px;
+}
+
+.marker-btn.active {
+    background-color: var(--accent);
+    color: var(--darker-bg);
+    opacity: 1;
+}
+
+.marker-btn:hover {
+    opacity: 1;
+    background-color: var(--dark-bg);
 }
 
 /* Canvas Area */
@@ -148,113 +217,27 @@ select:disabled {
 .tip-section {
     padding-top: 15px;
     border-top: 1px solid var(--accent);
+    margin-top: auto;
 }
 
 .tip-text {
-    color: var(--text-color);
     font-size: 14px;
     line-height: 1.4;
-}
-
-.tip-text p {
-    margin-bottom: 8px;
 }
 
 .tip-text .signature {
     color: var(--accent);
     font-style: italic;
-    margin-top: 12px;
-}
-
-/* Utility Classes */
-.canvas-container:has(#mapCanvas[width="400"]) .placeholder-text {
-    display: block;
-}
-
-/* Logo Section */
-.logo-section {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.squad-logo {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-}
-
-.logo-section p {
-    font-size: 28px;
-    color: var(--accent);
-    font-family: sans-serif, Arial;
-    margin-top: -20px;
-}
-
-/* Add styles for file input */
-.file-input {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-    background-color: var(--darker-bg);
-    color: var(--text-color);
-    cursor: pointer;
-    opacity: 0.75;
-    border: none;
-    border-radius: 4px;
-}
-
-.file-input::-webkit-file-upload-button {
-    background-color: var(--darker-bg);
-    color: var(--text-color);
-    padding: 5px 10px;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-/* Update marker tools styles */
-.marker-options {
-    display: flex;
-    gap: 10px;
-}
-
-.marker-buttons {
-    display: flex;
-    gap: 10px;
-    width: 100%;
-}
-
-.marker-btn {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    padding: 8px;
-    border-radius: 4px;
-}
-
-.marker-icon {
-    width: 48px;
-    height: 48px;
-    object-fit: contain;
-}
-
-.marker-btn.active {
-    background-color: var(--accent);
-    color: var(--darker-bg);
-    opacity: 1;
-}
-
-/* Selected marker highlight */
-.marker-selected {
-    border: 4px solid var(--accent);
-    border-radius: 2px;
+    margin-top: 8px;
 }
 
 /* Action Buttons */
 .action-buttons {
-    margin-top: auto;
     margin-bottom: 10px;
+}
+
+/* Utility */
+.canvas-container:has(#mapCanvas[width="400"]) .placeholder-text {
+    display: block;
 }
 
