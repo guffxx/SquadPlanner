@@ -3,7 +3,6 @@
     --darker-bg: #1f1f1f;
     --accent: #ffc409;
     --text-color: #ffffff;
-    --shadow-glow: 0 0 10px -3px var(--accent);
 }
 
 /* Base Styles */
@@ -32,7 +31,6 @@ body {
     width: 250px;
     padding: 20px;
     border-right: 1px solid var(--accent);
-    box-shadow: var(--shadow-glow);
     display: flex;
     flex-direction: column;
 }
@@ -71,16 +69,14 @@ select, button {
     margin: 5px 0;
     background-color: var(--darker-bg);
     color: var(--text-color);
-    border: 1px solid var(--accent);
-    border-radius: 4px;
     cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: var(--shadow-glow);
+    transition: background-color 0.2s ease;
+    opacity: 0.75;
+    border: none;
 }
 
 select:hover, button:hover {
     background-color: var(--dark-bg);
-    border-color: var(--text-color);
 }
 
 select:disabled {
@@ -140,7 +136,6 @@ select:disabled {
     padding: 20px 40px;
     border-radius: 8px;
     border: 1px solid var(--accent);
-    box-shadow: var(--shadow-glow);
 }
 
 /* Tip Section */
@@ -165,4 +160,24 @@ select:disabled {
 /* Utility Classes */
 .canvas-container:has(#mapCanvas[width="400"]) .placeholder-text {
     display: block;
+}
+
+/* Logo Section */
+.logo-section {
+    text-align: center;
+    margin-bottom: 75px;
+}
+
+.squad-logo {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.logo-section p {
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--accent);
+    font-family: Arial, sans-serif;
+    margin-top: -20px;
 }
