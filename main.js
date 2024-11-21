@@ -13,6 +13,9 @@ let minScale = 0.5;  // Allow zoom out to 50%
 let maxScale = 2.5;    // Allow zoom in to 250%
 let offsetX = 0;
 let offsetY = 0;
+let isDragging = false;
+let dragStartX = 0;
+let dragStartY = 0;
 
 // Initialize canvas size
 canvas.width = 400;
@@ -109,6 +112,53 @@ canvas.addEventListener('mousedown', startDrawing);
 canvas.addEventListener('mousemove', draw);
 canvas.addEventListener('mouseup', stopDrawing);
 canvas.addEventListener('mouseout', stopDrawing);
+canvas.addEventListener('contextmenu', function(e) {
+    e.preventDefault(); // Prevent the context menu from appearing
+});
+
+canvas.addEventListener('mousedown', function(e) {
+    if (e.button === 2) { // Right mouse button
+        isDragging = true;
+        const rect = canvas.getBoundingClientRect();
+        dragStartX = e.clientX - rect.left;
+        dragStartY = e.clientY - rect.top;
+        canvas.style.cursor = 'grabbing';
+    }
+});
+
+canvas.addEventListener('mousemove', function(e) {
+    if (isDragging) {
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+        
+        // Calculate the distance moved
+        const dx = mouseX - dragStartX;
+        const dy = mouseY - dragStartY;
+        
+        // Update offset and starting position
+        offsetX += dx;
+        offsetY += dy;
+        dragStartX = mouseX;
+        dragStartY = mouseY;
+        
+        redrawCanvas();
+    }
+});
+
+canvas.addEventListener('mouseup', function(e) {
+    if (e.button === 2) { // Right mouse button
+        isDragging = false;
+        canvas.style.cursor = 'default';
+    }
+});
+
+canvas.addEventListener('mouseout', function() {
+    if (isDragging) {
+        isDragging = false;
+        canvas.style.cursor = 'default';
+    }
+});
 
 function startDrawing(e) {
     if (!currentImage) return;
