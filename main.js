@@ -11,8 +11,8 @@ let drawingCtx = drawingCanvas.getContext('2d');
 let drawingHistory = []; // Store each line as a separate path
 let currentPath = []; // Store the current line being drawn
 let scale = 1;
-let minScale = 1; // 50% zoom
-let maxScale = 2;   // 200% zoom
+let minScale = 0.5;  // Allow zoom out to 50%
+let maxScale = 2;    // Allow zoom in to 200%
 let offsetX = 0;
 let offsetY = 0;
 
@@ -113,42 +113,49 @@ canvas.addEventListener('mouseup', stopDrawing);
 canvas.addEventListener('mouseout', stopDrawing);
 
 function startDrawing(e) {
+    if (!currentImage) return;
+    
     if (isPlacingHab) {
-        // Place HAB marker
         placeHABMarker(e);
     } else {
         isDrawing = true;
-        [lastX, lastY] = getMousePos(canvas, e);
+        const pos = getMousePos(e);
+        [lastX, lastY] = [pos.x, pos.y];
+        
+        currentPath = [{
+            x: lastX,
+            y: lastY,
+            color: currentColor
+        }];
     }
 }
 
 function draw(e) {
-    if (!isDrawing || isPlacingHab) return;
+    if (!currentImage || !isDrawing) return;
+
+    const pos = getMousePos(e);
     
-    const [currentX, currentY] = getMousePos(canvas, e);
+    ctx.save();
+    ctx.translate(offsetX, offsetY);
+    ctx.scale(scale, scale);
     
-    // Add point to current path
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(pos.x, pos.y);
+    ctx.strokeStyle = currentColor;
+    ctx.lineWidth = 3 / scale;
+    ctx.lineCap = 'round';
+    ctx.stroke();
+    
+    ctx.restore();
+
     currentPath.push({
-        x: currentX,
-        y: currentY,
-        color: currentColor,
-        lastX: lastX,
-        lastY: lastY
+        x: pos.x,
+        y: pos.y,
+        color: currentColor
     });
-    
-    // Draw on drawing canvas
-    drawingCtx.beginPath();
-    drawingCtx.moveTo(lastX, lastY);
-    drawingCtx.lineTo(currentX, currentY);
-    drawingCtx.strokeStyle = currentColor;
-    drawingCtx.lineWidth = 4;
-    drawingCtx.lineCap = 'round';
-    drawingCtx.stroke();
-    
-    // Update display
-    redrawCanvas();
-    
-    [lastX, lastY] = [currentX, currentY];
+
+    [lastX, lastY] = [pos.x, pos.y];
 }
 
 function stopDrawing() {
@@ -159,12 +166,15 @@ function stopDrawing() {
     isDrawing = false;
 }
 
-function getMousePos(canvas, e) {
+function getMousePos(e) {
     const rect = canvas.getBoundingClientRect();
-    return [
-        (e.clientX - rect.left) * (canvas.width / rect.width),
-        (e.clientY - rect.top) * (canvas.height / rect.height)
-    ];
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    
+    return {
+        x: ((e.clientX - rect.left) * scaleX - offsetX) / scale,
+        y: ((e.clientY - rect.top) * scaleY - offsetY) / scale
+    };
 }
 
 // HAB marker functionality
@@ -315,29 +325,25 @@ function handleZoom(e) {
     if (!currentImage) return;
 
     const rect = canvas.getBoundingClientRect();
-    const mouseX = (e.clientX - rect.left) * (canvas.width / rect.width);
-    const mouseY = (e.clientY - rect.top) * (canvas.height / rect.height);
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
 
     // Calculate zoom direction and factor
     const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
-    
-    // Calculate new scale
     const newScale = scale * zoomFactor;
     
     // Check zoom limits
     if (newScale < minScale || newScale > maxScale) return;
+
+    // Calculate mouse position relative to canvas
+    const canvasX = mouseX * (canvas.width / rect.width);
+    const canvasY = mouseY * (canvas.height / rect.height);
+
+    // Update the offset to zoom towards mouse position
+    offsetX = canvasX - (canvasX - offsetX) * zoomFactor;
+    offsetY = canvasY - (canvasY - offsetY) * zoomFactor;
     
-    // Calculate mouse position in canvas space before zoom
-    const mouseXCanvas = (mouseX - offsetX) / scale;
-    const mouseYCanvas = (mouseY - offsetY) / scale;
-    
-    // Update scale
     scale = newScale;
-    
-    // Adjust offset to zoom towards mouse position
-    offsetX = mouseX - mouseXCanvas * scale;
-    offsetY = mouseY - mouseYCanvas * scale;
-    
     redrawAll();
 }
 
@@ -350,39 +356,42 @@ function redrawAll() {
     
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    // Save the current transformation state
     ctx.save();
-    
-    // Apply transformations
     ctx.translate(offsetX, offsetY);
     ctx.scale(scale, scale);
     
-    // Draw the base image
+    // Draw base image
     ctx.drawImage(currentImage, 0, 0);
     
-    // Draw all lines with correct scaling
-    drawingData.forEach(point => {
-        if (point.type === 'start') {
-            ctx.beginPath();
-            ctx.moveTo(point.x, point.y);
-            ctx.strokeStyle = point.color;
-            ctx.lineWidth = 3 / scale;
-            ctx.lineCap = 'round';
-        } else if (point.type === 'draw') {
-            ctx.lineTo(point.x, point.y);
-            ctx.stroke();
+    // Draw all paths
+    drawingHistory.forEach(path => {
+        if (path.length < 2) return;
+        
+        ctx.beginPath();
+        ctx.moveTo(path[0].x, path[0].y);
+        ctx.strokeStyle = path[0].color;
+        ctx.lineWidth = 3 / scale;
+        ctx.lineCap = 'round';
+        
+        for (let i = 1; i < path.length; i++) {
+            ctx.lineTo(path[i].x, path[i].y);
         }
+        ctx.stroke();
     });
     
-    // Restore the transformation state
+    // Draw current path if exists
+    if (currentPath.length > 0) {
+        ctx.beginPath();
+        ctx.moveTo(currentPath[0].x, currentPath[0].y);
+        ctx.strokeStyle = currentPath[0].color;
+        ctx.lineWidth = 3 / scale;
+        ctx.lineCap = 'round';
+        
+        for (let i = 1; i < currentPath.length; i++) {
+            ctx.lineTo(currentPath[i].x, currentPath[i].y);
+        }
+        ctx.stroke();
+    }
+    
     ctx.restore();
-}
-
-// Update getMousePos function to account for zoom and offset
-function getMousePos(e) {
-    const rect = canvas.getBoundingClientRect();
-    return {
-        x: ((e.clientX - rect.left) * (canvas.width / rect.width) - offsetX) / scale,
-        y: ((e.clientY - rect.top) * (canvas.height / rect.height) - offsetY) / scale
-    };
 }
