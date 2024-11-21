@@ -148,7 +148,6 @@ select:disabled {
 
 .color-btn.red { background-color: #ff0000; }
 .color-btn.blue { background-color: #0000ff; }
-.color-btn.green { background-color: #00ff00; }
 .color-btn.yellow { background-color: #ffff00; }
 
 .color-btn.red:hover {
@@ -158,11 +157,6 @@ select:disabled {
 
 .color-btn.blue:hover {
     box-shadow: 0 0 8px rgba(0, 0, 255, 0.7);
-    transform: scale(1.1);
-}
-
-.color-btn.green:hover {
-    box-shadow: 0 0 8px rgba(0, 255, 0, 0.7);
     transform: scale(1.1);
 }
 
@@ -182,13 +176,6 @@ select:disabled {
     border: 3px solid transparent;
     box-shadow: 0 0 12px rgba(0, 0, 255, 0.9),
                 inset 0 0 8px rgba(0, 0, 255, 0.5);
-    transform: scale(1.1);
-}
-
-.color-btn.green.active {
-    border: 3px solid transparent;
-    box-shadow: 0 0 12px rgba(0, 255, 0, 0.9),
-                inset 0 0 8px rgba(0, 255, 0, 0.5);
     transform: scale(1.1);
 }
 
