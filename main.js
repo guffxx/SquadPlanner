@@ -73,17 +73,11 @@ function loadMap(src) {
         canvas.width = currentImage.width;
         canvas.height = currentImage.height;
         
-        // Set drawing canvas size to match
-        drawingCanvas.width = canvas.width;
-        drawingCanvas.height = canvas.height;
-        
         // Draw image
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
         
         // Hide placeholder text
         document.querySelector('.placeholder-text').style.display = 'none';
-        redrawMarkers(); // Redraw any existing markers
         
         // Reset drawing history
         drawingHistory = [];
@@ -94,7 +88,8 @@ function loadMap(src) {
         offsetX = 0;
         offsetY = 0;
         
-        redrawAll();
+        // Draw the initial state
+        redrawCanvas();
     };
     
     currentImage.onerror = function(e) {
@@ -161,7 +156,7 @@ canvas.addEventListener('mouseout', function() {
 });
 
 function startDrawing(e) {
-    if (!currentImage) return;
+    if (!currentImage || e.button === 2) return; // Don't draw on right click
     
     if (isPlacingHab) {
         placeHABMarker(e);
