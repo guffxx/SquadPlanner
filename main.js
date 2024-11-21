@@ -196,6 +196,7 @@ document.getElementById('deleteMarkerBtn').addEventListener('click', function() 
     }
 });
 
+// Update the HAB marker rendering in redrawCanvas
 function redrawCanvas() {
     if (!currentImage) return;
     
@@ -253,13 +254,16 @@ function redrawCanvas() {
             ctx.fill();
             ctx.restore();
 
-            // Draw HAB marker immediately after its tint
+            // Draw HAB marker with corrected positioning and scaling
+            const scaledWidth = marker.width / scale;
+            const scaledHeight = marker.height / scale;
+            
             ctx.drawImage(
-                habImage, 
-                marker.x - (marker.width / scale) / 2, 
-                marker.y - (marker.height / scale) / 2, 
-                marker.width / scale, 
-                marker.height / scale
+                habImage,
+                marker.x - scaledWidth / 2,  // Center horizontally
+                marker.y - scaledHeight / 2,  // Center vertically
+                scaledWidth,
+                scaledHeight
             );
         }
     });
