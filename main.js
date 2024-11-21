@@ -12,7 +12,7 @@ let drawingHistory = []; // Store each line as a separate path
 let currentPath = []; // Store the current line being drawn
 let scale = 1;
 let minScale = 0.5;  // Allow zoom out to 50%
-let maxScale = 2;    // Allow zoom in to 200%
+let maxScale = 2.5;    // Allow zoom in to 250%
 let offsetX = 0;
 let offsetY = 0;
 
@@ -238,7 +238,10 @@ function redrawCanvas() {
         ctx.stroke();
     }
     
-    // Draw HAB markers with proper scaling
+    // Draw HAB markers
+    const habImage = new Image();
+    habImage.src = 'assets/icons/HAB.webp';
+    
     markers.forEach(marker => {
         if (marker.type === 'HAB') {
             // Draw tint effect
@@ -250,18 +253,14 @@ function redrawCanvas() {
             ctx.fill();
             ctx.restore();
 
-            // Draw HAB marker
-            const habImage = new Image();
-            habImage.src = 'assets/icons/HAB.webp';
-            habImage.onload = () => {
-                ctx.drawImage(
-                    habImage, 
-                    marker.x - (marker.width / scale) / 2, 
-                    marker.y - (marker.height / scale) / 2, 
-                    marker.width / scale, 
-                    marker.height / scale
-                );
-            };
+            // Draw HAB marker immediately after its tint
+            ctx.drawImage(
+                habImage, 
+                marker.x - (marker.width / scale) / 2, 
+                marker.y - (marker.height / scale) / 2, 
+                marker.width / scale, 
+                marker.height / scale
+            );
         }
     });
     
@@ -306,17 +305,24 @@ function placeHABMarker(event) {
     marker.onload = function() {
         const markerWidth = 48;  
         const markerHeight = 48; 
+        const tintRadius = markerWidth/2;
         
-        // Store marker data in canvas coordinates (not scaled)
+        // Calculate the actual position accounting for scale and offset
+        const markerPos = {
+            x: pos.x,
+            y: pos.y
+        };
+        
+        // Store marker data with unified position
         markers.push({ 
-            x: pos.x, 
-            y: pos.y, 
+            x: markerPos.x, 
+            y: markerPos.y, 
             type: 'HAB', 
             width: markerWidth, 
             height: markerHeight,
             tintColor: 'red',
             tintAlpha: 0.5,
-            tintRadius: markerWidth/2
+            tintRadius: tintRadius
         });
         
         redrawCanvas();
