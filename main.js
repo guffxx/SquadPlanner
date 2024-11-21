@@ -350,7 +350,7 @@ function placeHABMarker(event) {
     marker.onload = function() {
         const markerWidth = 48;  
         const markerHeight = 48; 
-        const tintRadius = markerWidth/2;
+        const tintRadius = markerWidth/1.5;
         
         // Calculate the actual position accounting for scale and offset
         const markerPos = {
