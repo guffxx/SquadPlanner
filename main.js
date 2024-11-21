@@ -197,29 +197,56 @@ document.getElementById('deleteMarkerBtn').addEventListener('click', function() 
 });
 
 function redrawCanvas() {
+    if (!currentImage) return;
+    
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
+    ctx.save();
+    ctx.translate(offsetX, offsetY);
+    ctx.scale(scale, scale);
+    
     // Draw base image
-    if (currentImage) {
-        ctx.drawImage(currentImage, 0, 0);
+    ctx.drawImage(currentImage, 0, 0);
+    
+    // Draw all paths
+    drawingHistory.forEach(path => {
+        if (path.length < 2) return;
+        
+        ctx.beginPath();
+        ctx.moveTo(path[0].x, path[0].y);
+        ctx.strokeStyle = path[0].color;
+        ctx.lineWidth = 3 / scale;
+        ctx.lineCap = 'round';
+        
+        for (let i = 1; i < path.length; i++) {
+            ctx.lineTo(path[i].x, path[i].y);
+        }
+        ctx.stroke();
+    });
+    
+    // Draw current path if exists
+    if (currentPath.length > 0) {
+        ctx.beginPath();
+        ctx.moveTo(currentPath[0].x, currentPath[0].y);
+        ctx.strokeStyle = currentPath[0].color;
+        ctx.lineWidth = 3 / scale;
+        ctx.lineCap = 'round';
+        
+        for (let i = 1; i < currentPath.length; i++) {
+            ctx.lineTo(currentPath[i].x, currentPath[i].y);
+        }
+        ctx.stroke();
     }
     
-    // Draw lines
-    ctx.drawImage(drawingCanvas, 0, 0);
-    
-    // Draw markers with tint
-    redrawMarkers();
-}
-
-function redrawMarkers() {
+    // Draw HAB markers
     markers.forEach(marker => {
         if (marker.type === 'HAB') {
-            // Draw tint effect first
+            // Draw tint effect
             ctx.save();
             ctx.fillStyle = marker.tintColor;
             ctx.globalAlpha = marker.tintAlpha;
             ctx.beginPath();
-            ctx.arc(marker.x, marker.y, marker.tintRadius, 0, Math.PI * 2);
+            ctx.arc(marker.x / scale, marker.y / scale, marker.tintRadius, 0, Math.PI * 2);
             ctx.fill();
             ctx.restore();
 
@@ -227,10 +254,18 @@ function redrawMarkers() {
             const habImage = new Image();
             habImage.src = 'assets/icons/HAB.webp';
             habImage.onload = () => {
-                ctx.drawImage(habImage, marker.x - marker.width/2, marker.y - marker.height/2, marker.width, marker.height);
+                ctx.drawImage(
+                    habImage, 
+                    (marker.x / scale) - marker.width/2, 
+                    (marker.y / scale) - marker.height/2, 
+                    marker.width, 
+                    marker.height
+                );
             };
         }
     });
+    
+    ctx.restore();
 }
 
 // Clear canvas functionality - modified to clear everything
@@ -263,10 +298,8 @@ window.addEventListener('resize', function() {
 });
 
 function placeHABMarker(event) {
-    const rect = canvas.getBoundingClientRect();
-    const x = (event.clientX - rect.left) * (canvas.width / rect.width);
-    const y = (event.clientY - rect.top) * (canvas.height / rect.height);
-
+    const pos = getMousePos(event);
+    
     const marker = new Image();
     marker.src = 'assets/icons/HAB.webp';
     
@@ -276,8 +309,8 @@ function placeHABMarker(event) {
         
         // Store marker data with tint information
         markers.push({ 
-            x, 
-            y, 
+            x: pos.x * scale, 
+            y: pos.y * scale, 
             type: 'HAB', 
             width: markerWidth, 
             height: markerHeight,
@@ -352,46 +385,5 @@ canvas.addEventListener('wheel', handleZoom);
 
 // Update redrawAll function to handle zoom and offset
 function redrawAll() {
-    if (!currentImage) return;
-    
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    ctx.save();
-    ctx.translate(offsetX, offsetY);
-    ctx.scale(scale, scale);
-    
-    // Draw base image
-    ctx.drawImage(currentImage, 0, 0);
-    
-    // Draw all paths
-    drawingHistory.forEach(path => {
-        if (path.length < 2) return;
-        
-        ctx.beginPath();
-        ctx.moveTo(path[0].x, path[0].y);
-        ctx.strokeStyle = path[0].color;
-        ctx.lineWidth = 3 / scale;
-        ctx.lineCap = 'round';
-        
-        for (let i = 1; i < path.length; i++) {
-            ctx.lineTo(path[i].x, path[i].y);
-        }
-        ctx.stroke();
-    });
-    
-    // Draw current path if exists
-    if (currentPath.length > 0) {
-        ctx.beginPath();
-        ctx.moveTo(currentPath[0].x, currentPath[0].y);
-        ctx.strokeStyle = currentPath[0].color;
-        ctx.lineWidth = 3 / scale;
-        ctx.lineCap = 'round';
-        
-        for (let i = 1; i < currentPath.length; i++) {
-            ctx.lineTo(currentPath[i].x, currentPath[i].y);
-        }
-        ctx.stroke();
-    }
-    
-    ctx.restore();
+    redrawCanvas();
 }
