@@ -9,7 +9,7 @@ let isPlacingHab = false;
 let drawingHistory = []; // Store each line as a separate path
 let currentPath = []; // Store the current line being drawn
 let scale = 1;
-let minScale = 0.5;  // Allow zoom out to 50%
+let minScale = 1;  // Allow zoom out to 50%
 let maxScale = 2.5;    // Allow zoom in to 250%
 let offsetX = 0;
 let offsetY = 0;
@@ -63,6 +63,10 @@ imageUpload.addEventListener('change', function(e) {
 
 function loadMap(src) {
     console.log('Loading map from:', src);
+    
+    if (currentImage) {
+        currentImage.onload = null; // Remove old event listener
+    }
     
     currentImage = new Image();
     
@@ -127,13 +131,12 @@ canvas.addEventListener('mousemove', function(e) {
         const mouseX = e.clientX - rect.left;
         const mouseY = e.clientY - rect.top;
         
-        // Calculate the distance moved
-        const dx = mouseX - dragStartX;
-        const dy = mouseY - dragStartY;
+        const dx = (mouseX - dragStartX) * (canvas.width / rect.width);
+        const dy = (mouseY - dragStartY) * (canvas.height / rect.height);
         
-        // Update offset and starting position
         offsetX += dx;
         offsetY += dy;
+        
         dragStartX = mouseX;
         dragStartY = mouseY;
         
@@ -337,7 +340,15 @@ document.getElementById('downloadNow').addEventListener('click', function() {
 // Window resize handling
 window.addEventListener('resize', function() {
     if (currentImage) {
+        const tempScale = scale;
+        const tempOffsetX = offsetX;
+        const tempOffsetY = offsetY;
+        
         redrawCanvas();
+        
+        scale = tempScale;
+        offsetX = tempOffsetX;
+        offsetY = tempOffsetY;
     }
 });
 
@@ -352,16 +363,9 @@ function placeHABMarker(event) {
         const markerHeight = 48; 
         const tintRadius = markerWidth/2.5;
         
-        // Calculate the actual position accounting for scale and offset
-        const markerPos = {
-            x: pos.x,
-            y: pos.y
-        };
-        
-        // Store marker data with unified position
         markers.push({ 
-            x: markerPos.x, 
-            y: markerPos.y, 
+            x: pos.x, 
+            y: pos.y, 
             type: 'HAB', 
             width: markerWidth, 
             height: markerHeight,
