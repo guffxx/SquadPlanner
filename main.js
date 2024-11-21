@@ -10,6 +10,11 @@ let drawingCanvas = document.createElement('canvas');
 let drawingCtx = drawingCanvas.getContext('2d');
 let drawingHistory = []; // Store each line as a separate path
 let currentPath = []; // Store the current line being drawn
+let scale = 1;
+let minScale = 1; // 50% zoom
+let maxScale = 2;   // 200% zoom
+let offsetX = 0;
+let offsetY = 0;
 
 // Initialize canvas size
 canvas.width = 400;
@@ -82,6 +87,13 @@ function loadMap(src) {
         // Reset drawing history
         drawingHistory = [];
         currentPath = [];
+        
+        // Reset zoom and offset
+        scale = 1;
+        offsetX = 0;
+        offsetY = 0;
+        
+        redrawAll();
     };
     
     currentImage.onerror = function(e) {
@@ -294,4 +306,83 @@ function redrawDrawings() {
             }
         });
     });
+}
+
+// Add zoom handler function
+function handleZoom(e) {
+    e.preventDefault();
+    
+    if (!currentImage) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const mouseX = (e.clientX - rect.left) * (canvas.width / rect.width);
+    const mouseY = (e.clientY - rect.top) * (canvas.height / rect.height);
+
+    // Calculate zoom direction and factor
+    const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
+    
+    // Calculate new scale
+    const newScale = scale * zoomFactor;
+    
+    // Check zoom limits
+    if (newScale < minScale || newScale > maxScale) return;
+    
+    // Calculate mouse position in canvas space before zoom
+    const mouseXCanvas = (mouseX - offsetX) / scale;
+    const mouseYCanvas = (mouseY - offsetY) / scale;
+    
+    // Update scale
+    scale = newScale;
+    
+    // Adjust offset to zoom towards mouse position
+    offsetX = mouseX - mouseXCanvas * scale;
+    offsetY = mouseY - mouseYCanvas * scale;
+    
+    redrawAll();
+}
+
+// Add wheel event listener to canvas
+canvas.addEventListener('wheel', handleZoom);
+
+// Update redrawAll function to handle zoom and offset
+function redrawAll() {
+    if (!currentImage) return;
+    
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Save the current transformation state
+    ctx.save();
+    
+    // Apply transformations
+    ctx.translate(offsetX, offsetY);
+    ctx.scale(scale, scale);
+    
+    // Draw the base image
+    ctx.drawImage(currentImage, 0, 0);
+    
+    // Draw all lines with correct scaling
+    drawingData.forEach(point => {
+        if (point.type === 'start') {
+            ctx.beginPath();
+            ctx.moveTo(point.x, point.y);
+            ctx.strokeStyle = point.color;
+            ctx.lineWidth = 3 / scale;
+            ctx.lineCap = 'round';
+        } else if (point.type === 'draw') {
+            ctx.lineTo(point.x, point.y);
+            ctx.stroke();
+        }
+    });
+    
+    // Restore the transformation state
+    ctx.restore();
+}
+
+// Update getMousePos function to account for zoom and offset
+function getMousePos(e) {
+    const rect = canvas.getBoundingClientRect();
+    return {
+        x: ((e.clientX - rect.left) * (canvas.width / rect.width) - offsetX) / scale,
+        y: ((e.clientY - rect.top) * (canvas.height / rect.height) - offsetY) / scale
+    };
 }
