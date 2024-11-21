@@ -286,9 +286,6 @@ function redrawCanvas() {
     }
     
     // Draw HAB markers
-    const habImage = new Image();
-    habImage.src = 'assets/icons/HAB.webp';
-    
     markers.forEach(marker => {
         if (marker.type === 'HAB') {
             // Draw tint effect
@@ -300,14 +297,17 @@ function redrawCanvas() {
             ctx.fill();
             ctx.restore();
 
-            // Draw HAB marker with corrected positioning and scaling
+            // Draw HAB marker
+            const habImage = new Image();
+            habImage.src = 'assets/icons/HAB.webp';
+            
             const scaledWidth = marker.width / scale;
             const scaledHeight = marker.height / scale;
             
             ctx.drawImage(
                 habImage,
-                marker.x - scaledWidth / 2,  // Center horizontally
-                marker.y - scaledHeight / 2,  // Center vertically
+                marker.x - scaledWidth / 2,
+                marker.y - scaledHeight / 2,
                 scaledWidth,
                 scaledHeight
             );
@@ -422,4 +422,26 @@ canvas.addEventListener('wheel', handleZoom);
 function redrawAll() {
     redrawCanvas();
 }
+
+// Add recenter functionality
+document.getElementById('recenterBtn').addEventListener('click', function() {
+    if (currentImage) {
+        // Store current drawings and markers
+        const tempDrawings = [...drawingHistory];
+        const tempMarkers = [...markers];
+        
+        // Reset position and zoom
+        scale = 1;
+        offsetX = 0;
+        offsetY = 0;
+        
+        // Redraw everything with original position
+        redrawCanvas();
+        
+        // Restore drawings and markers
+        drawingHistory = tempDrawings;
+        markers = tempMarkers;
+        redrawCanvas();
+    }
+});
 

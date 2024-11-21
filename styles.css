@@ -258,10 +258,6 @@ select:disabled {
 }
 
 /* Update glow effect back to original */
-#mapCanvas:not([width="400"]) {
-    box-shadow: 0 0 15px var(--accent),
-                0 0 30px rgba(255, 196, 9, 0.3);
-}
 
 .placeholder-text {
     position: absolute;
@@ -328,4 +324,3 @@ select:disabled {
 .canvas-wrapper {
     display: none;
 }
-
