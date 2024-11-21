@@ -238,7 +238,7 @@ function redrawCanvas() {
         ctx.stroke();
     }
     
-    // Draw HAB markers
+    // Draw HAB markers with proper scaling
     markers.forEach(marker => {
         if (marker.type === 'HAB') {
             // Draw tint effect
@@ -246,7 +246,7 @@ function redrawCanvas() {
             ctx.fillStyle = marker.tintColor;
             ctx.globalAlpha = marker.tintAlpha;
             ctx.beginPath();
-            ctx.arc(marker.x / scale, marker.y / scale, marker.tintRadius, 0, Math.PI * 2);
+            ctx.arc(marker.x, marker.y, marker.tintRadius / scale, 0, Math.PI * 2);
             ctx.fill();
             ctx.restore();
 
@@ -256,10 +256,10 @@ function redrawCanvas() {
             habImage.onload = () => {
                 ctx.drawImage(
                     habImage, 
-                    (marker.x / scale) - marker.width/2, 
-                    (marker.y / scale) - marker.height/2, 
-                    marker.width, 
-                    marker.height
+                    marker.x - (marker.width / scale) / 2, 
+                    marker.y - (marker.height / scale) / 2, 
+                    marker.width / scale, 
+                    marker.height / scale
                 );
             };
         }
@@ -307,10 +307,10 @@ function placeHABMarker(event) {
         const markerWidth = 48;  
         const markerHeight = 48; 
         
-        // Store marker data with tint information
+        // Store marker data in canvas coordinates (not scaled)
         markers.push({ 
-            x: pos.x * scale, 
-            y: pos.y * scale, 
+            x: pos.x, 
+            y: pos.y, 
             type: 'HAB', 
             width: markerWidth, 
             height: markerHeight,
