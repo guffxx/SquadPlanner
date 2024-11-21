@@ -6,8 +6,6 @@ let isDrawing = false;
 let currentImage = null;
 let markers = [];
 let isPlacingHab = false;
-let drawingCanvas = document.createElement('canvas');
-let drawingCtx = drawingCanvas.getContext('2d');
 let drawingHistory = []; // Store each line as a separate path
 let currentPath = []; // Store the current line being drawn
 let scale = 1;
@@ -270,13 +268,11 @@ function redrawCanvas() {
     
     ctx.restore();
 }
-
 // Clear canvas functionality - modified to clear everything
 document.getElementById('clearAll').addEventListener('click', function() {
     markers = []; // Clear HAB markers
     drawingHistory = []; // Clear drawing history
     currentPath = []; // Clear current path
-    drawingCtx.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height); // Clear drawings
     if (currentImage) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(currentImage, 0, 0);
@@ -337,29 +333,9 @@ function placeHABMarker(event) {
 document.getElementById('deleteLineBtn').addEventListener('click', function() {
     if (drawingHistory.length > 0) {
         drawingHistory.pop(); // Remove the last line
-        redrawDrawings(); // Redraw all remaining lines
         redrawCanvas();
     }
 });
-
-// Add function to redraw all drawings
-function redrawDrawings() {
-    drawingCtx.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
-    
-    drawingHistory.forEach(path => {
-        path.forEach((point, index) => {
-            if (index > 0) {
-                drawingCtx.beginPath();
-                drawingCtx.moveTo(path[index - 1].x, path[index - 1].y);
-                drawingCtx.lineTo(point.x, point.y);
-                drawingCtx.strokeStyle = point.color;
-                drawingCtx.lineWidth = 4;
-                drawingCtx.lineCap = 'round';
-                drawingCtx.stroke();
-            }
-        });
-    });
-}
 
 // Add zoom handler function
 function handleZoom(e) {
@@ -397,3 +373,4 @@ canvas.addEventListener('wheel', handleZoom);
 function redrawAll() {
     redrawCanvas();
 }
+
