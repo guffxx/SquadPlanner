@@ -361,7 +361,7 @@ function placeMarker(event, markerType) {
     
     marker.onload = function() {
         let markerWidth, markerHeight;
-        const baseSize = 42; // Consistent size for all markers
+        const baseSize = markerType.toLowerCase() === 'lav' ? 50 : 46;
         
         // Calculate dimensions maintaining aspect ratio
         const aspectRatio = marker.naturalWidth / marker.naturalHeight;
