@@ -326,22 +326,67 @@ select:disabled {
     margin-bottom: 10px;
 }
 
-/* Add these styles for the delete line button */
-#deleteLineBtn {
-    margin-top: 5px;
-    width: 100%;
-    padding: 8px;
-    background-color: var(--darker-bg);
-    color: var(--text-color);
+/* Reset and standardize delete button styles */
+#deleteLineBtn, .delete-btn {
+    width: auto !important;
+    min-width: 85px;
+    height: 32px;
+    padding: 4px 12px;
+    margin-top: 4px;
+    background-color: #ff4444;
+    color: white;
     border: none;
     border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.2s ease;
+    font-size: 15px;
+    font-weight: 500;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    grid-column: auto;
+    white-space: nowrap;
 }
 
-#deleteLineBtn:hover {
-    background-color: var(--dark-bg);
-    opacity: 1;
+/* Remove any conflicting styles */
+.compact-btn#deleteLineBtn {
+    width: auto !important;
+    margin-left: 0;
+    font-size: 15px;
+    font-weight: 500;
+    height: 32px;
+    padding: 4px 12px;
+}
+
+.icon-btn.delete-btn {
+    width: auto !important;
+    margin-left: 4px;
+    font-size: 15px;
+    font-weight: 500;
+    height: 32px;
+    padding: 4px 12px;
+}
+
+/* Hover states */
+#deleteLineBtn:hover, .delete-btn:hover {
+    background-color: #ff2222;
+}
+
+/* Update containers to handle fixed-width buttons */
+.line-tools-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.marker-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    padding: 4px;
+}
+
+.marker-grid .delete-btn {
+    justify-self: start;
 }
 
 .canvas-wrapper {
@@ -400,17 +445,9 @@ select:disabled {
     padding: 4px;
 }
 
-.delete-btn {
-    grid-column: span 3;
-    width: calc(100% - 8px);
-    height: 40px;
-    padding: 8px;
-    margin-top: 4px;
-}
-
-.delete-btn span {
-    display: block;
-    font-size: 13px;
+.marker-grid .delete-btn {
+    justify-self: start;
+    margin-left: 4px;
 }
 
 /* Update existing styles */
@@ -480,15 +517,16 @@ select:disabled {
 .line-tools-container {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 4px;
 }
 
 .marker-color-picker {
-    display: flex;
-    justify-content: space-between;
-    gap: 6px;
-    align-items: center;
-    margin: 5px 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    width: 100%;
 }
 
 .color-btn {
@@ -622,5 +660,55 @@ select:disabled {
         padding: 5px;
         margin-bottom: 6px;
     }
+}
+
+/* Add this new style for the reset button */
+#clearAll {
+    background-color: #ff4444;
+    color: white;
+}
+
+#clearAll:hover {
+    background-color: #ff2222;
+}
+
+/* Add this new style for the download button */
+#downloadNow {
+    background-color: var(--accent);
+    color: var(--darker-bg);
+    font-weight: bold;
+}
+
+#downloadNow:hover {
+    background-color: #ffd649;  /* slightly lighter shade of the accent color */
+}
+
+/* Update the recenter button style - remove green color */
+#recenterBtn {
+    background-color: var(--darker-bg);  /* Use the default dark background */
+    color: var(--text-color);
+    border: 1px solid var(--accent);  /* Add accent border like other buttons */
+}
+
+#recenterBtn:hover {
+    background-color: var(--accent);
+    color: var(--darker-bg);
+}
+
+/* Update the delete buttons styling */
+#deleteLineBtn:hover, .delete-btn:hover {
+    background-color: #ff2222;
+}
+
+/* Override any existing styles for these buttons */
+.compact-btn#deleteLineBtn {
+    width: auto;
+    margin-left: 0;
+}
+
+.icon-btn.delete-btn {
+    width: calc(100% - 4px);
+    text-align: left;
+    justify-content: flex-start;
 }
 

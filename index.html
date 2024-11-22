@@ -87,7 +87,7 @@
                             <label for="whiteColor" class="color-btn white" data-color="white"></label>
                         </div>
                     </div>
-                    <button id="deleteLineBtn" class="compact-btn">Delete Line</button>
+                    <button id="deleteLineBtn" class="compact-btn">Delete Last</button>
                 </div>
             </section>
 
@@ -112,16 +112,14 @@
                     <button id="tankMarkerBtn" class="icon-btn">
                         <img src="assets/icons/tank.png" alt="Tank" class="marker-icon">
                     </button>
-                    <button id="deleteMarkerBtn" class="icon-btn delete-btn">
-                        <span>Delete Last</span>
-                    </button>
+                    <button id="deleteMarkerBtn" class="icon-btn delete-btn">Delete Last</button>
                 </div>
             </section>
 
             <div class="button-container">
-                <button id="recenterBtn">Recenter Map</button>
-                <button id="clearAll">RESET</button>
-                <button id="downloadNow">Download Current Image</button>
+                <button id="recenterBtn">RECENTER</button>
+                <button id="downloadNow">DOWNLOAD MAP</button>
+                <button id="clearAll">RESET/CLEAR</button>
             </div>
             <div class="tip-section">
                 <div class="tip-text">
@@ -135,7 +133,16 @@
         
         <main class="canvas-container">
             <canvas id="mapCanvas"></canvas>
-            <div class="placeholder-text">Select a map from the left</div>
+            <div class="placeholder-text">
+                Select a map from the left
+            <br>
+            Draw with the Line tools
+            <br>
+            Place Map Markers 
+            <br>
+            Download the Plan
+        </div>
+
         </main>
     </div>
     <script src="main.js"></script>

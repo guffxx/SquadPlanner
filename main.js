@@ -496,5 +496,6 @@ Object.entries(markerButtons).forEach(([buttonId, markerType]) => {
             isDrawing = false;
         });
     }
+
 });
 
