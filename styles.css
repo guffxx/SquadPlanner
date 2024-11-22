@@ -30,18 +30,22 @@ body {
 .container {
     display: flex;
     height: 100vh;
+    min-height: 600px;
 }
 
 /* Sidebar */
 .sidebar {
     background-color: var(--dark-bg);
     width: 250px;
+    min-width: 250px;
+    max-width: 300px;
     padding: 20px;
     border-right: 1px solid var(--accent);
     display: flex;
     flex-direction: column;
     overflow-y: auto;
     height: 100%;
+    flex-shrink: 0;
 }
 
 .sidebar section {
@@ -115,18 +119,17 @@ select:disabled {
 /* Color Picker */
 .marker-color-picker {
     display: flex;
-    gap: 5px;
+    gap: 6px;
+    align-items: center;
     margin: 5px 0;
-    justify-content: center;
-    flex-wrap: wrap;
 }
 
 .color-btn {
-    min-width: 40px;
-    width: 40px;
-    min-height: 40px;
-    height: 40px;
-    flex: 0 0 40px;
+    min-width: 45px;
+    width: 45px;
+    min-height: 45px;
+    height: 45px;
+    flex: 0 0 45px;
     border-radius: 50%;
     border: 3px solid transparent;
     cursor: pointer;
@@ -149,6 +152,11 @@ select:disabled {
 .color-btn.red { background-color: #ff0000; }
 .color-btn.blue { background-color: #0000ff; }
 .color-btn.yellow { background-color: #ffff00; }
+.color-btn.purple { background-color: purple; }
+.color-btn.white { 
+    background-color: white;
+    border: 1px solid #666; /* Adding a subtle border to make it visible against light backgrounds */
+}
 
 .color-btn.red:hover {
     box-shadow: 0 0 8px rgba(255, 0, 0, 0.7);
@@ -162,6 +170,15 @@ select:disabled {
 
 .color-btn.yellow:hover {
     box-shadow: 0 0 8px rgba(255, 255, 0, 0.7);
+    transform: scale(1.1);
+}
+
+.color-btn.purple:hover {
+    background-color: #800080;
+}
+
+.color-btn.white:hover {
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
     transform: scale(1.1);
 }
 
@@ -186,6 +203,20 @@ select:disabled {
     transform: scale(1.1);
 }
 
+.color-btn.purple.active {
+    border: 3px solid transparent;
+    box-shadow: 0 0 12px rgba(128, 0, 128, 0.9),
+                inset 0 0 8px rgba(128, 0, 128, 0.5);
+    transform: scale(1.1);
+}
+
+.color-btn.white.active {
+    border: 3px solid transparent;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.9),
+                inset 0 0 8px rgba(255, 255, 255, 0.5);
+    transform: scale(1.1);
+}
+
 /* Marker Tools */
 .icon-tools {
     margin-top: 10px;
@@ -196,12 +227,12 @@ select:disabled {
 }
 
 .icon-btn {
-    padding: 1px;
+    padding: 2px;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 34px;
-    height: 34px;
+    width: 45px;
+    height: 45px;
     background-color: var(--darker-bg);
     border: none;
     border-radius: 4px;
@@ -221,8 +252,8 @@ select:disabled {
 }
 
 .marker-icon {
-    width: 32px !important;
-    height: 32px !important;
+    width: 40px !important;
+    height: 40px !important;
     object-fit: contain;
     padding: 0;
 }
@@ -362,41 +393,24 @@ select:disabled {
 
 .marker-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, auto);
     gap: 4px;
     justify-items: center;
-    padding: 2px;
-}
-
-.icon-btn {
-    padding: 8px 5px;
-    font-size: 12px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-}
-
-.marker-icon {
-    width: 24px;
-    height: 24px;
-}
-
-.icon-btn span {
-    font-size: 11px;
+    padding: 4px;
 }
 
 .delete-btn {
-    grid-column: 1 / -1;
-    width: 100%;
-    height: auto;
+    grid-column: span 3;
+    width: calc(100% - 8px);
+    height: 40px;
     padding: 8px;
     margin-top: 4px;
 }
 
 .delete-btn span {
     display: block;
+    font-size: 13px;
 }
 
 /* Update existing styles */
@@ -414,15 +428,13 @@ select:disabled {
 
 /* Add specific styling for HAB marker */
 #habMarkerBtn, #habMarkerBtn .marker-icon {
-    width: 32px;
-    height: 32px;
+    width: 45px;
+    height: 45px;
 }
 
 /* Adjust HAB button size to accommodate larger icon */
 #habMarkerBtn {
-    padding: 4px;
-    min-width: 28px;
-    min-height: 28px;
+    padding: 2px;
 }
 
 /* Add these new styles */
@@ -462,5 +474,153 @@ select:disabled {
 .delete-btn {
     grid-column: span 2;
     width: calc(100% - 4px);
+}
+
+/* Line Tools Section */
+.line-tools-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.marker-color-picker {
+    display: flex;
+    justify-content: space-between;
+    gap: 6px;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.color-btn {
+    min-width: 37px;
+    width: 37px;
+    min-height: 37px;
+    height: 37px;
+    flex: 0 0 37px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
+    margin: 0;
+    position: relative;
+}
+
+/* Delete Line Button */
+.compact-btn {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    background-color: var(--darker-bg);
+    color: var(--text-color);
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.compact-btn:hover {
+    background-color: var(--accent);
+    color: var(--darker-bg);
+}
+
+/* Color Button States */
+.color-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.color-btn.active {
+    border: 3px solid var(--text-color);
+    transform: scale(1.1);
+}
+
+/* Color Specific Styles */
+.color-btn.red { background-color: #ff0000; }
+.color-btn.blue { background-color: #0000ff; }
+.color-btn.yellow { background-color: #ffff00; }
+.color-btn.white { 
+    background-color: white;
+    border: 1px solid #666;
+}
+
+/* Color Specific Hover Effects */
+.color-btn.red:hover { box-shadow: 0 0 8px rgba(255, 0, 0, 0.7); }
+.color-btn.blue:hover { box-shadow: 0 0 8px rgba(0, 0, 255, 0.7); }
+.color-btn.yellow:hover { box-shadow: 0 0 8px rgba(255, 255, 0, 0.7); }
+.color-btn.white:hover { box-shadow: 0 0 8px rgba(255, 255, 255, 0.7); }
+
+/* Active State Effects */
+.color-btn.red.active {
+    box-shadow: 0 0 12px rgba(255, 0, 0, 0.9),
+                inset 0 0 8px rgba(255, 0, 0, 0.5);
+}
+
+.color-btn.blue.active {
+    box-shadow: 0 0 12px rgba(0, 0, 255, 0.9),
+                inset 0 0 8px rgba(0, 0, 255, 0.5);
+}
+
+.color-btn.yellow.active {
+    box-shadow: 0 0 12px rgba(255, 255, 0, 0.9),
+                inset 0 0 8px rgba(255, 255, 0, 0.5);
+}
+
+.color-btn.white.active {
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.9),
+                inset 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+/* Update Layout and Sidebar styles */
+.container {
+    display: flex;
+    height: 100vh;
+    min-height: 600px;
+}
+
+.sidebar {
+    background-color: var(--dark-bg);
+    width: 250px;
+    min-width: 250px;
+    max-width: 300px;
+    padding: 20px;
+    border-right: 1px solid var(--accent);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    height: 100%;
+    flex-shrink: 0;
+}
+
+/* Add responsive adjustments for very small screens */
+@media screen and (max-height: 800px) {
+    .sidebar {
+        padding: 15px;
+    }
+    
+    .logo-section {
+        margin-bottom: 15px;
+    }
+    
+    .selector-group, .tool-row, .icon-tools {
+        padding: 6px;
+        margin-bottom: 8px;
+    }
+}
+
+@media screen and (max-height: 600px) {
+    .sidebar {
+        padding: 10px;
+    }
+    
+    .logo-section {
+        margin-bottom: 10px;
+    }
+    
+    .selector-group, .tool-row, .icon-tools {
+        padding: 5px;
+        margin-bottom: 6px;
+    }
 }
 

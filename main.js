@@ -194,8 +194,9 @@ function draw(e) {
     ctx.moveTo(lastX, lastY);
     ctx.lineTo(pos.x, pos.y);
     ctx.strokeStyle = currentColor;
-    ctx.lineWidth = 3 / scale;
+    ctx.lineWidth = 5;
     ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
     ctx.stroke();
     
     ctx.restore();
@@ -267,8 +268,9 @@ function redrawCanvas() {
         ctx.beginPath();
         ctx.moveTo(path[0].x, path[0].y);
         ctx.strokeStyle = path[0].color;
-        ctx.lineWidth = 3 / scale;
+        ctx.lineWidth = 5;
         ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
         
         for (let i = 1; i < path.length; i++) {
             ctx.lineTo(path[i].x, path[i].y);
@@ -281,8 +283,9 @@ function redrawCanvas() {
         ctx.beginPath();
         ctx.moveTo(currentPath[0].x, currentPath[0].y);
         ctx.strokeStyle = currentPath[0].color;
-        ctx.lineWidth = 3 / scale;
+        ctx.lineWidth = 5;
         ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
         
         for (let i = 1; i < currentPath.length; i++) {
             ctx.lineTo(currentPath[i].x, currentPath[i].y);
@@ -292,26 +295,9 @@ function redrawCanvas() {
     
     // Draw all markers
     markers.forEach(marker => {
-        // Draw tint effect for HAB markers only
-        if (marker.type === 'HAB') {
-            ctx.save();
-            ctx.fillStyle = '#1c1c1c';
-            ctx.globalAlpha = 1;
-            
-            // Make tint smaller than HAB marker
-            const tintSize = marker.width * 0.8;  // Changed from marker.width to 80% of marker width
-            ctx.fillRect(
-                marker.x - tintSize/2,
-                marker.y - tintSize/2,
-                tintSize,
-                tintSize
-            );
-            ctx.restore();
-        }
-
         // Draw marker image
         const markerImage = new Image();
-        markerImage.src = `assets/icons/${marker.type}.${marker.type === 'HAB' ? 'webp' : 'png'}`;
+        markerImage.src = `assets/icons/${marker.type.toLowerCase()}.png`;
         
         const scaledWidth = marker.width / scale;
         const scaledHeight = marker.height / scale;
@@ -366,42 +352,34 @@ window.addEventListener('resize', function() {
 
 
 function placeMarker(event, markerType) {
+    if (!markerType || !currentImage) return;
+    
     const pos = getMousePos(event);
     
     const marker = new Image();
-    marker.src = `assets/icons/${markerType}.${markerType === 'HAB' ? 'webp' : 'png'}`;
+    marker.src = `assets/icons/${markerType.toLowerCase()}.png`;
     
     marker.onload = function() {
         let markerWidth, markerHeight;
-        const baseSize = markerType === 'HAB' ? 48 : 48; // Increased base size for vehicles
+        const baseSize = 42; // Consistent size for all markers
         
         // Calculate dimensions maintaining aspect ratio
         const aspectRatio = marker.naturalWidth / marker.naturalHeight;
         
-        if (markerType === 'HAB') {
-            markerWidth = baseSize;
-            markerHeight = baseSize;
-        } else if (aspectRatio > 1) {
-            // Wider than tall
+        if (aspectRatio > 1) {
             markerWidth = baseSize;
             markerHeight = baseSize / aspectRatio;
         } else {
-            // Taller than wide or square
             markerHeight = baseSize;
             markerWidth = baseSize * aspectRatio;
         }
-        
-        const tintRadius = markerType === 'HAB' ? markerWidth/2.5 : 0;
         
         markers.push({ 
             x: pos.x, 
             y: pos.y, 
             type: markerType, 
             width: markerWidth, 
-            height: markerHeight,
-            tintColor: 'red',
-            tintAlpha: 0.5,
-            tintRadius: tintRadius
+            height: markerHeight
         });
         
         redrawCanvas();
@@ -481,32 +459,42 @@ const markerButtons = {
     'heliMarkerBtn': 'heli',
     'lavMarkerBtn': 'lav',
     'logiMarkerBtn': 'logi',
-    'transMarkerBtn': 'trans',
     'matvMarkerBtn': 'matv',
     'tankMarkerBtn': 'tank'
 };
 
+// Remove any existing event listeners
 Object.entries(markerButtons).forEach(([buttonId, markerType]) => {
-    document.getElementById(buttonId).addEventListener('click', function() {
-        // Remove active class from all buttons
-        Object.keys(markerButtons).forEach(id => {
-            document.getElementById(id).classList.remove('active');
+    const button = document.getElementById(buttonId);
+    if (button) {
+        const newButton = button.cloneNode(true);
+        button.parentNode.replaceChild(newButton, button);
+        
+        newButton.addEventListener('click', function() {
+            // Remove active class from all buttons
+            Object.keys(markerButtons).forEach(id => {
+                document.getElementById(id).classList.remove('active');
+            });
+            
+            // Remove active class from color buttons
+            document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('active'));
+            
+            // Toggle marker placement mode
+            if (currentMarkerType === markerType) {
+                isPlacingMarker = false;
+                currentMarkerType = null;
+                canvas.style.cursor = 'default';
+                this.classList.remove('active');
+            } else {
+                isPlacingMarker = true;
+                currentMarkerType = markerType;
+                this.classList.add('active');
+                canvas.style.cursor = 'crosshair';
+            }
+            
+            // Exit drawing mode
+            isDrawing = false;
         });
-        
-        // Toggle marker placement mode
-        if (currentMarkerType === markerType) {
-            isPlacingMarker = false;
-            currentMarkerType = null;
-            canvas.style.cursor = 'default';
-        } else {
-            isPlacingMarker = true;
-            currentMarkerType = markerType;
-            this.classList.add('active');
-            canvas.style.cursor = 'crosshair';
-        }
-        
-        // Exit drawing mode
-        isDrawing = false;
-    });
+    }
 });
 

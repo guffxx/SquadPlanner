@@ -72,18 +72,22 @@
             <section class="drawing-tools">
                 <div class="tool-row">
                     <h3>Line Tools</h3>
-                    <div class="marker-color-picker">
-                        <input type="radio" name="color" id="redColor" value="red" checked hidden>
-                        <label for="redColor" class="color-btn red active" data-color="red"></label>
-                        
-                        <input type="radio" name="color" id="blueColor" value="blue" hidden>
-                        <label for="blueColor" class="color-btn blue" data-color="blue"></label>
+                    <div class="line-tools-container">
+                        <div class="marker-color-picker">
+                            <input type="radio" name="color" id="redColor" value="red" checked hidden>
+                            <label for="redColor" class="color-btn red active" data-color="red"></label>
+                            
+                            <input type="radio" name="color" id="blueColor" value="blue" hidden>
+                            <label for="blueColor" class="color-btn blue" data-color="blue"></label>
 
-                        <input type="radio" name="color" id="yellowColor" value="yellow" hidden>
-                        <label for="yellowColor" class="color-btn yellow" data-color="yellow"></label>
-                        
-                        <button id="deleteLineBtn" class="compact-btn">Delete Line</button>
+                            <input type="radio" name="color" id="yellowColor" value="yellow" hidden>
+                            <label for="yellowColor" class="color-btn yellow" data-color="yellow"></label>
+                            
+                            <input type="radio" name="color" id="whiteColor" value="white" hidden>
+                            <label for="whiteColor" class="color-btn white" data-color="white"></label>
+                        </div>
                     </div>
+                    <button id="deleteLineBtn" class="compact-btn">Delete Line</button>
                 </div>
             </section>
 
@@ -91,7 +95,7 @@
                 <h3>Map Markers</h3>
                 <div class="marker-grid">
                     <button id="habMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/HAB.webp" alt="HAB" class="marker-icon">
+                        <img src="assets/icons/hab.png" alt="HAB" class="marker-icon">
                     </button>
                     <button id="heliMarkerBtn" class="icon-btn">
                         <img src="assets/icons/heli.png" alt="Heli" class="marker-icon">
@@ -101,9 +105,6 @@
                     </button>
                     <button id="logiMarkerBtn" class="icon-btn">
                         <img src="assets/icons/logi.png" alt="Logi" class="marker-icon">
-                    </button>
-                    <button id="transMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/trans.png" alt="Trans" class="marker-icon">
                     </button>
                     <button id="matvMarkerBtn" class="icon-btn">
                         <img src="assets/icons/matv.png" alt="MATV" class="marker-icon">
