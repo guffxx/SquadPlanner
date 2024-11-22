@@ -5,7 +5,8 @@ let currentColor = 'red';
 let isDrawing = false;
 let currentImage = null;
 let markers = [];
-let isPlacingHab = false;
+let isPlacingMarker = false;
+let currentMarkerType = null;
 let drawingHistory = []; // Store each line as a separate path
 let currentPath = []; // Store the current line being drawn
 let scale = 1;
@@ -33,8 +34,12 @@ document.querySelectorAll('.marker-color-picker .color-btn').forEach(btn => {
         // Add active class to clicked button
         this.classList.add('active');
         currentColor = this.dataset.color;
-        isPlacingHab = false; // Exit HAB placement mode when color is selected
-        document.getElementById('habMarkerBtn').classList.remove('active');
+        isPlacingMarker = false;
+        currentMarkerType = null;
+        Object.keys(markerButtons).forEach(id => {
+            document.getElementById(id).classList.remove('active');
+        });
+        canvas.style.cursor = 'default';
     });
 });
 
@@ -161,8 +166,8 @@ canvas.addEventListener('mouseout', function() {
 function startDrawing(e) {
     if (!currentImage || e.button === 2) return; // Don't draw on right click
     
-    if (isPlacingHab) {
-        placeHABMarker(e);
+    if (isPlacingMarker) {
+        placeMarker(e, currentMarkerType);
     } else {
         isDrawing = true;
         const pos = getMousePos(e);
@@ -225,9 +230,9 @@ function getMousePos(e) {
 
 // HAB marker functionality
 document.getElementById('habMarkerBtn').addEventListener('click', function() {
-    isPlacingHab = !isPlacingHab;
+    isPlacingMarker = !isPlacingMarker;
     this.classList.toggle('active');
-    if (isPlacingHab) {
+    if (isPlacingMarker) {
         canvas.style.cursor = 'crosshair';
     } else {
         canvas.style.cursor = 'default';
@@ -285,33 +290,39 @@ function redrawCanvas() {
         ctx.stroke();
     }
     
-    // Draw HAB markers
+    // Draw all markers
     markers.forEach(marker => {
+        // Draw tint effect for HAB markers only
         if (marker.type === 'HAB') {
-            // Draw tint effect
             ctx.save();
-            ctx.fillStyle = marker.tintColor;
-            ctx.globalAlpha = marker.tintAlpha;
-            ctx.beginPath();
-            ctx.arc(marker.x, marker.y, marker.tintRadius / scale, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.restore();
-
-            // Draw HAB marker
-            const habImage = new Image();
-            habImage.src = 'assets/icons/HAB.webp';
+            ctx.fillStyle = '#1c1c1c';
+            ctx.globalAlpha = 1;
             
-            const scaledWidth = marker.width / scale;
-            const scaledHeight = marker.height / scale;
-            
-            ctx.drawImage(
-                habImage,
-                marker.x - scaledWidth / 2,
-                marker.y - scaledHeight / 2,
-                scaledWidth,
-                scaledHeight
+            // Make tint smaller than HAB marker
+            const tintSize = marker.width * 0.8;  // Changed from marker.width to 80% of marker width
+            ctx.fillRect(
+                marker.x - tintSize/2,
+                marker.y - tintSize/2,
+                tintSize,
+                tintSize
             );
+            ctx.restore();
         }
+
+        // Draw marker image
+        const markerImage = new Image();
+        markerImage.src = `assets/icons/${marker.type}.${marker.type === 'HAB' ? 'webp' : 'png'}`;
+        
+        const scaledWidth = marker.width / scale;
+        const scaledHeight = marker.height / scale;
+        
+        ctx.drawImage(
+            markerImage,
+            marker.x - scaledWidth / 2,
+            marker.y - scaledHeight / 2,
+            scaledWidth,
+            scaledHeight
+        );
     });
     
     ctx.restore();
@@ -352,21 +363,40 @@ window.addEventListener('resize', function() {
     }
 });
 
-function placeHABMarker(event) {
+
+
+function placeMarker(event, markerType) {
     const pos = getMousePos(event);
     
     const marker = new Image();
-    marker.src = 'assets/icons/HAB.webp';
+    marker.src = `assets/icons/${markerType}.${markerType === 'HAB' ? 'webp' : 'png'}`;
     
     marker.onload = function() {
-        const markerWidth = 48;  
-        const markerHeight = 48; 
-        const tintRadius = markerWidth/2.5;
+        let markerWidth, markerHeight;
+        const baseSize = markerType === 'HAB' ? 48 : 48; // Increased base size for vehicles
+        
+        // Calculate dimensions maintaining aspect ratio
+        const aspectRatio = marker.naturalWidth / marker.naturalHeight;
+        
+        if (markerType === 'HAB') {
+            markerWidth = baseSize;
+            markerHeight = baseSize;
+        } else if (aspectRatio > 1) {
+            // Wider than tall
+            markerWidth = baseSize;
+            markerHeight = baseSize / aspectRatio;
+        } else {
+            // Taller than wide or square
+            markerHeight = baseSize;
+            markerWidth = baseSize * aspectRatio;
+        }
+        
+        const tintRadius = markerType === 'HAB' ? markerWidth/2.5 : 0;
         
         markers.push({ 
             x: pos.x, 
             y: pos.y, 
-            type: 'HAB', 
+            type: markerType, 
             width: markerWidth, 
             height: markerHeight,
             tintColor: 'red',
@@ -443,5 +473,40 @@ document.getElementById('recenterBtn').addEventListener('click', function() {
         markers = tempMarkers;
         redrawCanvas();
     }
+});
+
+// Add event listeners for all marker buttons
+const markerButtons = {
+    'habMarkerBtn': 'HAB',
+    'heliMarkerBtn': 'heli',
+    'lavMarkerBtn': 'lav',
+    'logiMarkerBtn': 'logi',
+    'transMarkerBtn': 'trans',
+    'matvMarkerBtn': 'matv',
+    'tankMarkerBtn': 'tank'
+};
+
+Object.entries(markerButtons).forEach(([buttonId, markerType]) => {
+    document.getElementById(buttonId).addEventListener('click', function() {
+        // Remove active class from all buttons
+        Object.keys(markerButtons).forEach(id => {
+            document.getElementById(id).classList.remove('active');
+        });
+        
+        // Toggle marker placement mode
+        if (currentMarkerType === markerType) {
+            isPlacingMarker = false;
+            currentMarkerType = null;
+            canvas.style.cursor = 'default';
+        } else {
+            isPlacingMarker = true;
+            currentMarkerType = markerType;
+            this.classList.add('active');
+            canvas.style.cursor = 'crosshair';
+        }
+        
+        // Exit drawing mode
+        isDrawing = false;
+    });
 });
 

@@ -39,30 +39,50 @@
             </section>
             
             <section class="drawing-tools">
-                <h3>Marker Color</h3>
-                <div class="marker-color-picker">
-                    <input type="radio" name="color" id="redColor" value="red" checked hidden>
-                    <label for="redColor" class="color-btn red active" data-color="red"></label>
-                    
-                    <input type="radio" name="color" id="blueColor" value="blue" hidden>
-                    <label for="blueColor" class="color-btn blue" data-color="blue"></label>
+                <div class="tool-row">
+                    <h3>Line Tools</h3>
+                    <div class="marker-color-picker">
+                        <input type="radio" name="color" id="redColor" value="red" checked hidden>
+                        <label for="redColor" class="color-btn red active" data-color="red"></label>
+                        
+                        <input type="radio" name="color" id="blueColor" value="blue" hidden>
+                        <label for="blueColor" class="color-btn blue" data-color="blue"></label>
 
-                    <input type="radio" name="color" id="yellowColor" value="yellow" hidden>
-                    <label for="yellowColor" class="color-btn yellow" data-color="yellow"></label>
-                </div>
-                <div class="marker-buttons">
-                    <button id="deleteLineBtn" class="marker-btn">Delete Last Line</button>
+                        <input type="radio" name="color" id="yellowColor" value="yellow" hidden>
+                        <label for="yellowColor" class="color-btn yellow" data-color="yellow"></label>
+                        
+                        <button id="deleteLineBtn" class="compact-btn">Delete Line</button>
+                    </div>
                 </div>
             </section>
 
             <section class="icon-tools">
                 <h3>Map Markers</h3>
-                <div class="icon-buttons">
+                <div class="marker-grid">
                     <button id="habMarkerBtn" class="icon-btn">
                         <img src="assets/icons/HAB.webp" alt="HAB" class="marker-icon">
-                        Place HAB
                     </button>
-                    <button id="deleteMarkerBtn" class="icon-btn">Delete Last HAB</button>
+                    <button id="heliMarkerBtn" class="icon-btn">
+                        <img src="assets/icons/heli.png" alt="Heli" class="marker-icon">
+                    </button>
+                    <button id="lavMarkerBtn" class="icon-btn">
+                        <img src="assets/icons/lav.png" alt="LAV" class="marker-icon">
+                    </button>
+                    <button id="logiMarkerBtn" class="icon-btn">
+                        <img src="assets/icons/logi.png" alt="Logi" class="marker-icon">
+                    </button>
+                    <button id="transMarkerBtn" class="icon-btn">
+                        <img src="assets/icons/trans.png" alt="Trans" class="marker-icon">
+                    </button>
+                    <button id="matvMarkerBtn" class="icon-btn">
+                        <img src="assets/icons/matv.png" alt="MATV" class="marker-icon">
+                    </button>
+                    <button id="tankMarkerBtn" class="icon-btn">
+                        <img src="assets/icons/tank.png" alt="Tank" class="marker-icon">
+                    </button>
+                    <button id="deleteMarkerBtn" class="icon-btn delete-btn">
+                        <span>Delete Last</span>
+                    </button>
                 </div>
             </section>
 
