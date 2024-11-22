@@ -17,6 +17,9 @@ let offsetY = 0;
 let isDragging = false;
 let dragStartX = 0;
 let dragStartY = 0;
+let textAnnotations = [];
+let isPlacingText = false;
+let currentText = '';
 
 // Initialize canvas size
 canvas.width = 400;
@@ -164,9 +167,43 @@ canvas.addEventListener('mouseout', function() {
 });
 
 function startDrawing(e) {
-    if (!currentImage || e.button === 2) return; // Don't draw on right click
+    if (!currentImage || e.button === 2) return;
     
-    if (isPlacingMarker) {
+    if (isPlacingText) {
+        const pos = getMousePos(e);
+        
+        // Check if clicking near existing text to replace it
+        const clickRadius = 20; // Detection radius in pixels
+        const clickX = pos.x;
+        const clickY = pos.y;
+        
+        // Find if we clicked near any existing text
+        const existingTextIndex = textAnnotations.findIndex(annotation => {
+            const dx = annotation.x - clickX;
+            const dy = annotation.y - clickY;
+            return Math.sqrt(dx * dx + dy * dy) < clickRadius;
+        });
+        
+        if (existingTextIndex !== -1) {
+            // Replace existing text
+            textAnnotations[existingTextIndex].text = currentText;
+        } else {
+            // Add new text
+            textAnnotations.push({
+                x: pos.x,
+                y: pos.y,
+                text: currentText
+            });
+        }
+        
+        // Reset text placement mode
+        isPlacingText = false;
+        currentText = '';
+        document.getElementById('annotationText').value = '';
+        canvas.style.cursor = 'default';
+        
+        redrawCanvas();
+    } else if (isPlacingMarker) {
         placeMarker(e, currentMarkerType);
     } else {
         isDrawing = true;
@@ -311,6 +348,26 @@ function redrawCanvas() {
         );
     });
     
+    // Draw text annotations
+    textAnnotations.forEach(annotation => {
+        ctx.save();
+        
+        ctx.font = 'bold 32px Arial'; // Increased from 24px to 32px
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        
+        // Add black outline
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 4;
+        ctx.strokeText(annotation.text, annotation.x, annotation.y);
+        
+        // Fill with white
+        ctx.fillStyle = 'white';
+        ctx.fillText(annotation.text, annotation.x, annotation.y);
+        
+        ctx.restore();
+    });
+    
     ctx.restore();
 }
 // Clear canvas functionality - modified to clear everything
@@ -318,6 +375,7 @@ document.getElementById('clearAll').addEventListener('click', function() {
     markers = []; // Clear HAB markers
     drawingHistory = []; // Clear drawing history
     currentPath = []; // Clear current path
+    textAnnotations = []; // Add this line
     if (currentImage) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(currentImage, 0, 0);
@@ -497,5 +555,32 @@ Object.entries(markerButtons).forEach(([buttonId, markerType]) => {
         });
     }
 
+});
+
+document.getElementById('addTextBtn').addEventListener('click', function() {
+    const textInput = document.getElementById('annotationText');
+    currentText = textInput.value.trim();
+    
+    if (currentText) {
+        isPlacingText = true;
+        isPlacingMarker = false;
+        currentMarkerType = null;
+        canvas.style.cursor = 'text';
+        
+        // Remove active states from other tools
+        Object.keys(markerButtons).forEach(id => {
+            document.getElementById(id).classList.remove('active');
+        });
+        document.querySelectorAll('.color-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+    }
+});
+
+document.getElementById('deleteTextBtn').addEventListener('click', function() {
+    if (textAnnotations.length > 0) {
+        textAnnotations.pop();
+        redrawCanvas();
+    }
 });
 

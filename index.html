@@ -71,7 +71,7 @@
             
             <section class="drawing-tools">
                 <div class="tool-row">
-                    <h3>Line Tools</h3>
+                    <h3>Line Tool:</h3>
                     <div class="line-tools-container">
                         <div class="marker-color-picker">
                             <input type="radio" name="color" id="redColor" value="red" checked hidden>
@@ -92,7 +92,7 @@
             </section>
 
             <section class="icon-tools">
-                <h3>Map Markers</h3>
+                <h3>Map Markers:</h3>
                 <div class="marker-grid">
                     <button id="habMarkerBtn" class="icon-btn">
                         <img src="assets/icons/hab.png" alt="HAB" class="marker-icon">
@@ -116,6 +116,15 @@
                 </div>
             </section>
 
+            <section class="text-tools">
+                <h3>Text Field:</h3>
+                <div class="text-input-container">
+                    <input type="text" id="annotationText" placeholder="Enter text..." class="text-input">
+                    <button id="addTextBtn" class="text-btn">Add Text</button>
+                    <button id="deleteTextBtn" class="delete-btn">Delete Last</button>
+                </div>
+            </section>
+
             <div class="button-container">
                 <button id="recenterBtn">RECENTER MAP</button>
                 <button id="downloadNow">DOWNLOAD MAP</button>
@@ -134,13 +143,15 @@
         <main class="canvas-container">
             <canvas id="mapCanvas"></canvas>
             <div class="placeholder-text">
-                Select a map from the left
+                - Select a map from the left
+                <br>
+                - Draw with the Line Tool
+                <br>
+                - Place Map Markers 
+                <br>
+                - Enter Text to place on the Map
             <br>
-            Draw with the Line tools
-            <br>
-            Place Map Markers 
-            <br>
-            Download the Plan
+            - Download the Plan
         </div>
 
         </main>
