@@ -672,7 +672,7 @@ select:disabled {
     background-color: #ff2222;
 }
 
-/* Add this new style for the download button */
+/* Update the download button style */
 #downloadNow {
     background-color: var(--accent);
     color: var(--darker-bg);
@@ -680,14 +680,15 @@ select:disabled {
 }
 
 #downloadNow:hover {
-    background-color: #ffd649;  /* slightly lighter shade of the accent color */
+    background-color: var(--darker-bg);
+    color: var(--accent);
 }
 
-/* Update the recenter button style - remove green color */
+/* Update the recenter button style - remove border */
 #recenterBtn {
-    background-color: var(--darker-bg);  /* Use the default dark background */
+    background-color: var(--darker-bg);
     color: var(--text-color);
-    border: 1px solid var(--accent);  /* Add accent border like other buttons */
+    border: none;
 }
 
 #recenterBtn:hover {
