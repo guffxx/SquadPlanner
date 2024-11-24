@@ -586,9 +586,11 @@ const markerButtons = {
     'logiMarkerBtn': 'logi',
     'matvMarkerBtn': 'matv',
     'tankMarkerBtn': 'tank',
-    'apcMarkerBtn': 'apc',    // Add new APC marker
-    'ifvMarkerBtn': 'ifv',    // Add new IFV marker
-    'rwsMarkerBtn': 'rws'     // Add new RWS marker
+    'apcMarkerBtn': 'apc',
+    'ifvMarkerBtn': 'ifv',
+    'rwsMarkerBtn': 'rws',
+    'radioMarkerBtn': 'radio',         // Add radio marker
+    'repStationMarkerBtn': 'repStation'  // Add repair station marker
 };
 
 // Remove any existing event listeners
