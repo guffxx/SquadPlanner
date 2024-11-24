@@ -1352,3 +1352,66 @@ select:disabled {
     background: none;
 }
 
+/* Add these styles for the tint selector */
+.tint-selector {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    padding: 4px;
+}
+
+.tint-label {
+    font-size: 14px;
+    color: var(--text-color);
+}
+
+.tint-color-picker {
+    display: flex;
+    gap: 4px;
+    flex: 1;
+}
+
+.tint-btn {
+    min-width: 35px;
+    height: 25px;
+    flex: 1;
+    border-radius: 15px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0.5;
+}
+
+.tint-btn.white { 
+    background-color: white;
+    border: 1px solid #666; 
+    opacity: 0.5;
+}
+
+.tint-btn.white:hover {
+    opacity: 0.8;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+}
+
+.tint-btn.white.active {
+    opacity: 1;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.9);
+    border: 2px solid var(--text-color);
+}
+
+.tint-btn.red { background-color: rgba(255, 0, 0, 0.5); }
+.tint-btn.blue { background-color: rgba(0, 0, 255, 0.5); }
+.tint-btn.yellow { background-color: rgba(255, 255, 0, 0.5); }
+
+.tint-btn:hover {
+    opacity: 0.8;
+    transform: scale(1.05);
+}
+
+.tint-btn.active {
+    opacity: 1;
+    transform: scale(1.05);
+    border: 2px solid var(--text-color);
+}
+

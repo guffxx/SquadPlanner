@@ -23,6 +23,7 @@ let currentText = '';
 let isErasing = false;
 let eraserCursor = null;
 let currentTextColor = '#ffc409';
+let currentTint = 'white';
 
 // Initialize canvas size
 canvas.width = 400;
@@ -377,20 +378,32 @@ function redrawCanvas() {
     
     // Draw all markers
     markers.forEach(marker => {
-        // Draw marker image
         const markerImage = new Image();
         markerImage.src = `assets/icons/${marker.type.toLowerCase()}.png`;
         
-        const scaledWidth = marker.width / scale;
-        const scaledHeight = marker.height / scale;
-        
-        ctx.drawImage(
-            markerImage,
-            marker.x - scaledWidth / 2,
-            marker.y - scaledHeight / 2,
-            scaledWidth,
-            scaledHeight
-        );
+        markerImage.onload = function() {
+            const scaledWidth = marker.width / scale;
+            const scaledHeight = marker.height / scale;
+            
+            if (marker.tint !== 'white') {
+                const tintedCanvas = applyTint(markerImage, marker.tint);
+                ctx.drawImage(
+                    tintedCanvas,
+                    marker.x - scaledWidth / 2,
+                    marker.y - scaledHeight / 2,
+                    scaledWidth,
+                    scaledHeight
+                );
+            } else {
+                ctx.drawImage(
+                    markerImage,
+                    marker.x - scaledWidth / 2,
+                    marker.y - scaledHeight / 2,
+                    scaledWidth,
+                    scaledHeight
+                );
+            }
+        };
     });
     
     // Draw text annotations
@@ -482,7 +495,8 @@ function placeMarker(event, markerType) {
             y: pos.y, 
             type: markerType, 
             width: markerWidth, 
-            height: markerHeight
+            height: markerHeight,
+            tint: currentTint // Store the tint with the marker
         });
         
         redrawCanvas();
@@ -790,6 +804,41 @@ document.querySelectorAll('.text-color-picker .color-btn').forEach(btn => {
         // Add active class to clicked button
         this.classList.add('active');
         currentTextColor = this.dataset.color;
+    });
+});
+
+// Add this function to apply tint to an image
+function applyTint(image, tint) {
+    if (tint === 'white') return image;
+    
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = image.width;
+    canvas.height = image.height;
+    
+    // Draw original image
+    ctx.drawImage(image, 0, 0);
+    
+    // Apply tint
+    ctx.globalCompositeOperation = 'multiply';
+    ctx.fillStyle = tint;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Restore original alpha
+    ctx.globalCompositeOperation = 'destination-in';
+    ctx.drawImage(image, 0, 0);
+    
+    return canvas;
+}
+
+// Add this event listener setup after other initialization code
+document.querySelectorAll('.tint-color-picker .tint-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        // Remove active class from all tint buttons
+        document.querySelectorAll('.tint-btn').forEach(b => b.classList.remove('active'));
+        // Add active class to clicked button
+        this.classList.add('active');
+        currentTint = this.dataset.tint;
     });
 });
 
