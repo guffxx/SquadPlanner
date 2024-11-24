@@ -1029,3 +1029,19 @@ select:disabled {
     margin-top: 4px;
 }
 
+/* Hide delete buttons */
+#deleteLineBtn, 
+#deleteMarkerBtn,
+#deleteTextBtn,
+.delete-btn {
+    display: none !important;
+}
+
+/* Update grid layout without delete button */
+.marker-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    padding: 4px;
+}
+
