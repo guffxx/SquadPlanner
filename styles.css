@@ -367,8 +367,13 @@ select, button, .file-input, .text-input {
 }
 
 .creator-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     padding-right: 20px;
     border-right: 1px solid var(--accent);
+    border-left: 1px solid var(--accent);
+    padding-left: 20px;
 }
 
 .social-links {
@@ -553,6 +558,16 @@ select:hover, button:hover {
     color: var(--accent);
     font-style: italic;
     font-size: 14px;
+}
+
+.bug-tip {
+    color: #ff4444;
+    font-size: 13px;
+    margin-right: 10px;
+}
+
+.tool-tip, .signature {
+    display: inline-block;
 }
 
 
