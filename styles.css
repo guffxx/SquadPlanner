@@ -1,3 +1,4 @@
+/* CSS Variables */
 :root {
     --dark-bg: #2b2b2b;
     --darker-bg: #1f1f1f;
@@ -5,13 +6,14 @@
     --text-color: #ffffff;
 }
 
-/* Base Styles */
+/* Reset Styles */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* Base Layout */
 body {
     background-color: var(--darker-bg);
     color: var(--text-color);
@@ -26,7 +28,6 @@ body {
     overflow: hidden;
 }
 
-/* Layout */
 .container {
     display: flex;
     height: 100vh;
@@ -38,7 +39,7 @@ body {
     padding-right: 0;
 }
 
-/* Sidebar */
+/* Sidebar Styles */
 .sidebar {
     background-color: var(--dark-bg);
     width: 280px;
@@ -77,7 +78,11 @@ body {
 }
 
 /* Common Section Styles */
-.selector-group, .tool-row, .icon-tools, .text-tools, .eraser-tools {
+.selector-group, 
+.tool-row, 
+.icon-tools, 
+.text-tools, 
+.eraser-tools {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
@@ -95,7 +100,10 @@ h2, h3 {
 }
 
 /* Form Controls */
-select, button, .file-input, .text-input {
+select, 
+button, 
+.file-input, 
+.text-input {
     width: 100%;
     padding: 10px;
     margin: 5px 0;
@@ -109,7 +117,8 @@ select, button, .file-input, .text-input {
 }
 
 /* Slider Controls */
-.width-slider, .marker-size-control .width-slider {
+.width-slider, 
+.marker-size-control .width-slider {
     flex: 1;
     height: 4px;
     -webkit-appearance: none;
@@ -121,6 +130,7 @@ select, button, .file-input, .text-input {
     transition: all 0.2s ease;
 }
 
+/* Slider Thumb Styles */
 .width-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     width: 16px;
@@ -131,12 +141,6 @@ select, button, .file-input, .text-input {
     border: none;
     transition: all 0.2s ease;
     box-shadow: 0 0 5px rgba(255, 196, 9, 0.5);
-}
-
-.width-slider::-webkit-slider-thumb:hover {
-    transform: scale(1.2);
-    background: #ffd700;
-    box-shadow: 0 0 10px rgba(255, 196, 9, 0.7);
 }
 
 .width-slider::-moz-range-thumb {
@@ -150,6 +154,13 @@ select, button, .file-input, .text-input {
     box-shadow: 0 0 5px rgba(255, 196, 9, 0.5);
 }
 
+/* Slider Hover Effects */
+.width-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    background: #ffd700;
+    box-shadow: 0 0 10px rgba(255, 196, 9, 0.7);
+}
+
 .width-slider::-moz-range-thumb:hover {
     transform: scale(1.2);
     background: #ffd700;
@@ -160,7 +171,9 @@ select, button, .file-input, .text-input {
     background: rgba(255, 255, 255, 0.2);
 }
 
-.width-value, .marker-size-value {
+/* Value Display */
+.width-value, 
+.marker-size-value {
     min-width: 28px;
     color: #999;
     font-size: 12px;
@@ -168,8 +181,9 @@ select, button, .file-input, .text-input {
     padding: 0 4px;
 }
 
-/* Color Buttons Base Styles */
-.color-btn, .tint-btn {
+/* Color Button Styles */
+.color-btn, 
+.tint-btn {
     min-width: 35px;
     width: 35px;
     min-height: 25px;
@@ -182,8 +196,10 @@ select, button, .file-input, .text-input {
     opacity: 0.5;
 }
 
-/* Color Pickers Layout */
-.marker-color-picker, .text-color-picker, .tint-color-picker {
+/* Color Picker Layout */
+.marker-color-picker, 
+.text-color-picker, 
+.tint-color-picker {
     display: flex;
     gap: 4px;
     margin: 4px 0;
@@ -195,12 +211,14 @@ select, button, .file-input, .text-input {
 }
 
 /* Color Button States */
-.color-btn:hover, .tint-btn:hover {
+.color-btn:hover, 
+.tint-btn:hover {
     opacity: 0.8;
     transform: scale(1.05);
 }
 
-.color-btn.active, .tint-btn.active {
+.color-btn.active, 
+.tint-btn.active {
     opacity: 1;
     transform: scale(1.05);
     border: none;
@@ -215,13 +233,13 @@ select, button, .file-input, .text-input {
     border: 1px solid #666;
 }
 
-/* Color-specific Hover Effects */
+/* Color Hover Effects */
 .color-btn.red:hover, .tint-btn.red:hover { box-shadow: 0 0 8px rgba(255, 0, 0, 0.7); }
 .color-btn.blue:hover, .tint-btn.blue:hover { box-shadow: 0 0 8px rgba(0, 0, 255, 0.7); }
 .color-btn.yellow:hover, .tint-btn.yellow:hover { box-shadow: 0 0 8px rgba(255, 255, 0, 0.7); }
 .color-btn.white:hover, .tint-btn.white:hover { box-shadow: 0 0 8px rgba(255, 255, 255, 0.7); }
 
-/* Active State Glow Effects */
+/* Active Color States */
 .color-btn.red.active, .tint-btn.red.active {
     box-shadow: 0 0 12px rgba(255, 0, 0, 0.9),
                 inset 0 0 8px rgba(255, 0, 0, 0.5);
@@ -266,6 +284,46 @@ select, button, .file-input, .text-input {
     height: 85%;
     object-fit: contain;
     pointer-events: none;
+    transition: filter 0.3s ease;
+}
+
+/* Color filters for icons based on selected color */
+.drawing-tools .marker-color-picker input[type="radio"][value="red"]:checked ~ .icon-tools .marker-icon {
+    filter: sepia(1) saturate(10000%) hue-rotate(0deg) brightness(0.8);
+}
+
+.drawing-tools .marker-color-picker input[type="radio"][value="blue"]:checked ~ .icon-tools .marker-icon {
+    filter: sepia(1) saturate(10000%) hue-rotate(240deg) brightness(0.8);
+}
+
+.drawing-tools .marker-color-picker input[type="radio"][value="yellow"]:checked ~ .icon-tools .marker-icon {
+    filter: sepia(1) saturate(10000%) hue-rotate(60deg) brightness(1);
+}
+
+.drawing-tools .marker-color-picker input[type="radio"][value="white"]:checked ~ .icon-tools .marker-icon {
+    filter: brightness(2) saturate(0);
+}
+
+/* Hover effects */
+.marker-grid .icon-btn:hover .marker-icon {
+    filter: brightness(1.4);
+}
+
+/* Hover effects for colored icons */
+.drawing-tools .marker-color-picker input[type="radio"][value="red"]:checked ~ .icon-tools .icon-btn:hover .marker-icon {
+    filter: sepia(1) saturate(10000%) hue-rotate(0deg) brightness(1.2);
+}
+
+.drawing-tools .marker-color-picker input[type="radio"][value="blue"]:checked ~ .icon-tools .icon-btn:hover .marker-icon {
+    filter: sepia(1) saturate(10000%) hue-rotate(240deg) brightness(1.2);
+}
+
+.drawing-tools .marker-color-picker input[type="radio"][value="yellow"]:checked ~ .icon-tools .icon-btn:hover .marker-icon {
+    filter: sepia(1) saturate(10000%) hue-rotate(60deg) brightness(1.4);
+}
+
+.drawing-tools .marker-color-picker input[type="radio"][value="white"]:checked ~ .icon-tools .icon-btn:hover .marker-icon {
+    filter: brightness(2.4) saturate(0);
 }
 
 /* Canvas Area */
@@ -324,18 +382,7 @@ select, button, .file-input, .text-input {
     color: rgba(255, 255, 255, 0.8);
 }
 
-/* Media Queries */
-@media screen and (max-height: 800px) {
-    .sidebar { padding: 15px; }
-    .selector-group, .tool-row, .icon-tools { padding: 6px; }
-}
-
-@media screen and (max-height: 600px) {
-    .sidebar { padding: 10px; }
-    .selector-group, .tool-row, .icon-tools { padding: 5px; }
-}
-
-/* Update top navigation styles */
+/* Top Navigation */
 .top-nav {
     position: fixed;
     top: 0;
@@ -369,6 +416,7 @@ select, button, .file-input, .text-input {
     height: 100%;
 }
 
+/* Navigation Elements */
 .bug-tip {
     color: #ff4444;
     font-size: 13px;
@@ -397,13 +445,6 @@ select, button, .file-input, .text-input {
     gap: 2px;
 }
 
-.tool-tip {
-    font-size: 13px;
-    color: #999;
-    margin: 0;
-    text-align: center;
-}
-
 .signature {
     color: var(--accent);
     font-style: italic;
@@ -411,13 +452,13 @@ select, button, .file-input, .text-input {
     margin: 0;
 }
 
+/* Social Links */
 .social-links {
     display: flex;
     gap: 12px;
     height: 100%;
     align-items: center;
     justify-content: center;
-    padding-left: auto;
 }
 
 .social-link {
@@ -436,11 +477,6 @@ select, button, .file-input, .text-input {
     height: 32px;
 }
 
-.social-link span {
-    display: inline-block;
-    line-height: 1;
-}
-
 .social-link:hover {
     opacity: 1;
     transform: translateY(-2px);
@@ -454,171 +490,13 @@ select, button, .file-input, .text-input {
     object-fit: contain;
 }
 
-/* Add back placeholder text styles */
-.placeholder-text {
-    position: absolute;
-    color: var(--accent);
-    font-size: 28px;
-    pointer-events: none;
-    text-shadow: 0 0 5px var(--accent);
-    padding: 20px 40px;
-    border-radius: 8px;
-}
-
-.canvas-container:has(#mapCanvas[width="400"]) .placeholder-text {
-    display: block;
-}
-
-/* Add back line width control styles */
-.line-width-control {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 8px;
-    padding: 4px;
-}
-
-.width-value {
-    min-width: 28px;
-    color: #999;
-    font-size: 12px;
-    text-align: right;
-    padding: 0 4px;
-}
-
-/* Add back marker size control styles */
-.marker-size-control {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 4px 0 8px 0;
-    padding: 4px;
-}
-
-.marker-size-value {
-    min-width: 35px;
-}
-
-/* Add back button container styles */
-.button-container {
-    gap: 8px;
-    margin-top: auto;
-    margin-bottom: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* Add back hover effects for buttons */
-select:hover, button:hover {
-    background-color: var(--dark-bg);
-    opacity: 1;
-}
-
-#downloadNow:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 196, 9, 0.4);
-    background: linear-gradient(45deg, #ffd700, var(--accent));
-}
-
-#clearAll:hover {
-    background-color: #ff4444;
-    color: white;
-}
-
-/* Ensure icon buttons maintain proper size in 4-column grid */
-.icon-btn.active {
-    background-color: var(--accent);
-    color: var(--darker-bg);
-    opacity: 1;
-    z-index: 2;
-}
-
-.icon-btn:hover {
-    opacity: 1;
-    background-color: var(--dark-bg);
-    z-index: 2;
-}
-
-/* Hide all delete buttons */
+/* Hidden Elements */
 #deleteLineBtn, 
 #deleteMarkerBtn,
 #deleteTextBtn,
 #recenterBtn,
 .delete-btn {
     display: none !important;
-}
-
-/* Style text input with accent border */
-.text-input {
-    width: 100%;
-    padding: 8px;
-    background-color: var(--darker-bg);
-    color: var(--text-color);
-    border: 1px solid var(--accent);
-    border-radius: 4px;
-    opacity: 0.75;
-    transition: all 0.2s ease;
-}
-
-.text-input:focus {
-    opacity: 1;
-    border: 1px solid var(--accent);
-    box-shadow: 0 0 8px rgba(255, 196, 9, 0.3);
-    outline: none;
-}
-
-/* Style Add Text button with green accent */
-#addTextBtn {
-    background-color: rgba(40, 167, 69, 0.3);
-    color: rgba(255, 255, 255, 0.9);
-    transition: all 0.3s ease;
-}
-
-#addTextBtn:hover {
-    background-color: rgba(40, 167, 69, 0.6);
-    color: white;
-}
-
-/* Style Eraser button */
-#eraserBtn {
-    background-color: rgba(255, 68, 68, 0.3);
-    color: rgba(255, 255, 255, 0.8);
-    transition: all 0.3s ease;
-}
-
-#eraserBtn:hover {
-    background-color: rgba(255, 68, 68, 0.5);
-    color: white;
-}
-
-#eraserBtn.active {
-    background-color: #ff4444;
-    color: white;
-    box-shadow: 0 0 15px rgba(255, 68, 68, 0.4);
-}
-
-.signature {
-    color: var(--accent);
-    font-style: italic;
-    font-size: 14px;
-}
-
-.bug-tip {
-    color: #ff4444;
-    font-size: 13px;
-    padding: 0 20px;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    max-width: 500px;
-    line-height: 1.2;
-}
-
-.tool-tip, .signature {
-    display: inline-block;
 }
 
 /* Update media queries for better text handling */
@@ -678,7 +556,6 @@ select:hover, button:hover {
         font-size: 9px;
     }
 }
-
 @media screen and (max-width: 480px) {
     .nav-content {
         margin-left: 282px;
@@ -721,6 +598,92 @@ select:hover, button:hover {
         width: 16px;
         height: 16px;
     }
+}
+
+/* Eraser Tool Button */
+#eraserBtn {
+    background-color: rgba(255, 68, 68, 0.3);
+    color: rgba(255, 255, 255, 0.8);
+    transition: all 0.3s ease;
+}
+
+#eraserBtn:hover {
+    background-color: rgba(255, 68, 68, 0.5);
+    color: white;
+}
+
+#eraserBtn.active {
+    background-color: #ff4444;
+    color: white;
+    box-shadow: 0 0 15px rgba(255, 68, 68, 0.4);
+}
+
+/* Text Input Field */
+.text-input {
+    width: 100%;
+    padding: 8px;
+    background-color: var(--darker-bg);
+    color: var(--text-color);
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    opacity: 0.75;
+    transition: all 0.2s ease;
+}
+
+.text-input:focus {
+    opacity: 1;
+    border: 1px solid var(--accent);
+    box-shadow: 0 0 8px rgba(255, 196, 9, 0.3);
+    outline: none;
+}
+
+/* Add Text Button */
+#addTextBtn {
+    background-color: rgba(40, 167, 69, 0.3);
+    color: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+}
+
+#addTextBtn:hover {
+    background-color: rgba(40, 167, 69, 0.6);
+    color: white;
+}
+
+/* Icon Button Active State */
+.icon-btn.active {
+    background-color: var(--accent);
+    color: var(--darker-bg);
+    opacity: 1;
+    box-shadow: 0 0 12px rgba(255, 196, 9, 0.5);
+    z-index: 2;
+}
+
+.icon-btn:hover {
+    opacity: 1;
+    background-color: var(--dark-bg);
+    box-shadow: 0 0 8px rgba(255, 196, 9, 0.3);
+    z-index: 2;
+}
+
+/* Add this to your existing CSS */
+.placeholder-text {
+    color: var(--accent);
+    font-size: 24px;
+    line-height: 2;
+    text-align: left;
+    text-shadow: 0 0 10px rgba(255, 196, 9, 0.7),
+                 -1px -1px 0 #000,  
+                 1px -1px 0 #000,
+                 -1px 1px 0 #000,
+                 1px 1px 0 #000;
+    font-weight: bold;
+    pointer-events: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 800px;
 }
 
 

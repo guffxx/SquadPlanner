@@ -103,9 +103,14 @@
                     </select>
                     <input type="file" id="imageUpload" accept="image/*" class="file-input" hidden>
                     <p class="tool-tip">Select a map from the dropdown, or upload a custom map</p>
-
+                    <button id="downloadNow">DOWNLOAD MAP</button>
                 </div>
 
+            </section>
+            <section class="eraser-tools">
+                <button id="eraserBtn" class="eraser-btn">Eraser Tool</button>
+                <button id="clearAll" class="eraser-btn">CLEAR MAP</button>
+                <p class="tool-tip">Click and drag to erase markers, lines, and text</p>
             </section>
             <section class="drawing-tools">
                 <div class="tool-row">
@@ -220,15 +225,8 @@
                 </div>
             </section>
             
-            <section class="eraser-tools">
-                <button id="eraserBtn" class="eraser-btn">Eraser Tool</button>
-                <button id="clearAll" class="eraser-btn">CLEAR MAP</button>
-                <p class="tool-tip">Click and drag to erase markers, lines, and text, or clear the map entirely</p>
-            </section>
-
             <div class="button-container">
                 <button id="recenterBtn">RECENTER MAP</button>
-                <button id="downloadNow">DOWNLOAD MAP</button>
             </div>
         </aside>
         <nav class="top-nav">
@@ -270,7 +268,7 @@
                 <br>
                 - Erase the icons, lines, and text with the eraser tools
                 <br>
-                - Download the finished Plan when complete
+                - Download the finished Map when complete
             </div>
 
         </main>
