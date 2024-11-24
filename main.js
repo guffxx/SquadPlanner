@@ -169,26 +169,41 @@ canvas.addEventListener('mouseout', function() {
 function startDrawing(e) {
     if (!currentImage || e.button === 2) return;
     
-    if (isPlacingText && currentText) {
+    if (isPlacingText) {
         const pos = getMousePos(e);
         
-        // Add text annotation
-        textAnnotations.push({
-            x: pos.x,
-            y: pos.y,
-            text: currentText
+        // Check if clicking near existing text to replace it
+        const clickRadius = 20; // Detection radius in pixels
+        const clickX = pos.x;
+        const clickY = pos.y;
+        
+        // Find if we clicked near any existing text
+        const existingTextIndex = textAnnotations.findIndex(annotation => {
+            const dx = annotation.x - clickX;
+            const dy = annotation.y - clickY;
+            return Math.sqrt(dx * dx + dy * dy) < clickRadius;
         });
+        
+        if (existingTextIndex !== -1) {
+            // Replace existing text
+            textAnnotations[existingTextIndex].text = currentText;
+        } else {
+            // Add new text
+            textAnnotations.push({
+                x: pos.x,
+                y: pos.y,
+                text: currentText
+            });
+        }
         
         // Reset text placement mode
         isPlacingText = false;
         currentText = '';
+        document.getElementById('annotationText').value = '';
         canvas.style.cursor = 'default';
-        document.getElementById('addTextBtn').classList.remove('active');
-        document.getElementById('textInput').value = ''; // Clear input field
         
         redrawCanvas();
-        e.preventDefault(); // Prevent other mouse events
-    } else if (isPlacingMarker && currentMarkerType) {
+    } else if (isPlacingMarker) {
         placeMarker(e, currentMarkerType);
     } else {
         isDrawing = true;
@@ -252,22 +267,21 @@ function getMousePos(e) {
 }
 
 // HAB marker functionality
-const markerButtons = {
-    'habMarkerBtn': 'HAB',
-    'heliMarkerBtn': 'heli',
-    'lavMarkerBtn': 'lav',
-    'logiMarkerBtn': 'logi',
-    'matvMarkerBtn': 'matv',
-    'tankMarkerBtn': 'tank'
-};
+document.getElementById('habMarkerBtn').addEventListener('click', function() {
+    isPlacingMarker = !isPlacingMarker;
+    this.classList.toggle('active');
+    if (isPlacingMarker) {
+        canvas.style.cursor = 'crosshair';
+    } else {
+        canvas.style.cursor = 'default';
+    }
+});
 
-
-// Update the marker button event listeners - remove the cloning which was causing issues
-Object.entries(markerButtons).forEach(([buttonId, markerType]) => {
-    const button = document.getElementById(buttonId);
-    if (button) {
-        // Remove the cloning
-        button.addEventListener('click', () => handleMarkerButtonClick(buttonId, markerType));
+// Delete marker functionality
+document.getElementById('deleteMarkerBtn').addEventListener('click', function() {
+    if (markers.length > 0) {
+        markers.pop(); // Remove the last HAB marker
+        redrawCanvas();
     }
 });
 
@@ -338,17 +352,16 @@ function redrawCanvas() {
     textAnnotations.forEach(annotation => {
         ctx.save();
         
-        // Set text properties
-        ctx.font = 'bold 32px Arial';
+        ctx.font = 'bold 32px Arial'; // Increased from 24px to 32px
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         
-        // Draw black outline
+        // Add black outline
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 4;
         ctx.strokeText(annotation.text, annotation.x, annotation.y);
         
-        // Draw white text
+        // Fill with white
         ctx.fillStyle = 'white';
         ctx.fillText(annotation.text, annotation.x, annotation.y);
         
@@ -362,9 +375,10 @@ document.getElementById('clearAll').addEventListener('click', function() {
     markers = []; // Clear HAB markers
     drawingHistory = []; // Clear drawing history
     currentPath = []; // Clear current path
-    textAnnotations = []; // Clear text annotations
+    textAnnotations = []; // Add this line
     if (currentImage) {
-        redrawCanvas();
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(currentImage, 0, 0);
     } else {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
@@ -400,14 +414,12 @@ function placeMarker(event, markerType) {
     
     const pos = getMousePos(event);
     
-    // Create marker image
     const marker = new Image();
     marker.src = `assets/icons/${markerType.toLowerCase()}.png`;
     
     marker.onload = function() {
         let markerWidth, markerHeight;
-        // Adjust base sizes
-        const baseSize = markerType.toLowerCase() === 'lav' ? 40 : 36;
+        const baseSize = markerType.toLowerCase() === 'lav' ? 50 : 46;
         
         // Calculate dimensions maintaining aspect ratio
         const aspectRatio = marker.naturalWidth / marker.naturalHeight;
@@ -420,7 +432,6 @@ function placeMarker(event, markerType) {
             markerWidth = baseSize * aspectRatio;
         }
         
-        // Add marker to array
         markers.push({ 
             x: pos.x, 
             y: pos.y, 
@@ -500,60 +511,75 @@ document.getElementById('recenterBtn').addEventListener('click', function() {
     }
 });
 
-// Clean up the handleMarkerButtonClick function
-function handleMarkerButtonClick(buttonId, markerType) {
-    // Remove active class from all buttons
-    Object.keys(markerButtons).forEach(id => {
-        document.getElementById(id).classList.remove('active');
-    });
-    
-    // Remove active class from color buttons
-    document.querySelectorAll('.color-btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    
-    // Toggle marker placement mode
-    if (currentMarkerType === markerType && isPlacingMarker) {
-        isPlacingMarker = false;
-        currentMarkerType = null;
-        canvas.style.cursor = 'default';
-    } else {
-        isPlacingMarker = true;
-        currentMarkerType = markerType;
-        document.getElementById(buttonId).classList.add('active');
-        canvas.style.cursor = 'crosshair';
-    }
-    
-    // Exit drawing mode
-    isDrawing = false;
-}
+// Add event listeners for all marker buttons
+const markerButtons = {
+    'habMarkerBtn': 'HAB',
+    'heliMarkerBtn': 'heli',
+    'lavMarkerBtn': 'lav',
+    'logiMarkerBtn': 'logi',
+    'matvMarkerBtn': 'matv',
+    'tankMarkerBtn': 'tank'
+};
 
-// Update the addTextBtn click handler
-document.getElementById('addTextBtn').addEventListener('click', function() {
-    if (!currentImage) return; // Don't add text if no map is loaded
-    
-    const textInput = document.getElementById('textInput');
-    const text = textInput.value.trim();
-    
-    if (!text) return; // Don't proceed if text is empty
-    
-    // Remove active states from other tools
-    Object.keys(markerButtons).forEach(id => {
-        document.getElementById(id).classList.remove('active');
-    });
-    document.querySelectorAll('.color-btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    
-    // Set text placement mode
-    isPlacingText = true;
-    currentText = text;
-    canvas.style.cursor = 'text';
-    this.classList.add('active');
+// Remove any existing event listeners
+Object.entries(markerButtons).forEach(([buttonId, markerType]) => {
+    const button = document.getElementById(buttonId);
+    if (button) {
+        const newButton = button.cloneNode(true);
+        button.parentNode.replaceChild(newButton, button);
+        
+        newButton.addEventListener('click', function() {
+            // Remove active class from all buttons
+            Object.keys(markerButtons).forEach(id => {
+                document.getElementById(id).classList.remove('active');
+            });
+            
+            // Remove active class from color buttons
+            document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('active'));
+            
+            // Toggle marker placement mode
+            if (currentMarkerType === markerType) {
+                isPlacingMarker = false;
+                currentMarkerType = null;
+                canvas.style.cursor = 'default';
+                this.classList.remove('active');
+            } else {
+                isPlacingMarker = true;
+                currentMarkerType = markerType;
+                this.classList.add('active');
+                canvas.style.cursor = 'crosshair';
+            }
+            
+            // Exit drawing mode
+            isDrawing = false;
+        });
+    }
+
 });
 
-// Remove the style element that was added
-const styleElement = document.querySelector('style');
-if (styleElement && styleElement.textContent.includes('.draggable-text')) {
-    styleElement.remove();
-}
+document.getElementById('addTextBtn').addEventListener('click', function() {
+    const textInput = document.getElementById('annotationText');
+    currentText = textInput.value.trim();
+    
+    if (currentText) {
+        isPlacingText = true;
+        isPlacingMarker = false;
+        currentMarkerType = null;
+        canvas.style.cursor = 'text';
+        
+        // Remove active states from other tools
+        Object.keys(markerButtons).forEach(id => {
+            document.getElementById(id).classList.remove('active');
+        });
+        document.querySelectorAll('.color-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+    }
+});
+
+document.getElementById('deleteTextBtn').addEventListener('click', function() {
+    if (textAnnotations.length > 0) {
+        textAnnotations.pop();
+        redrawCanvas();
+    }
+});
