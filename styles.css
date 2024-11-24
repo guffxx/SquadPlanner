@@ -1029,7 +1029,7 @@ select:disabled {
     margin-top: 4px;
 }
 
-/* Hide delete buttons */
+/* Hide all delete buttons */
 #deleteLineBtn, 
 #deleteMarkerBtn,
 #deleteTextBtn,
@@ -1043,5 +1043,12 @@ select:disabled {
     grid-template-columns: repeat(3, 1fr);
     gap: 4px;
     padding: 4px;
+}
+
+/* Update text input container without delete button */
+.text-tools .text-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
