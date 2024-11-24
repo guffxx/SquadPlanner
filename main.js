@@ -28,6 +28,9 @@ let smoothingFactor = 0.2; // Adjust this value between 0 and 1 (higher = more s
 let smoothedPoints = [];
 let lastSmoothX = 0;
 let lastSmoothY = 0;
+let markerSize = 42;
+const markerSizeSlider = document.getElementById('markerSize');
+const markerSizeValue = document.querySelector('.marker-size-value');
 
 // Initialize canvas size
 canvas.width = 400;
@@ -621,17 +624,16 @@ function placeMarker(event, markerType) {
     
     marker.onload = function() {
         let markerWidth, markerHeight;
-        const baseSize = markerType.toLowerCase() === 'logi' ? 44 : 42;
         
         // Calculate dimensions maintaining aspect ratio
         const aspectRatio = marker.naturalWidth / marker.naturalHeight;
         
         if (aspectRatio > 1) {
-            markerWidth = baseSize;
-            markerHeight = baseSize / aspectRatio;
+            markerWidth = markerSize;
+            markerHeight = markerSize / aspectRatio;
         } else {
-            markerHeight = baseSize;
-            markerWidth = baseSize * aspectRatio;
+            markerHeight = markerSize;
+            markerWidth = markerSize * aspectRatio;
         }
         
         markers.push({ 
@@ -640,7 +642,7 @@ function placeMarker(event, markerType) {
             type: markerType, 
             width: markerWidth, 
             height: markerHeight,
-            tint: currentTint // Store the tint with the marker
+            tint: currentTint
         });
         
         redrawCanvas();
@@ -734,7 +736,8 @@ const markerButtons = {
     'ifvMarkerBtn': 'ifv',
     'rwsMarkerBtn': 'rws',
     'radioMarkerBtn': 'radio',         // Add radio marker
-    'repStationMarkerBtn': 'repStation'  // Add repair station marker
+    'repStationMarkerBtn': 'repStation',  // Add repair station marker
+    'rallyMarkerBtn': 'rally'  // Add rally marker
 };
 
 // Remove any existing event listeners
@@ -986,5 +989,10 @@ document.querySelectorAll('.tint-color-picker .tint-btn').forEach(btn => {
         this.classList.add('active');
         currentTint = this.dataset.tint;
     });
+});
+
+markerSizeSlider.addEventListener('input', function() {
+    markerSize = this.value;
+    markerSizeValue.textContent = `${markerSize}px`;
 });
 

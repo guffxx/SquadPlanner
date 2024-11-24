@@ -1427,3 +1427,59 @@ select:disabled {
     border: 2px solid var(--text-color);
 }
 
+/* Update marker button styles to ensure consistent sizing */
+.marker-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    padding: 4px;
+}
+
+.marker-grid .icon-btn {
+    width: 100%;
+    aspect-ratio: 1;
+    padding: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.marker-grid .icon-btn .marker-icon {
+    width: 85%;
+    height: 85%;
+    object-fit: contain;
+}
+
+/* Remove any specific HAB button overrides */
+#habMarkerBtn,
+#habMarkerBtn .marker-icon {
+    width: auto;
+    height: auto;
+}
+
+/* Add styles for the marker size control */
+.marker-size-control {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 4px 0 8px 0;
+    padding: 4px;
+    background: none;
+}
+
+.marker-size-control .width-slider {
+    flex: 1;
+    height: 4px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    outline: none;
+    min-width: 0;
+}
+
+.marker-size-value {
+    min-width: 35px;
+}
+
