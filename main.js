@@ -24,6 +24,10 @@ let isErasing = false;
 let eraserCursor = null;
 let currentTextColor = '#ffc409';
 let currentTint = 'white';
+let smoothingFactor = 0.2; // Adjust this value between 0 and 1 (higher = more smoothing)
+let smoothedPoints = [];
+let lastSmoothX = 0;
+let lastSmoothY = 0;
 
 // Initialize canvas size
 canvas.width = 400;
@@ -243,11 +247,14 @@ function startDrawing(e) {
         isDrawing = true;
         const pos = getMousePos(e);
         [lastX, lastY] = [pos.x, pos.y];
+        [lastSmoothX, lastSmoothY] = [pos.x, pos.y];
+        smoothedPoints = [];
         
         currentPath = [{
             x: lastX,
             y: lastY,
-            color: currentColor
+            color: currentColor,
+            width: lineWidth
         }];
     }
 }
@@ -262,41 +269,137 @@ widthSlider.addEventListener('input', function() {
     widthValue.textContent = `${lineWidth}px`;
 });
 
-// Update the draw function to use the lineWidth
+// Add this helper function to draw an arrow
+function drawArrow(ctx, fromx, fromy, tox, toy, headLength = 15) {
+    headLength = headLength * 1.33;
+
+    const angle = Math.atan2(toy - fromy, tox - fromx);
+    const headAngle = Math.PI / 6; // 30 degrees
+
+    // Draw the arrow head
+    ctx.beginPath();
+    ctx.moveTo(tox, toy);
+    ctx.lineTo(
+        tox - headLength * Math.cos(angle - headAngle),
+        toy - headLength * Math.sin(angle - headAngle)
+    );
+    ctx.moveTo(tox, toy);
+    ctx.lineTo(
+        tox - headLength * Math.cos(angle + headAngle),
+        toy - headLength * Math.sin(angle + headAngle)
+    );
+    ctx.strokeStyle = ctx.strokeStyle; // Match the line color
+    ctx.lineWidth = ctx.lineWidth;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.stroke();
+}
+
+// Update the draw function to only draw the line (no arrows while drawing)
 function draw(e) {
     if (!currentImage || !isDrawing || isErasing) return;
 
     const pos = getMousePos(e);
     
+    // Apply smoothing
+    if (smoothedPoints.length === 0) {
+        lastSmoothX = pos.x;
+        lastSmoothY = pos.y;
+    }
+    
+    // Calculate smoothed position
+    const smoothX = lastSmoothX + (pos.x - lastSmoothX) * smoothingFactor;
+    const smoothY = lastSmoothY + (pos.y - lastSmoothY) * smoothingFactor;
+    
     ctx.save();
     ctx.translate(offsetX, offsetY);
     ctx.scale(scale, scale);
     
-    ctx.beginPath();
-    ctx.moveTo(lastX, lastY);
-    ctx.lineTo(pos.x, pos.y);
-    ctx.strokeStyle = currentColor;
-    ctx.lineWidth = lineWidth; // Use the variable line width
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    ctx.stroke();
+    // Clear previous drawing
+    ctx.clearRect(-offsetX/scale, -offsetY/scale, canvas.width/scale, canvas.height/scale);
+    
+    // Redraw the base image and history
+    ctx.drawImage(currentImage, 0, 0);
+    
+    // Draw all completed paths with their arrows
+    drawingHistory.forEach(path => {
+        if (path.length < 2) return;
+        
+        ctx.beginPath();
+        ctx.moveTo(path[0].x, path[0].y);
+        ctx.strokeStyle = path[0].color;
+        ctx.lineWidth = path[0].width;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        
+        for (let i = 1; i < path.length; i++) {
+            ctx.lineTo(path[i].x, path[i].y);
+        }
+        ctx.stroke();
+        
+        // Draw arrow for completed paths
+        if (path.length >= 2) {
+            const lastPoint = path[path.length - 1];
+            const secondLastPoint = path[path.length - 2];
+            drawArrow(
+                ctx,
+                secondLastPoint.x,
+                secondLastPoint.y,
+                lastPoint.x,
+                lastPoint.y,
+                path[0].width * 3
+            );
+        }
+    });
+    
+    // Draw current path
+    if (currentPath.length > 1) {
+        ctx.beginPath();
+        ctx.moveTo(currentPath[0].x, currentPath[0].y);
+        ctx.strokeStyle = currentColor;
+        ctx.lineWidth = lineWidth;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        
+        for (let i = 1; i < currentPath.length; i++) {
+            ctx.lineTo(currentPath[i].x, currentPath[i].y);
+        }
+        ctx.stroke();
+        
+        // Draw arrow for current path
+        const lastPoint = currentPath[currentPath.length - 1];
+        const secondLastPoint = currentPath[currentPath.length - 2];
+        drawArrow(
+            ctx,
+            secondLastPoint.x,
+            secondLastPoint.y,
+            lastPoint.x,
+            lastPoint.y,
+            lineWidth * 3
+        );
+    }
     
     ctx.restore();
 
     currentPath.push({
-        x: pos.x,
-        y: pos.y,
+        x: smoothX,
+        y: smoothY,
         color: currentColor,
-        width: lineWidth // Store the line width with the path
+        width: lineWidth
     });
 
-    [lastX, lastY] = [pos.x, pos.y];
+    // Update last positions
+    lastSmoothX = smoothX;
+    lastSmoothY = smoothY;
+    smoothedPoints.push({ x: smoothX, y: smoothY });
 }
 
+// Update stopDrawing to reset smoothing points
 function stopDrawing() {
     if (isDrawing && currentPath.length > 0) {
         drawingHistory.push([...currentPath]);
         currentPath = [];
+        smoothedPoints = [];
     }
     isDrawing = false;
 }
@@ -309,6 +412,20 @@ function getMousePos(e) {
     return {
         x: ((e.clientX - rect.left) * scaleX - offsetX) / scale,
         y: ((e.clientY - rect.top) * scaleY - offsetY) / scale
+    };
+        // Draw the arrow head as a filled triangle
+    ctx.beginPath();
+    ctx.moveTo(tox, toy); // Tip of the arrow
+        
+        // Calculate points for a wider, more substantial arrow head
+    const point1 = {
+        x: tox - headLength * Math.cos(angle - headAngle),
+        y: toy - headLength * Math.sin(angle - headAngle)
+    };
+        
+    const point2 = {
+        x: tox - headLength * Math.cos(angle + headAngle),
+        y: toy - headLength * Math.sin(angle + headAngle)
     };
 }
 
@@ -344,14 +461,15 @@ function redrawCanvas() {
     // Draw base image
     ctx.drawImage(currentImage, 0, 0);
     
-    // Draw all paths
+    // Draw all completed paths
     drawingHistory.forEach(path => {
         if (path.length < 2) return;
         
+        // Draw the line
         ctx.beginPath();
         ctx.moveTo(path[0].x, path[0].y);
         ctx.strokeStyle = path[0].color;
-        ctx.lineWidth = path[0].width || 5; // Use stored width or default to 5
+        ctx.lineWidth = path[0].width || 5;
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
         
@@ -359,14 +477,28 @@ function redrawCanvas() {
             ctx.lineTo(path[i].x, path[i].y);
         }
         ctx.stroke();
+        
+        // Add single arrow at the end of the path
+        if (path.length >= 2) {
+            const lastPoint = path[path.length - 1];
+            const secondLastPoint = path[path.length - 2];
+            drawArrow(
+                ctx,
+                secondLastPoint.x,
+                secondLastPoint.y,
+                lastPoint.x,
+                lastPoint.y,
+                path[0].width * 3
+            );
+        }
     });
     
-    // Draw current path if exists
-    if (currentPath.length > 0) {
+    // Draw current path if it exists
+    if (currentPath.length > 1) {
         ctx.beginPath();
         ctx.moveTo(currentPath[0].x, currentPath[0].y);
         ctx.strokeStyle = currentPath[0].color;
-        ctx.lineWidth = currentPath[0].width || 5; // Use stored width or default to 5
+        ctx.lineWidth = currentPath[0].width || 5;
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
         
@@ -374,6 +506,18 @@ function redrawCanvas() {
             ctx.lineTo(currentPath[i].x, currentPath[i].y);
         }
         ctx.stroke();
+        
+        // Add arrow at the end of current path
+        const lastPoint = currentPath[currentPath.length - 1];
+        const secondLastPoint = currentPath[currentPath.length - 2];
+        drawArrow(
+            ctx,
+            secondLastPoint.x,
+            secondLastPoint.y,
+            lastPoint.x,
+            lastPoint.y,
+            currentPath[0].width * 3
+        );
     }
     
     // Draw all markers

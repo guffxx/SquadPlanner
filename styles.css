@@ -34,15 +34,16 @@ body {
     justify-content: space-between;
     width: 100%;
     padding-top: 60px;
-    padding-left: 250px;
+    padding-left: 280px;
+    padding-right: 0;
 }
 
 /* Sidebar */
 .sidebar {
     background-color: var(--dark-bg);
-    width: 250px;
-    min-width: 250px;
-    max-width: 300px;
+    width: 280px;
+    min-width: 280px;
+    max-width: 330px;
     padding: 20px;
     border-right: 1px solid var(--accent);
     display: flex;
@@ -239,8 +240,9 @@ select:disabled {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 45px;
-    height: 45px;
+    width: 100%;
+    aspect-ratio: 1;
+    min-width: 0;
     background-color: var(--darker-bg);
     border: none;
     border-radius: 4px;
@@ -260,8 +262,8 @@ select:disabled {
 }
 
 .marker-icon {
-    width: 40px !important;
-    height: 40px !important;
+    width: 90% !important;
+    height: 90% !important;
     object-fit: contain;
     padding: 0;
 }
@@ -279,7 +281,7 @@ select:disabled {
     align-items: center;
     position: relative;
     background-color: rgba(43, 43, 43, 0.25);
-    margin: 0 20px;
+    margin: 0 20px 0 0;
     order: 2;
     margin-top: 10px;
 }
@@ -394,13 +396,18 @@ select:disabled {
 
 .marker-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 4px;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 3px;
     padding: 4px;
+    width: 100%;
+    justify-content: center;
 }
 
 .marker-grid .delete-btn {
-    justify-self: start;
+    grid-column: span 4;
+    width: 100% !important;
+    height: 28px;
+    margin-top: 2px;
 }
 
 .canvas-wrapper {
@@ -634,9 +641,9 @@ select:disabled {
 
 .sidebar {
     background-color: var(--dark-bg);
-    width: 250px;
-    min-width: 250px;
-    max-width: 300px;
+    width: 280px;
+    min-width: 280px;
+    max-width: 330px;
     padding: 20px;
     border-right: 1px solid var(--accent);
     display: flex;
@@ -1164,15 +1171,18 @@ select:disabled {
     padding: 10px 20px;
     z-index: 100;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    height: 60px;
 }
 
 .nav-content {
     max-width: 1400px;
     margin: 0 auto;
-    margin-left: 270px;
+    margin-left: 300px;
+    margin-right: 20px;
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    height: 40px;
 }
 
 .nav-left {
@@ -1221,9 +1231,10 @@ select:disabled {
     gap: 8px;
     text-decoration: none;
     color: var(--text-color);
-    padding: 8px;
+    padding: 6px 12px;
     border-radius: 4px;
     background: rgba(255, 255, 255, 0.05);
+    font-size: 14px;
 }
 
 .social-link span {
@@ -1254,11 +1265,12 @@ select:disabled {
     color: var(--accent);
     font-style: italic;
     font-size: 14px;
+    margin-top: 8px;
 }
 
 /* Update container padding to account for top nav */
 .container {
-    padding-top: 60px;
+    padding-top: 50px;
 }
 
 /* Update canvas container position */
