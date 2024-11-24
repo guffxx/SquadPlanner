@@ -20,6 +20,10 @@ let dragStartY = 0;
 let textAnnotations = [];
 let isPlacingText = false;
 let currentText = '';
+let activeTextBubble = null;
+let isDraggingText = false;
+let textDragStartX = 0;
+let textDragStartY = 0;
 
 // Initialize canvas size
 canvas.width = 400;
@@ -169,41 +173,18 @@ canvas.addEventListener('mouseout', function() {
 function startDrawing(e) {
     if (!currentImage || e.button === 2) return;
     
-    if (isPlacingText) {
+    if (isPlacingText && currentText) {
         const pos = getMousePos(e);
         
-        // Check if clicking near existing text to replace it
-        const clickRadius = 20; // Detection radius in pixels
-        const clickX = pos.x;
-        const clickY = pos.y;
-        
-        // Find if we clicked near any existing text
-        const existingTextIndex = textAnnotations.findIndex(annotation => {
-            const dx = annotation.x - clickX;
-            const dy = annotation.y - clickY;
-            return Math.sqrt(dx * dx + dy * dy) < clickRadius;
-        });
-        
-        if (existingTextIndex !== -1) {
-            // Replace existing text
-            textAnnotations[existingTextIndex].text = currentText;
-        } else {
-            // Add new text
-            textAnnotations.push({
-                x: pos.x,
-                y: pos.y,
-                text: currentText
-            });
-        }
+        // Create draggable text input at click position
+        createDraggableTextInput(pos.x, pos.y, currentText);
         
         // Reset text placement mode
         isPlacingText = false;
         currentText = '';
-        document.getElementById('annotationText').value = '';
         canvas.style.cursor = 'default';
-        
-        redrawCanvas();
-    } else if (isPlacingMarker) {
+        document.getElementById('addTextBtn').classList.remove('active');
+    } else if (isPlacingMarker && currentMarkerType) {
         placeMarker(e, currentMarkerType);
     } else {
         isDrawing = true;
@@ -267,21 +248,22 @@ function getMousePos(e) {
 }
 
 // HAB marker functionality
-document.getElementById('habMarkerBtn').addEventListener('click', function() {
-    isPlacingMarker = !isPlacingMarker;
-    this.classList.toggle('active');
-    if (isPlacingMarker) {
-        canvas.style.cursor = 'crosshair';
-    } else {
-        canvas.style.cursor = 'default';
-    }
-});
+const markerButtons = {
+    'habMarkerBtn': 'HAB',
+    'heliMarkerBtn': 'heli',
+    'lavMarkerBtn': 'lav',
+    'logiMarkerBtn': 'logi',
+    'matvMarkerBtn': 'matv',
+    'tankMarkerBtn': 'tank'
+};
 
-// Delete marker functionality
-document.getElementById('deleteMarkerBtn').addEventListener('click', function() {
-    if (markers.length > 0) {
-        markers.pop(); // Remove the last HAB marker
-        redrawCanvas();
+
+// Update the marker button event listeners - remove the cloning which was causing issues
+Object.entries(markerButtons).forEach(([buttonId, markerType]) => {
+    const button = document.getElementById(buttonId);
+    if (button) {
+        // Remove the cloning
+        button.addEventListener('click', () => handleMarkerButtonClick(buttonId, markerType));
     }
 });
 
@@ -414,12 +396,14 @@ function placeMarker(event, markerType) {
     
     const pos = getMousePos(event);
     
+    // Create marker image
     const marker = new Image();
     marker.src = `assets/icons/${markerType.toLowerCase()}.png`;
     
     marker.onload = function() {
         let markerWidth, markerHeight;
-        const baseSize = markerType.toLowerCase() === 'lav' ? 50 : 46;
+        // Adjust base sizes
+        const baseSize = markerType.toLowerCase() === 'lav' ? 40 : 36;
         
         // Calculate dimensions maintaining aspect ratio
         const aspectRatio = marker.naturalWidth / marker.naturalHeight;
@@ -432,6 +416,7 @@ function placeMarker(event, markerType) {
             markerWidth = baseSize * aspectRatio;
         }
         
+        // Add marker to array
         markers.push({ 
             x: pos.x, 
             y: pos.y, 
@@ -511,76 +496,133 @@ document.getElementById('recenterBtn').addEventListener('click', function() {
     }
 });
 
-// Add event listeners for all marker buttons
-const markerButtons = {
-    'habMarkerBtn': 'HAB',
-    'heliMarkerBtn': 'heli',
-    'lavMarkerBtn': 'lav',
-    'logiMarkerBtn': 'logi',
-    'matvMarkerBtn': 'matv',
-    'tankMarkerBtn': 'tank'
-};
-
-// Remove any existing event listeners
-Object.entries(markerButtons).forEach(([buttonId, markerType]) => {
-    const button = document.getElementById(buttonId);
-    if (button) {
-        const newButton = button.cloneNode(true);
-        button.parentNode.replaceChild(newButton, button);
-        
-        newButton.addEventListener('click', function() {
-            // Remove active class from all buttons
-            Object.keys(markerButtons).forEach(id => {
-                document.getElementById(id).classList.remove('active');
-            });
-            
-            // Remove active class from color buttons
-            document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('active'));
-            
-            // Toggle marker placement mode
-            if (currentMarkerType === markerType) {
-                isPlacingMarker = false;
-                currentMarkerType = null;
-                canvas.style.cursor = 'default';
-                this.classList.remove('active');
-            } else {
-                isPlacingMarker = true;
-                currentMarkerType = markerType;
-                this.classList.add('active');
-                canvas.style.cursor = 'crosshair';
-            }
-            
-            // Exit drawing mode
-            isDrawing = false;
-        });
-    }
-
-});
-
-document.getElementById('addTextBtn').addEventListener('click', function() {
-    const textInput = document.getElementById('annotationText');
-    currentText = textInput.value.trim();
+// Clean up the handleMarkerButtonClick function
+function handleMarkerButtonClick(buttonId, markerType) {
+    // Remove active class from all buttons
+    Object.keys(markerButtons).forEach(id => {
+        document.getElementById(id).classList.remove('active');
+    });
     
-    if (currentText) {
-        isPlacingText = true;
+    // Remove active class from color buttons
+    document.querySelectorAll('.color-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // Toggle marker placement mode
+    if (currentMarkerType === markerType && isPlacingMarker) {
         isPlacingMarker = false;
         currentMarkerType = null;
-        canvas.style.cursor = 'text';
-        
-        // Remove active states from other tools
-        Object.keys(markerButtons).forEach(id => {
-            document.getElementById(id).classList.remove('active');
-        });
-        document.querySelectorAll('.color-btn').forEach(btn => {
-            btn.classList.remove('active');
-        });
+        canvas.style.cursor = 'default';
+    } else {
+        isPlacingMarker = true;
+        currentMarkerType = markerType;
+        document.getElementById(buttonId).classList.add('active');
+        canvas.style.cursor = 'crosshair';
     }
+    
+    // Exit drawing mode
+    isDrawing = false;
+}
+
+// Update the addTextBtn click handler
+document.getElementById('addTextBtn').addEventListener('click', function() {
+    // Remove active states from other tools
+    Object.keys(markerButtons).forEach(id => {
+        document.getElementById(id).classList.remove('active');
+    });
+    document.querySelectorAll('.color-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // Create a popup for text input
+    const textInput = prompt('Enter text to place:', '');
+    if (textInput === null || textInput.trim() === '') return; // User cancelled or empty input
+    
+    // Set text placement mode
+    isPlacingText = true;
+    currentText = textInput;
+    canvas.style.cursor = 'crosshair';
+    this.classList.add('active');
 });
 
-document.getElementById('deleteTextBtn').addEventListener('click', function() {
-    if (textAnnotations.length > 0) {
-        textAnnotations.pop();
-        redrawCanvas();
-    }
-});
-
+// Add new function to create draggable text input
+function createDraggableTextInput(x, y, initialText) {
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'map-text-input';
+    input.value = initialText;
+    
+    const rect = canvas.getBoundingClientRect();
+    const screenX = (x * scale + offsetX) * (rect.width / canvas.width);
+    const screenY = (y * scale + offsetY) * (rect.height / canvas.height);
+    
+    input.style.position = 'absolute';
+    input.style.left = `${rect.left + screenX}px`;
+    input.style.top = `${rect.top + screenY}px`;
+    input.style.transform = 'translate(-50%, -50%)';
+    
+    let isDragging = false;
+    let dragStartX = 0;
+    let dragStartY = 0;
+    
+    input.addEventListener('mousedown', function(e) {
+        if (e.button === 0) { // Left click
+            isDragging = true;
+            dragStartX = e.clientX - input.offsetLeft;
+            dragStartY = e.clientY - input.offsetTop;
+            input.style.cursor = 'grabbing';
+        }
+    });
+    
+    document.addEventListener('mousemove', function(e) {
+        if (isDragging) {
+            const newX = e.clientX - dragStartX;
+            const newY = e.clientY - dragStartY;
+            input.style.left = `${newX}px`;
+            input.style.top = `${newY}px`;
+        }
+    });
+    
+    document.addEventListener('mouseup', function() {
+        if (isDragging) {
+            isDragging = false;
+            input.style.cursor = 'move';
+            
+            // Convert screen position back to canvas coordinates
+            const rect = canvas.getBoundingClientRect();
+            const canvasX = ((input.offsetLeft + input.offsetWidth/2 - rect.left) * (canvas.width / rect.width) - offsetX) / scale;
+            const canvasY = ((input.offsetTop + input.offsetHeight/2 - rect.top) * (canvas.height / rect.height) - offsetY) / scale;
+            
+            // Add to text annotations
+            textAnnotations.push({
+                x: canvasX,
+                y: canvasY,
+                text: input.value
+            });
+            
+            // Remove the input element
+            input.remove();
+            redrawCanvas();
+        }
+    });
+    
+    input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            const rect = canvas.getBoundingClientRect();
+            const canvasX = ((input.offsetLeft + input.offsetWidth/2 - rect.left) * (canvas.width / rect.width) - offsetX) / scale;
+            const canvasY = ((input.offsetTop + input.offsetHeight/2 - rect.top) * (canvas.height / rect.height) - offsetY) / scale;
+            
+            textAnnotations.push({
+                x: canvasX,
+                y: canvasY,
+                text: input.value
+            });
+            
+            input.remove();
+            redrawCanvas();
+        }
+    });
+    
+    document.body.appendChild(input);
+    input.focus();
+}

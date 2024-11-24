@@ -678,52 +678,35 @@ select:disabled {
 }
 
 .text-input-container {
-    display: grid;
-    grid-template-columns: 1fr auto auto;
-    gap: 8px;
+    display: flex;
     align-items: center;
+    justify-content: flex-start;
+    width: 100%;
 }
 
-.text-input {
+/* Style the Add Text button to match other tool buttons */
+#addTextBtn {
     width: 100%;
-    padding: 8px;
+    padding: 8px 12px;
     background-color: var(--darker-bg);
     color: var(--text-color);
-    border: 1px solid var(--accent);
+    border: none;
     border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
 }
 
-.text-btn {
+#addTextBtn:hover {
     background-color: var(--accent);
     color: var(--darker-bg);
-    border: none;
-    border-radius: 4px;
-    padding: 8px 12px;
-    white-space: nowrap;
-    height: 32px;
-    min-width: 85px;
 }
 
-.text-tools .delete-btn {
-    background-color: #ff4444;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 8px 12px;
-    white-space: nowrap;
-    height: 32px;
-    min-width: 85px;
+#addTextBtn.active {
+    background-color: var(--accent);
+    color: var(--darker-bg);
 }
 
-.text-btn:hover {
-    background-color: #ffd649;
-}
-
-.text-tools .delete-btn:hover {
-    background-color: #ff2222;
-}
-
-/* Style for text annotations on the map */
 .map-text {
     font-family: Arial, sans-serif;
     font-size: 16px;
@@ -741,21 +724,15 @@ select:disabled {
 
 /* Style the Add Text button like other action buttons */
 .text-btn {
-    width: auto !important;
-    min-width: 85px;
-    height: 32px;
-    padding: 4px 12px;
-    margin-top: 4px;
+    width: 100%;
+    padding: 8px 12px;
     background-color: var(--accent);
     color: var(--darker-bg);
     border: none;
     border-radius: 4px;
-    font-size: 15px;
-    font-weight: 500;
-    text-align: left;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
 /* Make delete text button match other delete buttons */
@@ -792,5 +769,25 @@ select:disabled {
     grid-template-columns: 1fr auto auto;
     gap: 4px;
     align-items: center;
+}
+
+.map-text-input {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    padding: 8px;
+    font-size: 16px;
+    min-width: 100px;
+    text-align: center;
+    cursor: move;
+    z-index: 1000;
+}
+
+.map-text-input:focus {
+    outline: none;
+    border-color: white;
+    background: rgba(0, 0, 0, 0.9);
 }
 
