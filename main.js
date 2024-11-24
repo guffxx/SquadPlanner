@@ -321,7 +321,7 @@ function draw(e) {
     // Clear previous drawing
     ctx.clearRect(-offsetX/scale, -offsetY/scale, canvas.width/scale, canvas.height/scale);
     
-    // Redraw the base image
+    // Draw base image
     ctx.drawImage(currentImage, 0, 0);
     
     // Draw all markers first
@@ -358,6 +358,13 @@ function draw(e) {
     drawingHistory.forEach(path => {
         if (path.length < 2) return;
         
+        // Set shadow properties
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
+        ctx.shadowBlur = 5;
+        ctx.shadowOffsetX = 2;
+        ctx.shadowOffsetY = 2;
+        
+        // Draw the line
         ctx.beginPath();
         ctx.moveTo(path[0].x, path[0].y);
         ctx.strokeStyle = path[0].color;
@@ -370,7 +377,7 @@ function draw(e) {
         }
         ctx.stroke();
         
-        // Draw arrow for completed paths
+        // Draw arrow with same shadow settings
         if (path.length >= 2) {
             const lastPoint = path[path.length - 1];
             const secondLastPoint = path[path.length - 2];
@@ -385,8 +392,14 @@ function draw(e) {
         }
     });
     
-    // Draw current path
+    // Draw current path with shadow
     if (currentPath.length > 1) {
+        // Set shadow properties
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
+        ctx.shadowBlur = 5;
+        ctx.shadowOffsetX = 2;
+        ctx.shadowOffsetY = 2;
+        
         ctx.beginPath();
         ctx.moveTo(currentPath[0].x, currentPath[0].y);
         ctx.strokeStyle = currentColor;
@@ -399,7 +412,7 @@ function draw(e) {
         }
         ctx.stroke();
         
-        // Draw arrow for current path
+        // Draw arrow with same shadow settings
         const lastPoint = currentPath[currentPath.length - 1];
         const secondLastPoint = currentPath[currentPath.length - 2];
         drawArrow(
@@ -412,19 +425,11 @@ function draw(e) {
         );
     }
     
-    // Draw text annotations last
-    textAnnotations.forEach(annotation => {
-        ctx.save();
-        ctx.font = 'bold 32px Arial';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.strokeStyle = 'black';
-        ctx.lineWidth = 4;
-        ctx.strokeText(annotation.text, annotation.x, annotation.y);
-        ctx.fillStyle = annotation.color;
-        ctx.fillText(annotation.text, annotation.x, annotation.y);
-        ctx.restore();
-    });
+    // Reset shadow before drawing other elements
+    ctx.shadowColor = 'transparent';
+    ctx.shadowBlur = 0;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 0;
     
     ctx.restore();
 
@@ -1023,6 +1028,22 @@ function applyTint(image, tint) {
     
     return canvas;
 }
+
+// Add this event listener setup after other initialization code
+document.querySelectorAll('.tint-color-picker .tint-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        // Remove active class from all tint buttons
+        document.querySelectorAll('.tint-btn').forEach(b => b.classList.remove('active'));
+        // Add active class to clicked button
+        this.classList.add('active');
+        currentTint = this.dataset.tint;
+    });
+});
+
+markerSizeSlider.addEventListener('input', function() {
+    markerSize = this.value;
+    markerSizeValue.textContent = `${markerSize}px`;
+});
 
 // Add this event listener setup after other initialization code
 document.querySelectorAll('.tint-color-picker .tint-btn').forEach(btn => {
