@@ -248,7 +248,6 @@ select:disabled {
 
 .icon-btn:hover {
     opacity: 1;
-    background-color: var(--dark-bg);
 }
 
 .marker-icon {
@@ -326,51 +325,6 @@ select:disabled {
     margin-bottom: 10px;
 }
 
-/* Reset and standardize delete button styles */
-#deleteLineBtn, .delete-btn {
-    width: auto !important;
-    min-width: 85px;
-    height: 32px;
-    padding: 4px 12px;
-    margin-top: 4px;
-    background-color: #ff4444;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 15px;
-    font-weight: 500;
-    text-align: left;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    grid-column: auto;
-    white-space: nowrap;
-}
-
-/* Remove any conflicting styles */
-.compact-btn#deleteLineBtn {
-    width: auto !important;
-    margin-left: 0;
-    font-size: 15px;
-    font-weight: 500;
-    height: 32px;
-    padding: 4px 12px;
-}
-
-.icon-btn.delete-btn {
-    width: auto !important;
-    margin-left: 4px;
-    font-size: 15px;
-    font-weight: 500;
-    height: 32px;
-    padding: 4px 12px;
-}
-
-/* Hover states */
-#deleteLineBtn:hover, .delete-btn:hover {
-    background-color: #ff2222;
-}
-
 /* Update containers to handle fixed-width buttons */
 .line-tools-container {
     display: flex;
@@ -385,7 +339,7 @@ select:disabled {
     padding: 4px;
 }
 
-.marker-grid .delete-btn {
+.marker-grid {
     justify-self: start;
 }
 
