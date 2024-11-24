@@ -564,14 +564,17 @@ document.getElementById('recenterBtn').addEventListener('click', function() {
     }
 });
 
-// Add event listeners for all marker buttons
+// Update the markerButtons object to include new markers
 const markerButtons = {
     'habMarkerBtn': 'HAB',
     'heliMarkerBtn': 'heli',
     'lavMarkerBtn': 'lav',
     'logiMarkerBtn': 'logi',
     'matvMarkerBtn': 'matv',
-    'tankMarkerBtn': 'tank'
+    'tankMarkerBtn': 'tank',
+    'apcMarkerBtn': 'apc',    // Add new APC marker
+    'ifvMarkerBtn': 'ifv',    // Add new IFV marker
+    'rwsMarkerBtn': 'rws'     // Add new RWS marker
 };
 
 // Remove any existing event listeners
