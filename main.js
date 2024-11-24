@@ -298,7 +298,7 @@ function drawArrow(ctx, fromx, fromy, tox, toy, headLength = 15) {
     ctx.stroke();
 }
 
-// Update the draw function to only draw the line (no arrows while drawing)
+// Update the draw function to ensure markers stay visible
 function draw(e) {
     if (!currentImage || !isDrawing || isErasing) return;
 
@@ -321,10 +321,40 @@ function draw(e) {
     // Clear previous drawing
     ctx.clearRect(-offsetX/scale, -offsetY/scale, canvas.width/scale, canvas.height/scale);
     
-    // Redraw the base image and history
+    // Redraw the base image
     ctx.drawImage(currentImage, 0, 0);
     
-    // Draw all completed paths with their arrows
+    // Draw all markers first
+    markers.forEach(marker => {
+        const markerImage = new Image();
+        markerImage.src = `assets/icons/${marker.type.toLowerCase()}.png`;
+        
+        markerImage.onload = function() {
+            const scaledWidth = marker.width / scale;
+            const scaledHeight = marker.height / scale;
+            
+            if (marker.tint !== 'white') {
+                const tintedCanvas = applyTint(markerImage, marker.tint);
+                ctx.drawImage(
+                    tintedCanvas,
+                    marker.x - scaledWidth / 2,
+                    marker.y - scaledHeight / 2,
+                    scaledWidth,
+                    scaledHeight
+                );
+            } else {
+                ctx.drawImage(
+                    markerImage,
+                    marker.x - scaledWidth / 2,
+                    marker.y - scaledHeight / 2,
+                    scaledWidth,
+                    scaledHeight
+                );
+            }
+        };
+    });
+    
+    // Draw all completed paths
     drawingHistory.forEach(path => {
         if (path.length < 2) return;
         
@@ -381,6 +411,20 @@ function draw(e) {
             lineWidth * 3
         );
     }
+    
+    // Draw text annotations last
+    textAnnotations.forEach(annotation => {
+        ctx.save();
+        ctx.font = 'bold 32px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 4;
+        ctx.strokeText(annotation.text, annotation.x, annotation.y);
+        ctx.fillStyle = annotation.color;
+        ctx.fillText(annotation.text, annotation.x, annotation.y);
+        ctx.restore();
+    });
     
     ctx.restore();
 
