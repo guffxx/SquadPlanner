@@ -464,7 +464,7 @@ function placeMarker(event, markerType) {
     
     marker.onload = function() {
         let markerWidth, markerHeight;
-        const baseSize = markerType.toLowerCase() === 'logi' ? 40 : 36;
+        const baseSize = markerType.toLowerCase() === 'logi' ? 44 : 42;
         
         // Calculate dimensions maintaining aspect ratio
         const aspectRatio = marker.naturalWidth / marker.naturalHeight;
