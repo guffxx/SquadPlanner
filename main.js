@@ -251,6 +251,17 @@ function startDrawing(e) {
     }
 }
 
+// Add line width control
+let lineWidth = 5;
+const widthSlider = document.getElementById('lineWidth');
+const widthValue = document.querySelector('.width-value');
+
+widthSlider.addEventListener('input', function() {
+    lineWidth = this.value;
+    widthValue.textContent = `${lineWidth}px`;
+});
+
+// Update the draw function to use the lineWidth
 function draw(e) {
     if (!currentImage || !isDrawing || isErasing) return;
 
@@ -264,7 +275,7 @@ function draw(e) {
     ctx.moveTo(lastX, lastY);
     ctx.lineTo(pos.x, pos.y);
     ctx.strokeStyle = currentColor;
-    ctx.lineWidth = 5;
+    ctx.lineWidth = lineWidth; // Use the variable line width
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
     ctx.stroke();
@@ -274,7 +285,8 @@ function draw(e) {
     currentPath.push({
         x: pos.x,
         y: pos.y,
-        color: currentColor
+        color: currentColor,
+        width: lineWidth // Store the line width with the path
     });
 
     [lastX, lastY] = [pos.x, pos.y];
@@ -338,7 +350,7 @@ function redrawCanvas() {
         ctx.beginPath();
         ctx.moveTo(path[0].x, path[0].y);
         ctx.strokeStyle = path[0].color;
-        ctx.lineWidth = 5;
+        ctx.lineWidth = path[0].width || 5; // Use stored width or default to 5
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
         
@@ -353,7 +365,7 @@ function redrawCanvas() {
         ctx.beginPath();
         ctx.moveTo(currentPath[0].x, currentPath[0].y);
         ctx.strokeStyle = currentPath[0].color;
-        ctx.lineWidth = 5;
+        ctx.lineWidth = currentPath[0].width || 5; // Use stored width or default to 5
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
         

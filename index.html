@@ -86,6 +86,10 @@
                             <input type="radio" name="color" id="whiteColor" value="white" hidden>
                             <label for="whiteColor" class="color-btn white" data-color="white"></label>
                         </div>
+                        <div class="line-width-control">
+                            <input type="range" id="lineWidth" min="1" max="8" value="5" class="width-slider">
+                            <span class="width-value">5px</span>
+                        </div>
                         <p class="tool-tip">Left cleck to draw on the map with the selected color</p>
                     </div>
                     <button id="deleteLineBtn" class="compact-btn">Delete Last</button>
@@ -145,7 +149,7 @@
                 <h3>Eraser Tool:</h3>
                 <button id="eraserBtn" class="eraser-btn">Eraser</button>
                 <button id="clearAll" class="eraser-btn">CLEAR MAP</button>
-                <p class="tool-tip">Click and drag to erase markers, lines, and text</p>
+                <p class="tool-tip">Click and drag to erase markers, lines, and text, or clear the map</p>
             </section>
 
             <div class="button-container">
@@ -153,32 +157,26 @@
                 <button id="downloadNow">DOWNLOAD MAP</button>
             </div>
         </aside>
-        <aside class="right-sidebar">
-
-            <div class="right-content">
-                <section class="tool-tip-section">
-                    <p class="tool-tip2">Still a WIP</p>
-                    <p class="tool-tip2">Created for the community to plan Squad matches. I hope it helps you win your next game! glhf.</p>
-                    <p class="signature">- *RCN* guFF</p>
-                </section>
-
-                <div class="social-links">
-                    <section class="bluesky-section">
-                        <a href="https://bsky.app/profile/iamguff.bsky.social" target="_blank" class="bluesky-link">
-                            <img src="assets/icons/Bluesky_Logo.png" alt="Bluesky" class="bluesky-icon">
+        <nav class="top-nav">
+            <div class="nav-content">
+                <div class="nav-right">
+                    <div class="social-links">
+                        <a href="https://bsky.app/profile/iamguff.bsky.social" target="_blank" class="social-link">
+                            <img src="assets/icons/Bluesky_Logo.png" alt="Bluesky" class="social-icon">
                             <span>Follow on Bluesky</span>
                         </a>
-                    </section>
-
-                    <section class="github-section">
-                        <a href="https://codeofguff.github.io" target="_blank" class="github-link">
-                            <img src="assets/icons/github.png" alt="GitHub" class="github-icon">
+                        <a href="https://codeofguff.github.io" target="_blank" class="social-link">
+                            <img src="assets/icons/github.png" alt="GitHub" class="social-icon">
                             <span>Visit My GitHub</span>
                         </a>
-                    </section>
+                    </div>
+                    <div class="creator-info">
+                        <p class="tool-tip2">Created for the community to plan Squad matches. I hope it helps you win your next game! glhf.</p>
+                        <span class="signature">- *RCN* guFF</span>
+                    </div>
                 </div>
             </div>
-        </aside>
+        </nav>
         
         <main class="canvas-container">
             <canvas id="mapCanvas"></canvas>

@@ -33,6 +33,8 @@ body {
     min-height: 600px;
     justify-content: space-between;
     width: 100%;
+    padding-top: 60px;
+    padding-left: 250px;
 }
 
 /* Sidebar */
@@ -46,9 +48,12 @@ body {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
-    height: 100%;
+    height: 100vh;
     flex-shrink: 0;
-    order: 1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
 }
 
 .sidebar section {
@@ -276,6 +281,7 @@ select:disabled {
     background-color: rgba(43, 43, 43, 0.25);
     margin: 0 20px;
     order: 2;
+    margin-top: 10px;
 }
 
 #mapCanvas {
@@ -326,7 +332,7 @@ select:disabled {
 }
 
 .button-container {
-    gap: 5px;
+    gap: 8px;
     margin-top: auto;
     margin-bottom: 10px;
     display: flex;
@@ -636,8 +642,12 @@ select:disabled {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
-    height: 100%;
+    height: 100vh;
     flex-shrink: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
 }
 
 /* Add responsive adjustments for very small screens */
@@ -1143,81 +1153,118 @@ select:disabled {
     gap: 8px;
 }
 
-/* Add these styles for the right sidebar */
-.right-sidebar {
-    background-color: var(--dark-bg);
-    width: 250px;
-    min-width: 250px;
-    max-width: 300px;
-    padding: 20px;
-    border-left: 1px solid var(--accent);
+/* Remove old right-sidebar styles and add new top-nav styles */
+.top-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to right, var(--dark-bg), var(--darker-bg));
+    border-bottom: 1px solid var(--accent);
+    padding: 10px 20px;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.nav-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    margin-left: 270px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.nav-left {
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
-    height: 100%;
-    flex-shrink: 0;
-    order: 3;
 }
 
-.right-content {
-    display: flex;
-    flex-direction: column;
-    height: 100%; /* Ensure full height */
+.nav-text {
+    color: var(--accent);
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0;
 }
 
-/* Update social links positioning and styling */
-.social-links {
-    margin-top: auto; /* Push to bottom */
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+.nav-subtext {
+    color: var(--text-color);
+    font-size: 12px;
+    opacity: 0.7;
+    margin: 2px 0 0 0;
 }
 
-.bluesky-section,
-.github-section {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    border-radius: 8px;
-    padding: 12px;
-    opacity: 0.5;
-    transition: all 0.2s ease;
-}
-
-.bluesky-section:hover,
-.github-section:hover {
-    opacity: 1;
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.bluesky-link,
-.github-link {
+.nav-right {
     display: flex;
     align-items: center;
-    gap: 10px;
-    color: var(--text-color);
-    text-decoration: none;
-    transition: color 0.2s ease;
+    gap: 20px;
 }
 
-.bluesky-section:hover .bluesky-link,
-.github-section:hover .github-link {
+.social-links {
+    display: flex;
+    gap: 12px;
+    margin: 0;
+}
+
+.social-link {
+    opacity: 0.6;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--text-color);
+    padding: 8px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.social-link span {
+    display: inline-block;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.social-link:hover {
+    opacity: 1;
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.1);
     color: var(--accent);
 }
 
-.bluesky-icon,
-.github-icon {
-    width: 24px;
-    height: 24px;
+.social-icon {
+    width: 20px;
+    height: 20px;
     object-fit: contain;
 }
 
-/* Hide recenter and clear map buttons */
+.creator-info {
+    padding-left: 20px;
+    border-left: 1px solid var(--accent);
+}
+
+.signature {
+    color: var(--accent);
+    font-style: italic;
+    font-size: 14px;
+}
+
+/* Update container padding to account for top nav */
+.container {
+    padding-top: 60px;
+}
+
+/* Update canvas container position */
+.canvas-container {
+    margin-top: 10px;
+}
+
+/* Hide recenter map button */
 #recenterBtn {
     display: none !important;
 }
 
-/* Update button container spacing since we're hiding buttons */
+/* Update button container spacing since we're hiding a button */
 .button-container {
     gap: 8px;
     margin-top: auto;
@@ -1232,23 +1279,69 @@ select:disabled {
     width: 100%;
 }
 
-/* Style clear map button inside eraser tools */
-.eraser-tools #clearAll {
+/* Update line width control styles */
+.line-width-control {
     width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
     margin-top: 8px;
-    background-color: rgba(255, 68, 68, 0.3);
-    color: rgba(255, 255, 255, 0.8);
-    transition: all 0.3s ease;
-    padding: 12px;
-    font-size: 15px;
-    border: none;
-    border-radius: 4px;
-    text-align: center;
-    justify-content: center;
+    padding: 4px;
+    background: none;
 }
 
-.eraser-tools #clearAll:hover {
-    background-color: #ff4444;
-    color: white;
+.width-slider {
+    flex: 1;
+    height: 4px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    outline: none;
+    min-width: 0;
+}
+
+.width-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 0 5px rgba(255, 196, 9, 0.5);
+}
+
+.width-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    background: #ffd700;
+    box-shadow: 0 0 10px rgba(255, 196, 9, 0.7);
+}
+
+.width-slider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 0 5px rgba(255, 196, 9, 0.5);
+}
+
+.width-slider::-moz-range-thumb:hover {
+    transform: scale(1.2);
+    background: #ffd700;
+    box-shadow: 0 0 10px rgba(255, 196, 9, 0.7);
+}
+
+.width-value {
+    min-width: 28px;
+    color: #999;
+    font-size: 12px;
+    text-align: right;
+    padding: 0 4px;
+    background: none;
 }
 
