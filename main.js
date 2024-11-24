@@ -151,8 +151,27 @@ canvas.addEventListener('mousemove', function(e) {
         const dx = (mouseX - dragStartX) * (canvas.width / rect.width);
         const dy = (mouseY - dragStartY) * (canvas.height / rect.height);
         
-        offsetX += dx;
-        offsetY += dy;
+        // Calculate new offsets
+        let newOffsetX = offsetX + dx;
+        let newOffsetY = offsetY + dy;
+        
+        // Calculate bounds
+        const maxOffsetX = canvas.width * (scale - 1);
+        const maxOffsetY = canvas.height * (scale - 1);
+        
+        // Apply bounds checking
+        if (scale <= 1) {
+            // If zoomed out to 1x or less, center the image
+            newOffsetX = 0;
+            newOffsetY = 0;
+        } else {
+            // Limit panning when zoomed in
+            newOffsetX = Math.max(-maxOffsetX, Math.min(maxOffsetX, newOffsetX));
+            newOffsetY = Math.max(-maxOffsetY, Math.min(maxOffsetY, newOffsetY));
+        }
+        
+        offsetX = newOffsetX;
+        offsetY = newOffsetY;
         
         dragStartX = mouseX;
         dragStartY = mouseY;
@@ -480,7 +499,16 @@ function handleZoom(e) {
     const newScale = scale * zoomFactor;
     
     // Check zoom limits
-    if (newScale < minScale || newScale > maxScale) return;
+    if (newScale < minScale || newScale > maxScale) {
+        // If zooming out beyond minimum scale, reset to center
+        if (newScale < minScale) {
+            scale = minScale;
+            offsetX = 0;
+            offsetY = 0;
+            redrawCanvas();
+        }
+        return;
+    }
 
     // Calculate mouse position relative to canvas
     const canvasX = mouseX * (canvas.width / rect.width);
@@ -491,7 +519,7 @@ function handleZoom(e) {
     offsetY = canvasY - (canvasY - offsetY) * zoomFactor;
     
     scale = newScale;
-    redrawAll();
+    redrawCanvas();
 }
 
 // Add wheel event listener to canvas

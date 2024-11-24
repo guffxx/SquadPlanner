@@ -86,6 +86,7 @@
                             <input type="radio" name="color" id="whiteColor" value="white" hidden>
                             <label for="whiteColor" class="color-btn white" data-color="white"></label>
                         </div>
+                        <p class="tool-tip">Left cleck to draw on the map with the selected color</p>
                     </div>
                     <button id="deleteLineBtn" class="compact-btn">Delete Last</button>
                 </div>
@@ -114,6 +115,7 @@
                     </button>
                     <button id="deleteMarkerBtn" class="icon-btn delete-btn">Delete Last</button>
                 </div>
+                <p class="tool-tip">Select a marker to left click it on the map</p>
             </section>
 
             <section class="text-tools">
@@ -135,23 +137,20 @@
                     </div>
                     <button id="addTextBtn" class="text-btn">Add Text</button>
                     <button id="deleteTextBtn" class="delete-btn">Delete Last</button>
-                    <p class="tool-tip">Enter Text, select a color, then click on map</p>
+                    <p class="tool-tip">Enter Text, select a color, then click on the map</p>
                 </div>
             </section>
 
             <section class="eraser-tools">
                 <h3>Eraser Tool:</h3>
-                <button id="eraserBtn" class="eraser-btn">
-                    <span class="eraser-icon">🗑️</span>
-                    Erase Elements
-                </button>
+                <button id="eraserBtn" class="eraser-btn">Eraser</button>
+                <button id="clearAll" class="eraser-btn">CLEAR MAP</button>
                 <p class="tool-tip">Click and drag to erase markers, lines, and text</p>
             </section>
 
             <div class="button-container">
                 <button id="recenterBtn">RECENTER MAP</button>
                 <button id="downloadNow">DOWNLOAD MAP</button>
-                <button id="clearAll">CLEAR MAP</button>
             </div>
         </aside>
         <aside class="right-sidebar">
