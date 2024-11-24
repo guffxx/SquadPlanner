@@ -329,15 +329,15 @@ select:disabled {
 /* Reset and standardize delete button styles */
 #deleteLineBtn, .delete-btn {
     width: auto !important;
-    min-width: 85px;
-    height: 32px;
-    padding: 4px 12px;
+    min-width: 70px;
+    height: 28px;
+    padding: 2px 8px;
     margin-top: 4px;
     background-color: #ff4444;
     color: white;
     border: none;
     border-radius: 4px;
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 500;
     text-align: left;
     display: flex;
@@ -351,19 +351,19 @@ select:disabled {
 .compact-btn#deleteLineBtn {
     width: auto !important;
     margin-left: 0;
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 500;
-    height: 32px;
-    padding: 4px 12px;
+    height: 28px;
+    padding: 2px 8px;
 }
 
 .icon-btn.delete-btn {
     width: auto !important;
     margin-left: 4px;
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 500;
-    height: 32px;
-    padding: 4px 12px;
+    height: 28px;
+    padding: 2px 8px;
 }
 
 /* Hover states */
@@ -724,10 +724,9 @@ select:disabled {
 }
 
 .text-input-container {
-    display: grid;
-    grid-template-columns: 1fr auto auto;
+    display: flex;
+    flex-direction: column;
     gap: 8px;
-    align-items: center;
 }
 
 .text-input {
@@ -755,9 +754,9 @@ select:disabled {
     color: white;
     border: none;
     border-radius: 4px;
-    padding: 8px 12px;
-    white-space: nowrap;
-    height: 32px;
+    padding: 2px 8px;
+    font-size: 13px;
+    height: 28px;
     min-width: 85px;
 }
 
@@ -807,15 +806,15 @@ select:disabled {
 /* Make delete text button match other delete buttons */
 .text-tools .delete-btn {
     width: auto !important;
-    min-width: 85px;
-    height: 32px;
-    padding: 4px 12px;
+    min-width: 70px;
+    height: 28px;
+    padding: 2px 8px;
     margin-top: 4px;
     background-color: #ff4444;
     color: white;
     border: none;
     border-radius: 4px;
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 500;
     text-align: left;
     display: flex;
@@ -834,8 +833,199 @@ select:disabled {
 
 /* Make the buttons container horizontal */
 .text-tools .text-input-container {
-    display: grid;
-    grid-template-columns: 1fr auto auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Update eraser tool styles for the new section */
+.eraser-tools {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 8px;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+.eraser-btn {
+    width: 100% !important;
+    background-color: #ff4444;
+    display: flex;
+    gap: 8px;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 12px;
+    font-size: 15px;
+    height: auto;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.eraser-btn .eraser-icon {
+    font-size: 18px;
+}
+
+.eraser-btn:hover {
+    background-color: #ff3333;
+}
+
+.eraser-btn.active {
+    background-color: #ff2222;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+}
+
+.tool-tip {
+    font-size: 12px;
+    color: #999;
+    margin-top: 4px;
+    text-align: center;
+}
+
+.eraser-cursor {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #ff0000;
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    display: none;
+    z-index: 1000;
+    background-color: rgba(255, 0, 0, 0.1);
+}
+
+/* Update text color picker styles */
+.text-color-picker {
+    display: flex;
     gap: 4px;
+    margin: 4px 0;
+    justify-content: space-between;
+    width: 100%;
+    padding: 4px;
+    border-radius: 20px;
+}
+
+/* Update line tools color picker to match text color picker */
+.marker-color-picker {
+    display: flex;
+    gap: 4px;
+    margin: 4px 0;
+    justify-content: space-between;
+    width: 100%;
+    padding: 4px;
+    border-radius: 20px;
+}
+
+/* Unified styles for both color pickers */
+.marker-color-picker .color-btn,
+.text-color-picker .color-btn {
+    min-width: 35px;
+    width: 35px;
+    min-height: 25px;
+    height: 25px;
+    flex: 1;
+    border-radius: 15px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Unified active states - removed white border, enhanced glow */
+.marker-color-picker .color-btn.active,
+.text-color-picker .color-btn.active {
+    border: none;
+    transform: scale(1.05);
+}
+
+/* Color-specific active states with enhanced glow */
+.marker-color-picker .color-btn.red.active,
+.text-color-picker .color-btn.red.active {
+    box-shadow: 0 0 12px rgba(255, 0, 0, 0.9);
+}
+
+.marker-color-picker .color-btn.blue.active,
+.text-color-picker .color-btn.blue.active {
+    box-shadow: 0 0 12px rgba(0, 0, 255, 0.9);
+}
+
+.marker-color-picker .color-btn.yellow.active,
+.text-color-picker .color-btn.yellow.active {
+    box-shadow: 0 0 12px rgba(255, 255, 0, 0.9);
+}
+
+.marker-color-picker .color-btn.white.active,
+.text-color-picker .color-btn.white.active {
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.9);
+}
+
+/* Unified hover states with enhanced glow */
+.marker-color-picker .color-btn:hover,
+.text-color-picker .color-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Update text tools container layout */
+.text-tools .text-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Style the text input */
+.text-input {
+    width: 100%;
+    padding: 8px;
+    background-color: var(--darker-bg);
+    color: var(--text-color);
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+}
+
+/* Button container for Add Text and Delete Last */
+.text-button-container {
+    display: flex;
+    gap: 8px;
     align-items: center;
 }
+
+/* Style the Add Text button */
+.text-btn {
+    width: auto !important;
+    min-width: 85px;
+    height: 32px;
+    padding: 4px 12px;
+    background-color: var(--accent);
+    color: var(--darker-bg);
+    border: none;
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+}
+
+/* Style the Delete Last button */
+.text-tools .delete-btn {
+    width: auto !important;
+    min-width: 70px;
+    height: 28px;
+    padding: 2px 8px;
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* Tool tip styling */
+.text-tools .tool-tip {
+    font-size: 12px;
+    color: #999;
+    margin-top: 4px;
+}
+

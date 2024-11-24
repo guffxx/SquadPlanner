@@ -20,6 +20,9 @@ let dragStartY = 0;
 let textAnnotations = [];
 let isPlacingText = false;
 let currentText = '';
+let isErasing = false;
+let eraserCursor = null;
+let currentTextColor = '#ffc409';
 
 // Initialize canvas size
 canvas.width = 400;
@@ -39,6 +42,12 @@ document.querySelectorAll('.marker-color-picker .color-btn').forEach(btn => {
         currentColor = this.dataset.color;
         isPlacingMarker = false;
         currentMarkerType = null;
+        
+        // Disable eraser tool when selecting color
+        isErasing = false;
+        eraserCursor.style.display = 'none';
+        document.getElementById('eraserBtn').classList.remove('active');
+        
         Object.keys(markerButtons).forEach(id => {
             document.getElementById(id).classList.remove('active');
         });
@@ -167,17 +176,16 @@ canvas.addEventListener('mouseout', function() {
 });
 
 function startDrawing(e) {
-    if (!currentImage || e.button === 2) return;
+    if (!currentImage || e.button === 2 || isErasing) return;
     
     if (isPlacingText) {
         const pos = getMousePos(e);
         
         // Check if clicking near existing text to replace it
-        const clickRadius = 20; // Detection radius in pixels
+        const clickRadius = 20;
         const clickX = pos.x;
         const clickY = pos.y;
         
-        // Find if we clicked near any existing text
         const existingTextIndex = textAnnotations.findIndex(annotation => {
             const dx = annotation.x - clickX;
             const dy = annotation.y - clickY;
@@ -185,14 +193,20 @@ function startDrawing(e) {
         });
         
         if (existingTextIndex !== -1) {
-            // Replace existing text
-            textAnnotations[existingTextIndex].text = currentText;
+            // Replace existing text and update color
+            textAnnotations[existingTextIndex] = {
+                x: pos.x,
+                y: pos.y,
+                text: currentText,
+                color: currentTextColor
+            };
         } else {
-            // Add new text
+            // Add new text with color
             textAnnotations.push({
                 x: pos.x,
                 y: pos.y,
-                text: currentText
+                text: currentText,
+                color: currentTextColor
             });
         }
         
@@ -219,7 +233,7 @@ function startDrawing(e) {
 }
 
 function draw(e) {
-    if (!currentImage || !isDrawing) return;
+    if (!currentImage || !isDrawing || isErasing) return;
 
     const pos = getMousePos(e);
     
@@ -352,7 +366,7 @@ function redrawCanvas() {
     textAnnotations.forEach(annotation => {
         ctx.save();
         
-        ctx.font = 'bold 32px Arial'; // Increased from 24px to 32px
+        ctx.font = 'bold 32px Arial';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         
@@ -361,8 +375,8 @@ function redrawCanvas() {
         ctx.lineWidth = 4;
         ctx.strokeText(annotation.text, annotation.x, annotation.y);
         
-        // Fill with white
-        ctx.fillStyle = 'white';
+        // Fill with the annotation's color
+        ctx.fillStyle = annotation.color;
         ctx.fillText(annotation.text, annotation.x, annotation.y);
         
         ctx.restore();
@@ -419,7 +433,7 @@ function placeMarker(event, markerType) {
     
     marker.onload = function() {
         let markerWidth, markerHeight;
-        const baseSize = markerType.toLowerCase() === 'lav' ? 50 : 46;
+        const baseSize = markerType.toLowerCase() === 'logi' ? 40 : 36;
         
         // Calculate dimensions maintaining aspect ratio
         const aspectRatio = marker.naturalWidth / marker.naturalHeight;
@@ -443,7 +457,6 @@ function placeMarker(event, markerType) {
         redrawCanvas();
     };
 }
-
 // Add delete line button functionality
 document.getElementById('deleteLineBtn').addEventListener('click', function() {
     if (drawingHistory.length > 0) {
@@ -537,6 +550,11 @@ Object.entries(markerButtons).forEach(([buttonId, markerType]) => {
             // Remove active class from color buttons
             document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('active'));
             
+            // Disable eraser tool when selecting marker
+            isErasing = false;
+            eraserCursor.style.display = 'none';
+            document.getElementById('eraserBtn').classList.remove('active');
+            
             // Toggle marker placement mode
             if (currentMarkerType === markerType) {
                 isPlacingMarker = false;
@@ -567,6 +585,11 @@ document.getElementById('addTextBtn').addEventListener('click', function() {
         currentMarkerType = null;
         canvas.style.cursor = 'text';
         
+        // Disable eraser tool when adding text
+        isErasing = false;
+        eraserCursor.style.display = 'none';
+        document.getElementById('eraserBtn').classList.remove('active');
+        
         // Remove active states from other tools
         Object.keys(markerButtons).forEach(id => {
             document.getElementById(id).classList.remove('active');
@@ -583,3 +606,147 @@ document.getElementById('deleteTextBtn').addEventListener('click', function() {
         redrawCanvas();
     }
 });
+
+// Update the eraseElements function
+function eraseElements(e) {
+    const pos = getMousePos(e);
+    const eraseRadius = 40 / scale; // Increased from 20 to 40
+    
+    // Filter out markers within erase radius
+    markers = markers.filter(marker => {
+        const dx = marker.x - pos.x;
+        const dy = marker.y - pos.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        return distance > eraseRadius;
+    });
+    
+    // Filter out text annotations within erase radius
+    textAnnotations = textAnnotations.filter(annotation => {
+        const dx = annotation.x - pos.x;
+        const dy = annotation.y - pos.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        return distance > eraseRadius;
+    });
+    
+    // Filter out line segments that intersect with the eraser
+    drawingHistory = drawingHistory.filter(path => {
+        if (path.length < 2) return false;
+        
+        // Check if any segment of the line intersects with eraser circle
+        for (let i = 1; i < path.length; i++) {
+            const x1 = path[i-1].x;
+            const y1 = path[i-1].y;
+            const x2 = path[i].x;
+            const y2 = path[i].y;
+            
+            // Calculate distance from point to line segment
+            const distance = pointToLineDistance(pos.x, pos.y, x1, y1, x2, y2);
+            if (distance < eraseRadius) return false;
+        }
+        return true;
+    });
+    
+    redrawCanvas();
+}
+
+// Helper function to calculate distance from point to line segment
+function pointToLineDistance(px, py, x1, y1, x2, y2) {
+    const A = px - x1;
+    const B = py - y1;
+    const C = x2 - x1;
+    const D = y2 - y1;
+
+    const dot = A * C + B * D;
+    const len_sq = C * C + D * D;
+    let param = -1;
+
+    if (len_sq !== 0) param = dot / len_sq;
+
+    let xx, yy;
+
+    if (param < 0) {
+        xx = x1;
+        yy = y1;
+    } else if (param > 1) {
+        xx = x2;
+        yy = y2;
+    } else {
+        xx = x1 + param * C;
+        yy = y1 + param * D;
+    }
+
+    const dx = px - xx;
+    const dy = py - yy;
+    return Math.sqrt(dx * dx + dy * dy);
+}
+
+// Update the initializeEraser function
+function initializeEraser() {
+    // Create eraser cursor element
+    eraserCursor = document.createElement('div');
+    eraserCursor.className = 'eraser-cursor';
+    document.body.appendChild(eraserCursor);
+
+    // Add eraser button functionality
+    const eraserBtn = document.getElementById('eraserBtn');
+    eraserBtn.addEventListener('click', function() {
+        isErasing = !isErasing;
+        this.classList.toggle('active');
+        
+        if (isErasing) {
+            canvas.style.cursor = 'none';
+            eraserCursor.style.display = 'block';
+            
+            // Disable other tools
+            isPlacingMarker = false;
+            isPlacingText = false;
+            isDrawing = false;
+            currentMarkerType = null;
+            
+            // Remove active states from other tools
+            Object.keys(markerButtons).forEach(id => {
+                document.getElementById(id).classList.remove('active');
+            });
+            document.querySelectorAll('.color-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+        } else {
+            canvas.style.cursor = 'default';
+            eraserCursor.style.display = 'none';
+        }
+    });
+
+    // Update eraser cursor position
+    canvas.addEventListener('mousemove', function(e) {
+        if (isErasing) {
+            const rect = canvas.getBoundingClientRect();
+            eraserCursor.style.left = (e.clientX - 20) + 'px'; // Changed from 10 to 20
+            eraserCursor.style.top = (e.clientY - 20) + 'px';  // Changed from 10 to 20
+            
+            if (e.buttons === 1) { // Left mouse button is pressed
+                eraseElements(e);
+            }
+        }
+    });
+
+    // Handle erasing on mouse down
+    canvas.addEventListener('mousedown', function(e) {
+        if (isErasing && e.button === 0) { // Left click only
+            eraseElements(e);
+        }
+    });
+}
+
+initializeEraser();
+
+// Add event listeners for text color picker
+document.querySelectorAll('.text-color-picker .color-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        // Remove active class from all text color buttons
+        document.querySelectorAll('.text-color-picker .color-btn').forEach(b => b.classList.remove('active'));
+        // Add active class to clicked button
+        this.classList.add('active');
+        currentTextColor = this.dataset.color;
+    });
+});
+

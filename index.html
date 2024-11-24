@@ -119,10 +119,33 @@
             <section class="text-tools">
                 <h3>Text Field:</h3>
                 <div class="text-input-container">
-                    <input type="text" id="annotationText" placeholder="Enter text..." class="text-input">
+                    <input type="text" id="annotationText" placeholder="Enter text" class="text-input">
+                    <div class="text-color-picker">
+                        <input type="radio" name="textColor" id="redTextColor" value="red" checked hidden>
+                        <label for="redTextColor" class="color-btn red active" data-color="red"></label>
+                        
+                        <input type="radio" name="textColor" id="blueTextColor" value="blue" hidden>
+                        <label for="blueTextColor" class="color-btn blue" data-color="blue"></label>
+
+                        <input type="radio" name="textColor" id="yellowTextColor" value="yellow" hidden>
+                        <label for="yellowTextColor" class="color-btn yellow" data-color="yellow"></label>
+                        
+                        <input type="radio" name="textColor" id="whiteTextColor" value="white" hidden>
+                        <label for="whiteTextColor" class="color-btn white" data-color="white"></label>
+                    </div>
                     <button id="addTextBtn" class="text-btn">Add Text</button>
                     <button id="deleteTextBtn" class="delete-btn">Delete Last</button>
+                    <p class="tool-tip">Enter text, select a color, then click on map</p>
                 </div>
+            </section>
+
+            <section class="eraser-tools">
+                <h3>Eraser Tool:</h3>
+                <button id="eraserBtn" class="eraser-btn">
+                    <span class="eraser-icon">🗑️</span>
+                    Erase Elements
+                </button>
+                <p class="tool-tip">Click and drag to erase markers, lines, and text</p>
             </section>
 
             <div class="button-container">
@@ -134,6 +157,7 @@
                 <div class="tip-text">
                     <p>- Left Click to Draw</p>
                     <p>- Right Click to Drag</p>
+                    <p>- click Add Text, then click on map</p>
                     <p>- STILL A WIP</p>
                     <p class="signature">- *RCN* guFF</p>
                 </div>
