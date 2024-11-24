@@ -684,7 +684,7 @@ select:disabled {
     width: 100%;
 }
 
-/* Style the Add Text button to match other tool buttons */
+/* Update Add Text button to match other icon buttons */
 #addTextBtn {
     width: 100%;
     padding: 8px 12px;
@@ -707,70 +707,7 @@ select:disabled {
     color: var(--darker-bg);
 }
 
-.map-text {
-    font-family: Arial, sans-serif;
-    font-size: 16px;
-    font-weight: bold;
-    color: white;
-    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.8);
-}
-
-/* Update text field button styles to match other sections */
-.text-input-container {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-/* Style the Add Text button like other action buttons */
-.text-btn {
-    width: 100%;
-    padding: 8px 12px;
-    background-color: var(--accent);
-    color: var(--darker-bg);
-    border: none;
-    border-radius: 4px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-/* Make delete text button match other delete buttons */
-.text-tools .delete-btn {
-    width: auto !important;
-    min-width: 85px;
-    height: 32px;
-    padding: 4px 12px;
-    margin-top: 4px;
-    background-color: #ff4444;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 15px;
-    font-weight: 500;
-    text-align: left;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-}
-
-/* Add hover effects to match other buttons */
-.text-btn:hover {
-    background-color: #ffd649;
-}
-
-.text-tools .delete-btn:hover {
-    background-color: #ff2222;
-}
-
-/* Make the buttons container horizontal */
-.text-tools .text-input-container {
-    display: grid;
-    grid-template-columns: 1fr auto auto;
-    gap: 4px;
-    align-items: center;
-}
-
+/* Style for text input on map */
 .map-text-input {
     position: absolute;
     background: rgba(0, 0, 0, 0.7);
@@ -789,5 +726,22 @@ select:disabled {
     outline: none;
     border-color: white;
     background: rgba(0, 0, 0, 0.9);
+}
+
+/* Add styles for the text input field */
+.text-field-input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 8px;
+    background-color: var(--darker-bg);
+    color: var(--text-color);
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.text-field-input:focus {
+    outline: none;
+    border-color: white;
 }
 

@@ -20,10 +20,6 @@ let dragStartY = 0;
 let textAnnotations = [];
 let isPlacingText = false;
 let currentText = '';
-let activeTextBubble = null;
-let isDraggingText = false;
-let textDragStartX = 0;
-let textDragStartY = 0;
 
 // Initialize canvas size
 canvas.width = 400;
@@ -176,14 +172,22 @@ function startDrawing(e) {
     if (isPlacingText && currentText) {
         const pos = getMousePos(e);
         
-        // Create draggable text input at click position
-        createDraggableTextInput(pos.x, pos.y, currentText);
+        // Add text annotation
+        textAnnotations.push({
+            x: pos.x,
+            y: pos.y,
+            text: currentText
+        });
         
         // Reset text placement mode
         isPlacingText = false;
         currentText = '';
         canvas.style.cursor = 'default';
         document.getElementById('addTextBtn').classList.remove('active');
+        document.getElementById('textInput').value = ''; // Clear input field
+        
+        redrawCanvas();
+        e.preventDefault(); // Prevent other mouse events
     } else if (isPlacingMarker && currentMarkerType) {
         placeMarker(e, currentMarkerType);
     } else {
@@ -334,16 +338,17 @@ function redrawCanvas() {
     textAnnotations.forEach(annotation => {
         ctx.save();
         
-        ctx.font = 'bold 32px Arial'; // Increased from 24px to 32px
+        // Set text properties
+        ctx.font = 'bold 32px Arial';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         
-        // Add black outline
+        // Draw black outline
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 4;
         ctx.strokeText(annotation.text, annotation.x, annotation.y);
         
-        // Fill with white
+        // Draw white text
         ctx.fillStyle = 'white';
         ctx.fillText(annotation.text, annotation.x, annotation.y);
         
@@ -357,10 +362,9 @@ document.getElementById('clearAll').addEventListener('click', function() {
     markers = []; // Clear HAB markers
     drawingHistory = []; // Clear drawing history
     currentPath = []; // Clear current path
-    textAnnotations = []; // Add this line
+    textAnnotations = []; // Clear text annotations
     if (currentImage) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(currentImage, 0, 0);
+        redrawCanvas();
     } else {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
@@ -526,6 +530,13 @@ function handleMarkerButtonClick(buttonId, markerType) {
 
 // Update the addTextBtn click handler
 document.getElementById('addTextBtn').addEventListener('click', function() {
+    if (!currentImage) return; // Don't add text if no map is loaded
+    
+    const textInput = document.getElementById('textInput');
+    const text = textInput.value.trim();
+    
+    if (!text) return; // Don't proceed if text is empty
+    
     // Remove active states from other tools
     Object.keys(markerButtons).forEach(id => {
         document.getElementById(id).classList.remove('active');
@@ -534,95 +545,15 @@ document.getElementById('addTextBtn').addEventListener('click', function() {
         btn.classList.remove('active');
     });
     
-    // Create a popup for text input
-    const textInput = prompt('Enter text to place:', '');
-    if (textInput === null || textInput.trim() === '') return; // User cancelled or empty input
-    
     // Set text placement mode
     isPlacingText = true;
-    currentText = textInput;
-    canvas.style.cursor = 'crosshair';
+    currentText = text;
+    canvas.style.cursor = 'text';
     this.classList.add('active');
 });
 
-// Add new function to create draggable text input
-function createDraggableTextInput(x, y, initialText) {
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.className = 'map-text-input';
-    input.value = initialText;
-    
-    const rect = canvas.getBoundingClientRect();
-    const screenX = (x * scale + offsetX) * (rect.width / canvas.width);
-    const screenY = (y * scale + offsetY) * (rect.height / canvas.height);
-    
-    input.style.position = 'absolute';
-    input.style.left = `${rect.left + screenX}px`;
-    input.style.top = `${rect.top + screenY}px`;
-    input.style.transform = 'translate(-50%, -50%)';
-    
-    let isDragging = false;
-    let dragStartX = 0;
-    let dragStartY = 0;
-    
-    input.addEventListener('mousedown', function(e) {
-        if (e.button === 0) { // Left click
-            isDragging = true;
-            dragStartX = e.clientX - input.offsetLeft;
-            dragStartY = e.clientY - input.offsetTop;
-            input.style.cursor = 'grabbing';
-        }
-    });
-    
-    document.addEventListener('mousemove', function(e) {
-        if (isDragging) {
-            const newX = e.clientX - dragStartX;
-            const newY = e.clientY - dragStartY;
-            input.style.left = `${newX}px`;
-            input.style.top = `${newY}px`;
-        }
-    });
-    
-    document.addEventListener('mouseup', function() {
-        if (isDragging) {
-            isDragging = false;
-            input.style.cursor = 'move';
-            
-            // Convert screen position back to canvas coordinates
-            const rect = canvas.getBoundingClientRect();
-            const canvasX = ((input.offsetLeft + input.offsetWidth/2 - rect.left) * (canvas.width / rect.width) - offsetX) / scale;
-            const canvasY = ((input.offsetTop + input.offsetHeight/2 - rect.top) * (canvas.height / rect.height) - offsetY) / scale;
-            
-            // Add to text annotations
-            textAnnotations.push({
-                x: canvasX,
-                y: canvasY,
-                text: input.value
-            });
-            
-            // Remove the input element
-            input.remove();
-            redrawCanvas();
-        }
-    });
-    
-    input.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-            const rect = canvas.getBoundingClientRect();
-            const canvasX = ((input.offsetLeft + input.offsetWidth/2 - rect.left) * (canvas.width / rect.width) - offsetX) / scale;
-            const canvasY = ((input.offsetTop + input.offsetHeight/2 - rect.top) * (canvas.height / rect.height) - offsetY) / scale;
-            
-            textAnnotations.push({
-                x: canvasX,
-                y: canvasY,
-                text: input.value
-            });
-            
-            input.remove();
-            redrawCanvas();
-        }
-    });
-    
-    document.body.appendChild(input);
-    input.focus();
+// Remove the style element that was added
+const styleElement = document.querySelector('style');
+if (styleElement && styleElement.textContent.includes('.draggable-text')) {
+    styleElement.remove();
 }
