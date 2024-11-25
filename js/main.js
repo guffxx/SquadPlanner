@@ -117,15 +117,6 @@ function initializeUIControls() {
         }
     });
 
-    // Tint color picker
-    document.querySelectorAll('.tint-color-picker .tint-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            document.querySelectorAll('.tint-btn').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            state.currentTint = this.dataset.tint;
-        });
-    });
-
     // Other controls
     document.getElementById('clearAll').addEventListener('click', function() {
         state.markers = [];
@@ -194,4 +185,4 @@ function deselectAllTools() {
 
     // Reset cursor
     state.canvas.style.cursor = 'default';
-} 
+}

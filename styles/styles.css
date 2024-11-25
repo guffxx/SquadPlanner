@@ -777,5 +777,25 @@ input[type="color"]::-moz-color-swatch {
     transform: scale(1.1);
 }
 
+.edit-nodes-btn {
+    background-color: var(--darker-bg);
+    color: var(--text-color);
+    border: 1px solid var(--accent);
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 8px;
+}
+
+.edit-nodes-btn:hover {
+    background-color: rgba(255, 196, 9, 0.1);
+}
+
+.edit-nodes-btn.active {
+    background-color: var(--accent);
+    color: var(--darker-bg);
+}
+
 
 
