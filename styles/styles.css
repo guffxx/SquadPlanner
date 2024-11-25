@@ -181,7 +181,7 @@ button,
     padding: 0 4px;
 }
 
-/* Remove old color button styles and add new color picker styles */
+/* Update color picker container styles */
 .color-picker-container {
     display: flex;
     align-items: center;
@@ -190,8 +190,22 @@ button,
     background: rgba(255, 255, 255, 0.05);
     border-radius: 4px;
     margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
+.color-picker-container:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(255, 196, 9, 0.3);
+}
+
+.color-picker-container.active {
+    background: rgba(255, 196, 9, 0.2);
+    box-shadow: 0 0 12px rgba(255, 196, 9, 0.5);
+}
+
+/* Update color picker input styles */
 input[type="color"] {
     -webkit-appearance: none;
     appearance: none;
@@ -209,12 +223,12 @@ input[type="color"]::-webkit-color-swatch-wrapper {
 }
 
 input[type="color"]::-webkit-color-swatch {
-    border: 2px solid var(--accent);
+    border: none;
     border-radius: 4px;
 }
 
 input[type="color"]::-moz-color-swatch {
-    border: 2px solid var(--accent);
+    border: none;
     border-radius: 4px;
 }
 
@@ -222,6 +236,7 @@ input[type="color"]::-moz-color-swatch {
     color: var(--text-color);
     font-size: 14px;
     opacity: 0.8;
+    pointer-events: none;
 }
 
 /* Remove old color button related styles */
@@ -777,25 +792,6 @@ input[type="color"]::-moz-color-swatch {
     transform: scale(1.1);
 }
 
-.edit-nodes-btn {
-    background-color: var(--darker-bg);
-    color: var(--text-color);
-    border: 1px solid var(--accent);
-    padding: 8px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 8px;
-}
-
-.edit-nodes-btn:hover {
-    background-color: rgba(255, 196, 9, 0.1);
-}
-
-.edit-nodes-btn.active {
-    background-color: var(--accent);
-    color: var(--darker-bg);
-}
 
 
 

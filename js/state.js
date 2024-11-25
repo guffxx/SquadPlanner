@@ -33,7 +33,8 @@ export const state = {
     lineWidth: 5,
     lastX: 0,
     lastY: 0,
-    textSize: 26
+    textSize: 26,
+    lastUsedMarker: null
 };
 
 // Initialize canvas size

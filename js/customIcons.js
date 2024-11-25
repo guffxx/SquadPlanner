@@ -71,8 +71,23 @@ function addIconToGrid(iconData) {
             btn.classList.remove('active');
         });
         iconBtn.classList.add('active');
+        
+        // Deselect all other tools first
         state.isPlacingMarker = true;
         state.currentMarkerType = iconData.src;
+        state.lastUsedMarker = iconData.src;
+        state.isPlacingText = false;
+        state.isErasing = false;
+        state.isDrawing = false;
+        
+        // Hide eraser cursor if it's visible
+        if (state.eraserCursor) {
+            state.eraserCursor.style.display = 'none';
+        }
+        
+        // Reset eraser button state
+        document.getElementById('eraserBtn').classList.remove('active');
+        
         state.canvas.style.cursor = 'crosshair';
     });
 }

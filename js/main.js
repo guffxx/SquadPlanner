@@ -62,22 +62,58 @@ function handleCanvasClick(e) {
 }
 
 function initializeUIControls() {
-    // Line color picker
+    // Line color picker and draw tool
     const lineColorPicker = document.getElementById('lineColorPicker');
+    const lineColorContainer = document.querySelector('.line-tools-container .color-picker-container');
+    
     lineColorPicker.addEventListener('input', function() {
         state.currentColor = this.value;
     });
+    
+    lineColorContainer.addEventListener('click', function(e) {
+        if (e.target === lineColorPicker) return;
+        deselectAllTools();
+        lineColorContainer.classList.add('active');
+        state.canvas.style.cursor = 'crosshair';
+    });
 
-    // Marker color picker
+    // Marker color picker and tool
     const markerColorPicker = document.getElementById('markerColorPicker');
+    const markerColorContainer = document.querySelector('.tint-selector .color-picker-container');
+    
     markerColorPicker.addEventListener('input', function() {
         state.currentTint = this.value;
     });
+    
+    markerColorContainer.addEventListener('click', function(e) {
+        if (e.target !== markerColorPicker) {
+            deselectAllTools();
+            markerColorContainer.classList.add('active');
+            state.isPlacingMarker = true;
+            state.currentMarkerType = state.lastUsedMarker || 'HAB';
+            state.canvas.style.cursor = 'crosshair';
+        } else {
+            // Programmatically click the color picker when container is clicked
+            markerColorPicker.click();
+        }
+    });
 
-    // Text color picker
+    // Text color picker and tool
     const textColorPicker = document.getElementById('textColorPicker');
+    const textColorContainer = document.querySelector('.text-input-container .color-picker-container');
+    
     textColorPicker.addEventListener('input', function() {
         state.currentTextColor = this.value;
+    });
+    
+    textColorContainer.addEventListener('click', function(e) {
+        if (e.target !== textColorPicker) {
+            deselectAllTools();
+            textColorContainer.classList.add('active');
+        } else {
+            // Programmatically click the color picker when container is clicked
+            textColorPicker.click();
+        }
     });
 
     // Marker buttons
@@ -85,21 +121,13 @@ function initializeUIControls() {
         const button = document.getElementById(buttonId);
         if (button) {
             button.addEventListener('click', function() {
-                // Deselect all tools first
                 deselectAllTools();
                 
-                // Toggle marker placement mode
-                if (state.currentMarkerType === markerType) {
-                    state.isPlacingMarker = false;
-                    state.currentMarkerType = null;
-                    state.canvas.style.cursor = 'default';
-                    this.classList.remove('active');
-                } else {
-                    state.isPlacingMarker = true;
-                    state.currentMarkerType = markerType;
-                    this.classList.add('active');
-                    state.canvas.style.cursor = 'crosshair';
-                }
+                state.isPlacingMarker = true;
+                state.currentMarkerType = markerType;
+                state.lastUsedMarker = markerType; // Store the last used marker
+                this.classList.add('active');
+                state.canvas.style.cursor = 'crosshair';
             });
         }
     });
@@ -109,11 +137,23 @@ function initializeUIControls() {
         const textInput = document.getElementById('annotationText');
         state.currentText = textInput.value.trim();
         if (state.currentText) {
-            // Deselect all tools
             deselectAllTools();
             
             state.isPlacingText = true;
             state.canvas.style.cursor = 'text';
+        }
+    });
+
+    // Eraser button
+    const eraserBtn = document.getElementById('eraserBtn');
+    eraserBtn.addEventListener('click', function() {
+        deselectAllTools();
+        
+        state.isErasing = true;
+        this.classList.add('active');
+        state.canvas.style.cursor = 'none';
+        if (state.eraserCursor) {
+            state.eraserCursor.style.display = 'block';
         }
     });
 
@@ -164,17 +204,17 @@ function initializeUIControls() {
     }
 }
 
-// Add this new function to handle tool deselection
 function deselectAllTools() {
     // Reset all tool states
     state.isPlacingMarker = false;
     state.currentMarkerType = null;
     state.isPlacingText = false;
     state.isErasing = false;
+    state.isDrawing = false;
 
-    // Remove active class from all marker buttons
-    Object.keys(markerButtons).forEach(id => {
-        document.getElementById(id).classList.remove('active');
+    // Remove active class from all buttons and containers
+    document.querySelectorAll('.icon-btn, .custom-icon-btn, .color-picker-container').forEach(btn => {
+        btn.classList.remove('active');
     });
 
     // Hide eraser cursor and deactivate eraser button
