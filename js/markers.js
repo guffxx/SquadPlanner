@@ -1,0 +1,54 @@
+import { state } from './state.js';
+import { getMousePos } from './drawing.js';
+import { redrawCanvas } from './canvas.js';
+import { applyTint } from './imageHandling.js';
+
+export const markerButtons = {
+    'habMarkerBtn': 'HAB',
+    'heliMarkerBtn': 'heli',
+    'lavMarkerBtn': 'lav',
+    'logiMarkerBtn': 'logi',
+    'matvMarkerBtn': 'matv',
+    'tankMarkerBtn': 'tank',
+    'apcMarkerBtn': 'apc',
+    'ifvMarkerBtn': 'ifv',
+    'rwsMarkerBtn': 'rws',
+    'radioMarkerBtn': 'radio',
+    'repStationMarkerBtn': 'repStation',
+    'rallyMarkerBtn': 'rally'
+};
+
+export function placeMarker(event, markerType) {
+    if (!markerType || !state.currentImage) return;
+    
+    const pos = getMousePos(event);
+    const marker = new Image();
+    marker.src = `assets/icons/${markerType.toLowerCase()}.png`;
+    
+    marker.onload = function() {
+        let markerWidth, markerHeight;
+        const aspectRatio = marker.naturalWidth / marker.naturalHeight;
+        
+        if (aspectRatio > 1) {
+            markerWidth = state.markerSize;
+            markerHeight = state.markerSize / aspectRatio;
+        } else {
+            markerHeight = state.markerSize;
+            markerWidth = state.markerSize * aspectRatio;
+        }
+        
+        const newMarker = { 
+            x: pos.x, 
+            y: pos.y, 
+            type: markerType, 
+            width: markerWidth, 
+            height: markerHeight,
+            tint: state.currentTint,
+            originalX: pos.x,
+            originalY: pos.y
+        };
+        
+        state.markers.push(newMarker);
+        redrawCanvas();
+    };
+} 

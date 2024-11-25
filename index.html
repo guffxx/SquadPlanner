@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Map Planning Tool</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles\styles.css">
 </head>
 <body>
     <div class="container">
@@ -220,6 +220,10 @@
                         <input type="radio" name="textColor" id="whiteTextColor" value="white" hidden>
                         <label for="whiteTextColor" class="color-btn white" data-color="white"></label>
                     </div>
+                    <div class="text-size-control">
+                        <input type="range" id="textSize" min="16" max="64" value="26" class="width-slider">
+                        <span class="width-value text-size-value">26px</span>
+                    </div>
                     <input type="text" id="annotationText" placeholder="Enter text" class="text-input">
                     <button id="addTextBtn" class="text-btn">Add Text</button>
                     <button id="deleteTextBtn" class="delete-btn">Delete Last</button>
@@ -235,7 +239,7 @@
             <div class="nav-content">
                 <div class="nav-right">
                     <div class="bug-tip">
-                        Known Bugs: Icons not scalling/flickering. Text disappearing (right click/drag to fix).
+                        Known Bugs: Icons flickering.
                     </div>
                     <div class="creator-info">
                         <div class="creator-text">
@@ -276,6 +280,6 @@
         </main>
 
     </div>
-    <script src="main.js"></script>
+    <script type="module" src="js/main.js"></script>
 </body>
 </html>

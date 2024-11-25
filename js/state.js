@@ -1,0 +1,41 @@
+// Global state variables
+export const state = {
+    canvas: document.getElementById('mapCanvas'),
+    ctx: document.getElementById('mapCanvas').getContext('2d'),
+    currentColor: 'red',
+    isDrawing: false,
+    currentImage: null,
+    markers: [],
+    isPlacingMarker: false,
+    currentMarkerType: null,
+    drawingHistory: [],
+    currentPath: [],
+    scale: 1,
+    minScale: 1,
+    maxScale: 2.5,
+    offsetX: 0,
+    offsetY: 0,
+    isDragging: false,
+    dragStartX: 0,
+    dragStartY: 0,
+    textAnnotations: [],
+    isPlacingText: false,
+    currentText: '',
+    isErasing: false,
+    eraserCursor: null,
+    currentTextColor: '#ffc409',
+    currentTint: 'white',
+    smoothingFactor: 0.2,
+    smoothedPoints: [],
+    lastSmoothX: 0,
+    lastSmoothY: 0,
+    markerSize: 42,
+    lineWidth: 5,
+    lastX: 0,
+    lastY: 0,
+    textSize: 26
+};
+
+// Initialize canvas size
+state.canvas.width = 400;
+state.canvas.height = 400; 
