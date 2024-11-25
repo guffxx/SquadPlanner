@@ -34,7 +34,10 @@ export const state = {
     lastX: 0,
     lastY: 0,
     textSize: 26,
-    lastUsedMarker: null
+    lastUsedMarker: null,
+    isDrawingStraightLine: false,
+    straightLineStart: null,
+    isDraggingHandle: null
 };
 
 // Initialize canvas size

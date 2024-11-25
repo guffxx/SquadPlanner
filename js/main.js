@@ -1,6 +1,6 @@
 import { state } from './state.js';
 import { loadMap } from './imageHandling.js';
-import { startDrawing, draw, stopDrawing, getMousePos } from './drawing.js';
+import { startDrawing, draw, stopDrawing, getMousePos, startStraightLine, updateStraightLine, finishStraightLine } from './drawing.js';
 import { markerButtons, placeMarker } from './markers.js';
 import { addTextAnnotation } from './annotations.js';
 import { initializeEraser, eraseElements, handleZoom } from './tools.js';
@@ -133,8 +133,18 @@ function initializeUIControls() {
     });
 
     // Text tools
-    document.getElementById('addTextBtn').addEventListener('click', function() {
-        const textInput = document.getElementById('annotationText');
+    const textInput = document.getElementById('annotationText');
+    const addTextBtn = document.getElementById('addTextBtn');
+
+    textInput.addEventListener('input', function() {
+        if (this.value.trim()) {
+            addTextBtn.classList.add('has-text');
+        } else {
+            addTextBtn.classList.remove('has-text');
+        }
+    });
+
+    addTextBtn.addEventListener('click', function() {
         state.currentText = textInput.value.trim();
         if (state.currentText) {
             deselectAllTools();
@@ -202,6 +212,44 @@ function initializeUIControls() {
             textSizeValue.textContent = `${state.textSize}px`;
         });
     }
+
+    // Straight line button
+    const straightLineBtn = document.getElementById('straightLineBtn');
+    straightLineBtn.addEventListener('click', function() {
+        deselectAllTools();
+        this.classList.add('active');
+        state.isDrawingStraightLine = true;
+        state.canvas.style.cursor = 'crosshair';
+    });
+
+    // Update canvas event listeners
+    state.canvas.addEventListener('mousedown', function(e) {
+        if (state.isDrawingStraightLine) {
+            startStraightLine(e);
+        } else if (state.isPlacingMarker && state.currentMarkerType) {
+            placeMarker(e, state.currentMarkerType);
+        } else if (state.isPlacingText) {
+            addTextAnnotation(e);
+        } else if (!state.isErasing) {
+            startDrawing(e);
+        }
+    });
+
+    state.canvas.addEventListener('mousemove', function(e) {
+        if (state.isDrawingStraightLine && state.isDraggingHandle) {
+            updateStraightLine(e);
+        } else if (!state.isErasing) {
+            draw(e);
+        }
+    });
+
+    state.canvas.addEventListener('mouseup', function(e) {
+        if (state.isDrawingStraightLine) {
+            finishStraightLine(e);
+        } else {
+            stopDrawing();
+        }
+    });
 }
 
 function deselectAllTools() {
@@ -211,6 +259,7 @@ function deselectAllTools() {
     state.isPlacingText = false;
     state.isErasing = false;
     state.isDrawing = false;
+    state.isDrawingStraightLine = false;
 
     // Remove active class from all buttons and containers
     document.querySelectorAll('.icon-btn, .custom-icon-btn, .color-picker-container').forEach(btn => {
@@ -225,4 +274,7 @@ function deselectAllTools() {
 
     // Reset cursor
     state.canvas.style.cursor = 'default';
+
+    // Remove active class from straight line button
+    document.getElementById('straightLineBtn')?.classList.remove('active');
 }
