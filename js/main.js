@@ -5,6 +5,7 @@ import { markerButtons, placeMarker } from './markers.js';
 import { addTextAnnotation } from './annotations.js';
 import { initializeEraser, eraseElements, handleZoom } from './tools.js';
 import { redrawCanvas } from './canvas.js';
+import { initializeCustomIcons } from './customIcons.js';
 
 // Initialize event listeners
 document.addEventListener('DOMContentLoaded', () => {
@@ -44,6 +45,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initialize UI controls
     initializeUIControls();
+
+    // Initialize custom icons
+    initializeCustomIcons();
 });
 
 // Add this new function to handle canvas clicks
@@ -58,17 +62,22 @@ function handleCanvasClick(e) {
 }
 
 function initializeUIControls() {
-    // Color picker
-    document.querySelectorAll('.marker-color-picker .color-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            // Deselect all tools
-            deselectAllTools();
-            
-            document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            state.currentColor = this.dataset.color;
-            state.canvas.style.cursor = 'default';
-        });
+    // Line color picker
+    const lineColorPicker = document.getElementById('lineColorPicker');
+    lineColorPicker.addEventListener('input', function() {
+        state.currentColor = this.value;
+    });
+
+    // Marker color picker
+    const markerColorPicker = document.getElementById('markerColorPicker');
+    markerColorPicker.addEventListener('input', function() {
+        state.currentTint = this.value;
+    });
+
+    // Text color picker
+    const textColorPicker = document.getElementById('textColorPicker');
+    textColorPicker.addEventListener('input', function() {
+        state.currentTextColor = this.value;
     });
 
     // Marker buttons
@@ -106,20 +115,6 @@ function initializeUIControls() {
             state.isPlacingText = true;
             state.canvas.style.cursor = 'text';
         }
-    });
-
-    // Text color picker
-    document.querySelectorAll('.text-color-picker .color-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            // Deselect all tools
-            deselectAllTools();
-            
-            document.querySelectorAll('.text-color-picker .color-btn').forEach(b => {
-                b.classList.remove('active');
-            });
-            this.classList.add('active');
-            state.currentTextColor = this.dataset.color;
-        });
     });
 
     // Tint color picker

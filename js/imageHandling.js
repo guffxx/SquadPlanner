@@ -30,8 +30,6 @@ export function loadMap(src) {
 }
 
 export function applyTint(image, tint) {
-    if (tint === 'white') return image;
-    
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     canvas.width = image.width;

@@ -33,6 +33,7 @@ export function redrawCanvas() {
         if (path.length >= 4) {
             const lastPoint = path[path.length - 1];
             const secondLastPoint = path[path.length - 2];
+            state.ctx.strokeStyle = path[0].color; // Ensure arrow has same color as line
             drawArrow(
                 state.ctx,
                 secondLastPoint.x,
@@ -60,6 +61,7 @@ export function redrawCanvas() {
         
         const lastPoint = state.currentPath[state.currentPath.length - 1];
         const secondLastPoint = state.currentPath[state.currentPath.length - 2];
+        state.ctx.strokeStyle = state.currentPath[0].color; // Ensure arrow has same color as line
         drawArrow(
             state.ctx,
             secondLastPoint.x,
@@ -70,10 +72,10 @@ export function redrawCanvas() {
         );
     }
     
-    // Draw markers - fixed position with zoom
+    // Draw markers
     state.markers.forEach(marker => {
         const markerImage = new Image();
-        markerImage.src = `assets/icons/${marker.type.toLowerCase()}.png`;
+        markerImage.src = marker.isCustom ? marker.type : `assets/icons/${marker.type.toLowerCase()}.png`;
         
         markerImage.onload = function() {
             state.ctx.save();
@@ -84,22 +86,22 @@ export function redrawCanvas() {
             const screenX = marker.x * state.scale + state.offsetX;
             const screenY = marker.y * state.scale + state.offsetY;
             
-            if (marker.tint !== 'white') {
+            if (marker.tint !== '#ffffff') {
                 const tintedCanvas = applyTint(markerImage, marker.tint);
                 state.ctx.drawImage(
                     tintedCanvas,
-                    screenX - marker.width / 2,
-                    screenY - marker.height / 2,
-                    marker.width,
-                    marker.height
+                    screenX - (marker.width * state.scale) / 2,
+                    screenY - (marker.height * state.scale) / 2,
+                    marker.width * state.scale,
+                    marker.height * state.scale
                 );
             } else {
                 state.ctx.drawImage(
                     markerImage,
-                    screenX - marker.width / 2,
-                    screenY - marker.height / 2,
-                    marker.width,
-                    marker.height
+                    screenX - (marker.width * state.scale) / 2,
+                    screenY - (marker.height * state.scale) / 2,
+                    marker.width * state.scale,
+                    marker.height * state.scale
                 );
             }
             state.ctx.restore();

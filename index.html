@@ -112,30 +112,21 @@
             <section class="eraser-tools">
                 <button id="eraserBtn" class="eraser-btn">Eraser Tool</button>
                 <button id="clearAll" class="eraser-btn">CLEAR MAP</button>
-                <p class="tool-tip">Click and drag to erase markers, lines, and text</p>
+                <p class="tool-tip">Click and drag to erase markers, lines, and text <br>Click Clear Map to start over</p>
             </section>
             <section class="drawing-tools">
                 <div class="tool-row">
                     <h3>Draw:</h3>
                     <div class="line-tools-container">
-                        <div class="marker-color-picker">
-                            <input type="radio" name="color" id="redColor" value="red" checked hidden>
-                            <label for="redColor" class="color-btn red active" data-color="red"></label>
-                            
-                            <input type="radio" name="color" id="blueColor" value="blue" hidden>
-                            <label for="blueColor" class="color-btn blue" data-color="blue"></label>
-
-                            <input type="radio" name="color" id="yellowColor" value="yellow" hidden>
-                            <label for="yellowColor" class="color-btn yellow" data-color="yellow"></label>
-                            
-                            <input type="radio" name="color" id="whiteColor" value="white" hidden>
-                            <label for="whiteColor" class="color-btn white" data-color="white"></label>
+                        <div class="color-picker-container">
+                            <input type="color" id="lineColorPicker" value="#ff0000">
+                            <label for="lineColorPicker" class="color-picker-label">Line Color</label>
                         </div>
                         <div class="line-width-control">
                             <input type="range" id="lineWidth" min="1" max="8" value="5" class="width-slider">
                             <span class="width-value">5px</span>
                         </div>
-                        <p class="tool-tip">Left click to draw on the map with the selected color</p>
+                        <p class="tool-tip">Select a color, adjust line width, click-drag to draw</p>
                     </div>
                     <button id="deleteLineBtn" class="compact-btn">Delete Last</button>
                 </div>
@@ -144,23 +135,21 @@
             <section class="icon-tools">
                 <h3>Mark:</h3>
                 <div class="tint-selector">
-                    <div class="tint-color-picker">
-                        <input type="radio" name="tintColor" id="redTint" value="red" hidden>
-                        <label for="redTint" class="tint-btn red" data-tint="red"></label>
-                        
-                        <input type="radio" name="tintColor" id="blueTint" value="blue" hidden>
-                        <label for="blueTint" class="tint-btn blue" data-tint="blue"></label>
-
-                        <input type="radio" name="tintColor" id="yellowTint" value="yellow" hidden>
-                        <label for="yellowTint" class="tint-btn yellow" data-tint="yellow"></label>
-                        
-                        <input type="radio" name="tintColor" id="whiteTint" value="white" hidden>
-                        <label for="whiteTint" class="tint-btn white" data-tint="white"></label>
+                    <div class="color-picker-container">
+                        <input type="color" id="markerColorPicker" value="#ff0000">
+                        <label for="markerColorPicker" class="color-picker-label">Marker Color</label>
                     </div>
                 </div>
                 <div class="marker-size-control">
                     <input type="range" id="markerSize" min="30" max="80" value="42" class="width-slider">
                     <span class="width-value marker-size-value">42px</span>
+                </div>
+                <div class="custom-icon-upload">
+                    <input type="file" id="customIconUpload" accept="image/*" hidden>
+                    <button id="uploadIconBtn" class="upload-icon-btn">Upload Custom Icon</button>
+                    <div id="customIconsGrid" class="marker-grid custom-icons">
+                        <!-- Custom icons will be added here dynamically -->
+                    </div>
                 </div>
                 <div class="marker-grid">
                     <button id="heliMarkerBtn" class="icon-btn">
@@ -201,24 +190,15 @@
                     </button>
                     <button id="deleteMarkerBtn" class="icon-btn delete-btn">Delete Last</button>
                 </div>
-                <p class="tool-tip">Select a marker, left click to place it on the map</p>
+                <p class="tool-tip">Select a color, select a marker, left click to place it on the map</p>
             </section>
 
             <section class="text-tools">
                 <h3>Text:</h3>
                 <div class="text-input-container">
-                    <div class="text-color-picker">
-                        <input type="radio" name="textColor" id="redTextColor" value="red" checked hidden>
-                        <label for="redTextColor" class="color-btn red active" data-color="red"></label>
-                        
-                        <input type="radio" name="textColor" id="blueTextColor" value="blue" hidden>
-                        <label for="blueTextColor" class="color-btn blue" data-color="blue"></label>
-
-                        <input type="radio" name="textColor" id="yellowTextColor" value="yellow" hidden>
-                        <label for="yellowTextColor" class="color-btn yellow" data-color="yellow"></label>
-                        
-                        <input type="radio" name="textColor" id="whiteTextColor" value="white" hidden>
-                        <label for="whiteTextColor" class="color-btn white" data-color="white"></label>
+                    <div class="color-picker-container">
+                        <input type="color" id="textColorPicker" value="#ff0000">
+                        <label for="textColorPicker" class="color-picker-label">Text Color</label>
                     </div>
                     <div class="text-size-control">
                         <input type="range" id="textSize" min="16" max="64" value="26" class="width-slider">
@@ -227,7 +207,7 @@
                     <input type="text" id="annotationText" placeholder="Enter text" class="text-input">
                     <button id="addTextBtn" class="text-btn">Add Text</button>
                     <button id="deleteTextBtn" class="delete-btn">Delete Last</button>
-                    <p class="tool-tip">Select a color, enter your text, click Add Text, then click on the map</p>
+                    <p class="tool-tip">Select a color, enter your text, click Add Text, adjust text size, click on the map</p>
                 </div>
             </section>
             

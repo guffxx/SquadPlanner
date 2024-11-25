@@ -23,7 +23,9 @@ export function placeMarker(event, markerType) {
     
     const pos = getMousePos(event);
     const marker = new Image();
-    marker.src = `assets/icons/${markerType.toLowerCase()}.png`;
+    
+    // Handle both built-in and custom icons
+    marker.src = markerType.includes('data:') ? markerType : `assets/icons/${markerType.toLowerCase()}.png`;
     
     marker.onload = function() {
         let markerWidth, markerHeight;
@@ -45,7 +47,8 @@ export function placeMarker(event, markerType) {
             height: markerHeight,
             tint: state.currentTint,
             originalX: pos.x,
-            originalY: pos.y
+            originalY: pos.y,
+            isCustom: markerType.includes('data:')
         };
         
         state.markers.push(newMarker);
