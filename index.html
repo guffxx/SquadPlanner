@@ -122,14 +122,23 @@
                             <input type="color" id="lineColorPicker" value="#ff0000">
                             <label for="lineColorPicker" class="color-picker-label">Line Color</label>
                         </div>
+                        
+                        <div class="line-type-buttons">
+                            <button id="arrowLineBtn" class="line-type-btn active" title="Arrow Line">--></button>
+                            <button id="xLineBtn" class="line-type-btn" title="X Line">--X</button>
+                            <button id="plainLineBtn" class="line-type-btn" title="Plain Line">---</button>
+                        </div>
+
                         <div class="line-width-control">
                             <input type="range" id="lineWidth" min="1" max="8" value="5" class="width-slider">
                             <span class="width-value">5px</span>
                         </div>
+
                         <button id="straightLineBtn" class="straight-line-btn">200px Line</button>
-                        <p class="tool-tip">Select a color, adjust line width, click-drag to draw</p>
+                        <p class="tool-tip">Select a color, select a line type, adjust line width, click-drag to draw</p>
                     </div>
                     <button id="deleteLineBtn" class="compact-btn">Delete Last</button>
+                    
                 </div>
             </section>
 

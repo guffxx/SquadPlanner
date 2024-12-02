@@ -20,6 +20,16 @@ export function drawArrow(ctx, fromx, fromy, tox, toy, headLength = 15) {
     ctx.stroke();
 }
 
+export function drawX(ctx, x, y, size = 15) {
+    const halfSize = size / 2;
+    ctx.beginPath();
+    ctx.moveTo(x - halfSize, y - halfSize);
+    ctx.lineTo(x + halfSize, y + halfSize);
+    ctx.moveTo(x + halfSize, y - halfSize);
+    ctx.lineTo(x - halfSize, y + halfSize);
+    ctx.stroke();
+}
+
 export function getMousePos(e) {
     const rect = state.canvas.getBoundingClientRect();
     const scaleX = state.canvas.width / rect.width;
@@ -38,13 +48,13 @@ export function startDrawing(e) {
     const pos = getMousePos(e);
     [state.lastX, state.lastY] = [pos.x, pos.y];
     [state.lastSmoothX, state.lastSmoothY] = [pos.x, pos.y];
-    state.smoothedPoints = [];
     
     state.currentPath = [{
         x: state.lastX,
         y: state.lastY,
         color: state.currentColor,
-        width: state.lineWidth
+        width: state.lineWidth,
+        type: state.currentLineType
     }];
 }
 
@@ -52,33 +62,21 @@ export function draw(e) {
     if (!state.currentImage || !state.isDrawing || state.isErasing) return;
 
     const pos = getMousePos(e);
-    
-    if (state.smoothedPoints.length === 0) {
-        state.lastSmoothX = pos.x;
-        state.lastSmoothY = pos.y;
-    }
-    
     const smoothX = state.lastSmoothX + (pos.x - state.lastSmoothX) * state.smoothingFactor;
     const smoothY = state.lastSmoothY + (pos.y - state.lastSmoothY) * state.smoothingFactor;
-    
-    state.ctx.save();
-    state.ctx.translate(state.offsetX, state.offsetY);
-    state.ctx.scale(state.scale, state.scale);
-    
-    redrawCanvas();
     
     state.currentPath.push({
         x: smoothX,
         y: smoothY,
         color: state.currentColor,
-        width: state.lineWidth
+        width: state.lineWidth,
+        type: state.currentLineType
     });
 
     state.lastSmoothX = smoothX;
     state.lastSmoothY = smoothY;
-    state.smoothedPoints.push({ x: smoothX, y: smoothY });
     
-    state.ctx.restore();
+    redrawCanvas();
 }
 
 export function stopDrawing() {

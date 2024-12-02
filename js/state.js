@@ -37,7 +37,8 @@ export const state = {
     lastUsedMarker: null,
     isDrawingStraightLine: false,
     straightLineStart: null,
-    isDraggingHandle: null
+    isDraggingHandle: null,
+    currentLineType: 'arrow'
 };
 
 // Initialize canvas size

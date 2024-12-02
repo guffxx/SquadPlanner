@@ -1,5 +1,5 @@
 import { state } from './state.js';
-import { drawArrow } from './drawing.js';
+import { drawArrow, drawX } from './drawing.js';
 import { applyTint } from './imageHandling.js';
 
 export function redrawCanvas() {
@@ -14,8 +14,8 @@ export function redrawCanvas() {
     // Draw base image
     state.ctx.drawImage(state.currentImage, 0, 0);
     
-    // Draw paths
-    state.drawingHistory.forEach(path => {
+    // Function to draw a path
+    const drawPath = (path) => {
         if (path.length < 2) return;
         
         state.ctx.beginPath();
@@ -30,46 +30,36 @@ export function redrawCanvas() {
         }
         state.ctx.stroke();
         
-        if (path.length >= 4) {
+        if (path.length >= 2) {
             const lastPoint = path[path.length - 1];
             const secondLastPoint = path[path.length - 2];
-            state.ctx.strokeStyle = path[0].color; // Ensure arrow has same color as line
-            drawArrow(
-                state.ctx,
-                secondLastPoint.x,
-                secondLastPoint.y,
-                lastPoint.x,
-                lastPoint.y,
-                path[0].width * 3
-            );
+            state.ctx.strokeStyle = path[0].color;
+
+            switch (path[0].type) {
+                case 'arrow':
+                    drawArrow(
+                        state.ctx,
+                        secondLastPoint.x,
+                        secondLastPoint.y,
+                        lastPoint.x,
+                        lastPoint.y,
+                        path[0].width * 3
+                    );
+                    break;
+                case 'x':
+                    drawX(state.ctx, lastPoint.x, lastPoint.y, path[0].width * 4);
+                    break;
+                // Plain line has no ending decoration
+            }
         }
-    });
+    };
+
+    // Draw saved paths
+    state.drawingHistory.forEach(drawPath);
     
     // Draw current path
-    if (state.currentPath.length > 1) {
-        state.ctx.beginPath();
-        state.ctx.moveTo(state.currentPath[0].x, state.currentPath[0].y);
-        state.ctx.strokeStyle = state.currentPath[0].color;
-        state.ctx.lineWidth = state.currentPath[0].width;
-        state.ctx.lineCap = 'round';
-        state.ctx.lineJoin = 'round';
-        
-        for (let i = 1; i < state.currentPath.length; i++) {
-            state.ctx.lineTo(state.currentPath[i].x, state.currentPath[i].y);
-        }
-        state.ctx.stroke();
-        
-        const lastPoint = state.currentPath[state.currentPath.length - 1];
-        const secondLastPoint = state.currentPath[state.currentPath.length - 2];
-        state.ctx.strokeStyle = state.currentPath[0].color; // Ensure arrow has same color as line
-        drawArrow(
-            state.ctx,
-            secondLastPoint.x,
-            secondLastPoint.y,
-            lastPoint.x,
-            lastPoint.y,
-            state.currentPath[0].width * 3
-        );
+    if (state.currentPath.length > 0) {
+        drawPath(state.currentPath);
     }
     
     // Draw markers
