@@ -250,6 +250,31 @@ function initializeUIControls() {
             stopDrawing();
         }
     });
+
+    // Add this to initializeUIControls()
+    const lineTypeButtons = {
+        'arrowLineBtn': 'arrow',
+        'xLineBtn': 'x',
+        'plainLineBtn': 'plain'
+    };
+
+    Object.entries(lineTypeButtons).forEach(([buttonId, lineType]) => {
+        const button = document.getElementById(buttonId);
+        if (button) {
+            button.addEventListener('click', function() {
+                // Remove active class from all line type buttons
+                document.querySelectorAll('.line-type-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                // Set the current line type
+                state.currentLineType = lineType;
+            });
+        }
+    });
 }
 
 function deselectAllTools() {

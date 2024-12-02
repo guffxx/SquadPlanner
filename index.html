@@ -122,14 +122,23 @@
                             <input type="color" id="lineColorPicker" value="#ff0000">
                             <label for="lineColorPicker" class="color-picker-label">Line Color</label>
                         </div>
+                        
+                        <div class="line-type-buttons">
+                            <button id="arrowLineBtn" class="line-type-btn active" title="Arrow Line">--></button>
+                            <button id="xLineBtn" class="line-type-btn" title="X Line">--X</button>
+                            <button id="plainLineBtn" class="line-type-btn" title="Plain Line">---</button>
+                        </div>
+
                         <div class="line-width-control">
                             <input type="range" id="lineWidth" min="1" max="8" value="5" class="width-slider">
                             <span class="width-value">5px</span>
                         </div>
+
                         <button id="straightLineBtn" class="straight-line-btn">200px Line</button>
-                        <p class="tool-tip">Select a color, adjust line width, click-drag to draw</p>
+                        <p class="tool-tip">Select a color, select a line type, adjust line width, click-drag to draw</p>
                     </div>
                     <button id="deleteLineBtn" class="compact-btn">Delete Last</button>
+                    
                 </div>
             </section>
 
@@ -189,6 +198,18 @@
                     <button id="habMarkerBtn" class="icon-btn">
                         <img src="assets/icons/hab.png" alt="HAB" class="marker-icon">
                     </button>
+                    <button id="towMarkerBtn" class="icon-btn">
+                        <img src="assets/icons/TOW.png" alt="TOW" class="marker-icon">
+                    </button>
+                    <button id="hatMarkerBtn" class="icon-btn">
+                        <img src="assets/icons/HAT.png" alt="HAT" class="marker-icon">
+                    </button>
+                    <button id="mgMarkerBtn" class="icon-btn">
+                        <img src="assets/icons/MG.png" alt="MG" class="marker-icon">
+                    </button>
+                    <button id="hmgMarkerBtn" class="icon-btn">
+                        <img src="assets/icons/HMG.png" alt="HMG" class="marker-icon">
+                    </button>
                     <button id="deleteMarkerBtn" class="icon-btn delete-btn">Delete Last</button>
                 </div>
                 <p class="tool-tip">Select a color, select a marker, left click to place it on the map</p>
@@ -220,10 +241,10 @@
             <div class="nav-content">
                 <div class="nav-right">
                     <div class="info-tip">
-                        Next Major Update: Janurary 2025
+                        Next Major Update: Early 2025
                     </div>
                     <div class="info-tip">
-                        Features Incoming: More icons, Better Maps, Toggle POIs, and more. 
+                        Features Incoming: Higher Quality Maps, Togglable POIs, and more. 
                     </div>
                     <div class="creator-info">
                         <div class="creator-text">
