@@ -12,9 +12,9 @@ export const markerButtons = {
     'tankMarkerBtn': 'tank',
     'apcMarkerBtn': 'apc',
     'ifvMarkerBtn': 'ifv',
-    'rwsMarkerBtn': 'rws',
+    'mortarMarkerBtn': 'mortar',
     'radioMarkerBtn': 'radio',
-    'repStationMarkerBtn': 'repStation',
+    'repStationMarkerBtn': 'rep',
     'rallyMarkerBtn': 'rally'
 };
 
