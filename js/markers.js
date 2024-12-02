@@ -15,7 +15,11 @@ export const markerButtons = {
     'mortarMarkerBtn': 'mortar',
     'radioMarkerBtn': 'radio',
     'repStationMarkerBtn': 'rep',
-    'rallyMarkerBtn': 'rally'
+    'rallyMarkerBtn': 'rally',
+    'towMarkerBtn': 'TOW',
+    'hatMarkerBtn': 'HAT',
+    'mgMarkerBtn': 'MG',
+    'hmgMarkerBtn': 'HMG'
 };
 
 export function placeMarker(event, markerType) {
