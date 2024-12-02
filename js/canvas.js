@@ -2,6 +2,8 @@ import { state } from './state.js';
 import { drawArrow, drawX } from './drawing.js';
 import { applyTint } from './imageHandling.js';
 
+const markerImageCache = new Map();
+
 export function redrawCanvas() {
     if (!state.currentImage) return;
     
@@ -64,38 +66,20 @@ export function redrawCanvas() {
     
     // Draw markers
     state.markers.forEach(marker => {
-        const markerImage = new Image();
-        markerImage.src = marker.isCustom ? marker.type : `assets/icons/${marker.type.toLowerCase()}.png`;
+        const imageKey = marker.isCustom ? marker.type : `assets/icons/${marker.type.toLowerCase()}.png`;
         
-        markerImage.onload = function() {
-            state.ctx.save();
-            // Reset the transformation for markers
-            state.ctx.setTransform(1, 0, 0, 1, 0, 0);
-            
-            // Calculate screen position
-            const screenX = marker.x * state.scale + state.offsetX;
-            const screenY = marker.y * state.scale + state.offsetY;
-            
-            if (marker.tint !== '#ffffff') {
-                const tintedCanvas = applyTint(markerImage, marker.tint);
-                state.ctx.drawImage(
-                    tintedCanvas,
-                    screenX - (marker.width * state.scale) / 2,
-                    screenY - (marker.height * state.scale) / 2,
-                    marker.width * state.scale,
-                    marker.height * state.scale
-                );
-            } else {
-                state.ctx.drawImage(
-                    markerImage,
-                    screenX - (marker.width * state.scale) / 2,
-                    screenY - (marker.height * state.scale) / 2,
-                    marker.width * state.scale,
-                    marker.height * state.scale
-                );
-            }
-            state.ctx.restore();
-        };
+        if (!markerImageCache.has(imageKey)) {
+            // Create and cache the image if it doesn't exist
+            const markerImage = new Image();
+            markerImage.src = imageKey;
+            markerImage.onload = () => {
+                markerImageCache.set(imageKey, markerImage);
+                drawMarker(marker, markerImage);
+            };
+        } else {
+            // Use cached image
+            drawMarker(marker, markerImageCache.get(imageKey));
+        }
     });
     
     // Draw text annotations
@@ -116,5 +100,35 @@ export function redrawCanvas() {
         state.ctx.restore();
     });
     
+    state.ctx.restore();
+}
+
+function drawMarker(marker, markerImage) {
+    state.ctx.save();
+    // Reset the transformation for markers
+    state.ctx.setTransform(1, 0, 0, 1, 0, 0);
+    
+    // Calculate screen position
+    const screenX = marker.x * state.scale + state.offsetX;
+    const screenY = marker.y * state.scale + state.offsetY;
+    
+    if (marker.tint !== '#ffffff') {
+        const tintedCanvas = applyTint(markerImage, marker.tint);
+        state.ctx.drawImage(
+            tintedCanvas,
+            screenX - (marker.width * state.scale) / 2,
+            screenY - (marker.height * state.scale) / 2,
+            marker.width * state.scale,
+            marker.height * state.scale
+        );
+    } else {
+        state.ctx.drawImage(
+            markerImage,
+            screenX - (marker.width * state.scale) / 2,
+            screenY - (marker.height * state.scale) / 2,
+            marker.width * state.scale,
+            marker.height * state.scale
+        );
+    }
     state.ctx.restore();
 } 
