@@ -336,6 +336,13 @@ input[type="color"]::-moz-color-swatch {
 
 /* Tool Tips */
 .tool-tip {
+    font-size: 13px;
+    color: #999;
+    margin: 0;
+    text-align: center;
+}
+
+.tool-tip1 {
     font-size: 17px;
     color: #999;
     margin: 0;
@@ -557,7 +564,11 @@ input[type="color"]::-moz-color-swatch {
     }
 
     .tool-tip {
-        font-size: 10px;
+        font-size: 12px;
+    }
+
+    .tool-tip1 {
+        font-size: 12px;
     }
 
     .signature {
@@ -587,6 +598,10 @@ input[type="color"]::-moz-color-swatch {
         font-size: 10px;
     }
 
+    .tool-tip1 {
+        font-size: 10px;
+    }
+
     .signature {
         font-size: 9px;
     }
@@ -613,7 +628,12 @@ input[type="color"]::-moz-color-swatch {
     }
 
     .tool-tip {
-        font-size: 13px;
+        font-size: 9px;
+        line-height: 1.1;
+    }
+
+    .tool-tip1 {
+        font-size: 9px;
         line-height: 1.1;
     }
 
