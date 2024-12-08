@@ -45,7 +45,7 @@ body {
     width: 280px;
     min-width: 280px;
     max-width: 330px;
-    padding: 20px;
+    padding: 10px;
     border-right: 1px solid var(--accent);
     display: flex;
     flex-direction: column;
@@ -94,9 +94,10 @@ body {
 /* Headings */
 h2, h3 {
     color: var(--accent);
-    margin-bottom: 10px;
+    margin-bottom: 2px;
     font-weight: 500;
     font-size: 18px;
+    font-style: bold;
 }
 
 /* Form Controls */
@@ -335,7 +336,7 @@ input[type="color"]::-moz-color-swatch {
 
 /* Tool Tips */
 .tool-tip {
-    font-size: 13px;
+    font-size: 17px;
     color: #999;
     margin: 0;
     text-align: center;
@@ -415,14 +416,15 @@ input[type="color"]::-moz-color-swatch {
 }
 
 .nav-content {
-    max-width: 1400px;
-    margin: 0 auto;
-    margin-left: 300px;
-    margin-right: 20px;
+    max-width: 100%;
+    margin: 0;
+    margin-left: 280px;
+    padding-right: 20px;
     display: flex;
     justify-content: flex-end;
     align-items: center;
     height: 100%;
+    width: calc(100% - 280px);
 }
 
 .nav-right {
@@ -430,6 +432,7 @@ input[type="color"]::-moz-color-swatch {
     align-items: center;
     gap: 20px;
     height: 100%;
+    margin-left: auto;
 }
 
 /* Update info-tip styling to match page theme */
@@ -477,8 +480,8 @@ input[type="color"]::-moz-color-swatch {
 
 .signature {
     color: var(--accent);
-    font-style: italic;
-    font-size: 13px;
+    font-style: bold;
+    font-size: 14px;
     margin: 0;
 }
 
@@ -488,7 +491,8 @@ input[type="color"]::-moz-color-swatch {
     gap: 12px;
     height: 100%;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
+    min-width: fit-content;
 }
 
 .social-link {
@@ -505,6 +509,7 @@ input[type="color"]::-moz-color-swatch {
     background: rgba(255, 255, 255, 0.05);
     font-size: 14px;
     height: 32px;
+    white-space: nowrap;
 }
 
 .social-link:hover {
@@ -520,7 +525,7 @@ input[type="color"]::-moz-color-swatch {
     object-fit: contain;
 }
 
-/* Hidden Elements */
+/* Hidden Elements Because if I use them the entire page breaks*/
 #deleteLineBtn, 
 #deleteMarkerBtn,
 #deleteTextBtn,
@@ -533,6 +538,7 @@ input[type="color"]::-moz-color-swatch {
 @media screen and (max-width: 1200px) {
     .nav-content {
         margin-left: 290px;
+        width: calc(100% - 290px);
     }
 
     .social-link span {
@@ -541,6 +547,7 @@ input[type="color"]::-moz-color-swatch {
 
     .social-link {
         padding: 6px;
+        width: 32px;
     }
 
     .info-tip {
@@ -550,7 +557,7 @@ input[type="color"]::-moz-color-swatch {
     }
 
     .tool-tip {
-        font-size: 11px;
+        font-size: 10px;
     }
 
     .signature {
@@ -561,7 +568,7 @@ input[type="color"]::-moz-color-swatch {
 @media screen and (max-width: 768px) {
     .nav-content {
         margin-left: 285px;
-        margin-right: 10px;
+        width: calc(100% - 285px);
     }
 
     .nav-right {
@@ -569,9 +576,7 @@ input[type="color"]::-moz-color-swatch {
     }
 
     .info-tip {
-        font-size: 10px;
-        padding: 4px 8px;
-        max-width: 200px;
+        display: none;
     }
 
     .creator-info {
@@ -608,7 +613,7 @@ input[type="color"]::-moz-color-swatch {
     }
 
     .tool-tip {
-        font-size: 9px;
+        font-size: 13px;
         line-height: 1.1;
     }
 
