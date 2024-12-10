@@ -569,6 +569,7 @@ input[type="color"]::-moz-color-swatch {
 
     .tool-tip1 {
         font-size: 12px;
+        max-width: 200px;
     }
 
     .signature {
@@ -595,11 +596,12 @@ input[type="color"]::-moz-color-swatch {
     }
 
     .tool-tip {
-        font-size: 10px;
+        font-size: 8px;
     }
 
     .tool-tip1 {
-        font-size: 10px;
+        font-size: 8px;
+        max-width: 150px;
     }
 
     .signature {
@@ -635,6 +637,7 @@ input[type="color"]::-moz-color-swatch {
     .tool-tip1 {
         font-size: 5px;
         line-height: 1.1;
+        max-width: 100px;
     }
 
     .signature {
