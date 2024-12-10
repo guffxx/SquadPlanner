@@ -617,7 +617,7 @@ input[type="color"]::-moz-color-swatch {
     }
 
     .info-tip {
-        font-size: 9px;
+        font-size: 5px;
         padding: 3px 5px;
         max-width: 150px;
         line-height: 1.1;
@@ -628,17 +628,17 @@ input[type="color"]::-moz-color-swatch {
     }
 
     .tool-tip {
-        font-size: 9px;
+        font-size: 5cqb;
         line-height: 1.1;
     }
 
     .tool-tip1 {
-        font-size: 9px;
+        font-size: 5px;
         line-height: 1.1;
     }
 
     .signature {
-        font-size: 8px;
+        font-size: 5px;
     }
 
     .social-links {
@@ -650,8 +650,8 @@ input[type="color"]::-moz-color-swatch {
     }
 
     .social-icon {
-        width: 16px;
-        height: 16px;
+        width: 12px;
+        height: 12px;
     }
 }
 
