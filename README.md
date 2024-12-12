@@ -2,7 +2,7 @@
 A Squad Planning App. 
 
 Allows you to select different maps/factions/units/etc to plan your Squad matches. <br>
-This project is only vanilla HTML/CSS/JS. 
+This project is only vanilla HTML/CSS/JS. </br>
 I used AI to help me with naming / searching functionality I am still learning / and general help. 
 refactor and many features incoming. 
 
