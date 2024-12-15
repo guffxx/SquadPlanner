@@ -275,6 +275,24 @@ function initializeUIControls() {
             });
         }
     });
+
+    // Add event listeners for quick color buttons
+    document.querySelectorAll('.quick-color-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const color = this.dataset.color;
+            const container = this.closest('.color-picker-container');
+            const colorPicker = container.querySelector('input[type="color"]');
+            colorPicker.value = color;
+            
+            // Trigger a change event on the color picker
+            const event = new Event('input', { bubbles: true });
+            colorPicker.dispatchEvent(event);
+            
+            // Update active state of quick color buttons in this container
+            container.querySelectorAll('.quick-color-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
 }
 
 function deselectAllTools() {
