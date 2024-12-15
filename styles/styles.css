@@ -441,32 +441,6 @@ input[type="color"]::-moz-color-swatch {
     margin-left: auto;
 }
 
-/* Update info-tip styling to match page theme */
-.info-tip {
-    display: flex;
-    align-items: center;
-    padding: 6px 12px;
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    border-radius: 4px;
-    font-size: 0.9em;
-    color: var(--text-color);
-    border-left: 2px solid var(--accent);
-    max-width: 300px;
-    transition: all 0.2s ease;
-}
-
-.info-tip:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(255, 196, 9, 0.3);
-}
-
-.bug-tip {
-    display: none;
-}
-
 /* Navigation Elements */
 .creator-info {
     display: flex;
@@ -487,7 +461,7 @@ input[type="color"]::-moz-color-swatch {
 .signature {
     color: var(--accent);
     font-style: bold;
-    font-size: 14px;
+    font-size: 15px;
     margin: 0;
 }
 
