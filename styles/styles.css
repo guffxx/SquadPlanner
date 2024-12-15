@@ -46,7 +46,6 @@ body {
     min-width: 280px;
     max-width: 330px;
     padding: 10px;
-    border-right: 1px solid var(--accent);
     display: flex;
     flex-direction: column;
     overflow-y: auto;
@@ -413,8 +412,7 @@ input[type="color"]::-moz-color-swatch {
     top: 0;
     left: 0;
     right: 0;
-    background: linear-gradient(to right, var(--dark-bg), var(--darker-bg));
-    border-bottom: 1px solid var(--accent);
+    background: var(--dark-bg);
     padding: 0 20px;
     z-index: 100;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
