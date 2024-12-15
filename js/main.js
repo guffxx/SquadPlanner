@@ -72,12 +72,10 @@ function initializeUIControls() {
     
     lineColorContainer.addEventListener('click', function(e) {
         if (e.target === lineColorPicker) return;
-        deselectAllTools();
-        lineColorContainer.classList.add('active');
         state.canvas.style.cursor = 'crosshair';
     });
 
-    // Marker color picker and tool
+    // Marker color picker
     const markerColorPicker = document.getElementById('markerColorPicker');
     const markerColorContainer = document.querySelector('.tint-selector .color-picker-container');
     
@@ -86,19 +84,12 @@ function initializeUIControls() {
     });
     
     markerColorContainer.addEventListener('click', function(e) {
-        if (e.target !== markerColorPicker) {
-            deselectAllTools();
-            markerColorContainer.classList.add('active');
-            state.isPlacingMarker = true;
-            state.currentMarkerType = state.lastUsedMarker || 'HAB';
-            state.canvas.style.cursor = 'crosshair';
-        } else {
-            // Programmatically click the color picker when container is clicked
+        if (e.target === markerColorPicker) {
             markerColorPicker.click();
         }
     });
 
-    // Text color picker and tool
+    // Text color picker
     const textColorPicker = document.getElementById('textColorPicker');
     const textColorContainer = document.querySelector('.text-input-container .color-picker-container');
     
@@ -107,11 +98,7 @@ function initializeUIControls() {
     });
     
     textColorContainer.addEventListener('click', function(e) {
-        if (e.target !== textColorPicker) {
-            deselectAllTools();
-            textColorContainer.classList.add('active');
-        } else {
-            // Programmatically click the color picker when container is clicked
+        if (e.target === textColorPicker) {
             textColorPicker.click();
         }
     });
@@ -122,10 +109,11 @@ function initializeUIControls() {
         if (button) {
             button.addEventListener('click', function() {
                 deselectAllTools();
+                deselectDrawingTools();
                 
                 state.isPlacingMarker = true;
                 state.currentMarkerType = markerType;
-                state.lastUsedMarker = markerType; // Store the last used marker
+                state.lastUsedMarker = markerType;
                 this.classList.add('active');
                 state.canvas.style.cursor = 'crosshair';
             });
@@ -262,6 +250,9 @@ function initializeUIControls() {
         const button = document.getElementById(buttonId);
         if (button) {
             button.addEventListener('click', function() {
+                deselectAllTools();
+                deselectMarkerTools();
+                
                 // Remove active class from all line type buttons
                 document.querySelectorAll('.line-type-btn').forEach(btn => {
                     btn.classList.remove('active');
@@ -272,11 +263,12 @@ function initializeUIControls() {
                 
                 // Set the current line type
                 state.currentLineType = lineType;
+                state.canvas.style.cursor = 'crosshair';
             });
         }
     });
 
-    // Add event listeners for quick color buttons
+    // Update quick color button handler
     document.querySelectorAll('.quick-color-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const color = this.dataset.color;
@@ -295,17 +287,41 @@ function initializeUIControls() {
     });
 }
 
+function deselectDrawingTools() {
+    // Remove active class from line type buttons
+    document.querySelectorAll('.line-type-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // Reset drawing states
+    state.isDrawing = false;
+    state.isDrawingStraightLine = false;
+    state.currentLineType = null;
+}
+
+function deselectMarkerTools() {
+    // Remove active class from marker buttons
+    document.querySelectorAll('.icon-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // Reset marker states
+    state.isPlacingMarker = false;
+    state.currentMarkerType = null;
+}
+
 function deselectAllTools() {
-    // Reset all tool states
+    // Reset all tool states except colors
     state.isPlacingMarker = false;
     state.currentMarkerType = null;
     state.isPlacingText = false;
     state.isErasing = false;
     state.isDrawing = false;
     state.isDrawingStraightLine = false;
+    state.currentLineType = null;
 
-    // Remove active class from all buttons and containers
-    document.querySelectorAll('.icon-btn, .custom-icon-btn, .color-picker-container').forEach(btn => {
+    // Remove active class from all tool buttons
+    document.querySelectorAll('.icon-btn, .custom-icon-btn, .line-type-btn').forEach(btn => {
         btn.classList.remove('active');
     });
 

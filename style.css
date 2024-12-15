@@ -196,12 +196,12 @@ button,
 }
 
 .color-picker-container:hover {
-    transform: translateY(-1px);
+    transform: none;
 }
 
 .color-picker-container.active {
-    background: rgba(255, 196, 9, 0.2);
-    box-shadow: 0 0 12px rgba(255, 196, 9, 0.5);
+    background: none;
+    box-shadow: none;
 }
 
 /* Update color picker input styles */
@@ -874,16 +874,18 @@ input[type="color"]::-moz-color-swatch {
     display: flex;
     gap: 2px;
     margin-left: 4px;
+    border-left: 30px solid rgba(255, 255, 255, 0.00);
+
 }
 
 .quick-color-btn {
     width: 30px;
     height: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 2px;
     cursor: pointer;
     padding: 0;
     transition: all 0.2s ease;
+    
 }
 
 .quick-color-btn:hover {
@@ -893,7 +895,8 @@ input[type="color"]::-moz-color-swatch {
 
 .quick-color-btn.active {
     border-color: var(--accent);
-    box-shadow: 0 0 4px var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    transform: scale(1.1);
 }
 
 
