@@ -1,0 +1,901 @@
+/* CSS Variables */
+:root {
+    --dark-bg: #2b2b2b;
+    --darker-bg: #1f1f1f;
+    --accent: #ffc409;
+    --text-color: #ffffff;
+}
+
+/* Reset Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Base Layout */
+body {
+    background-color: var(--darker-bg);
+    color: var(--text-color);
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), 
+                      url('../assets/images/Squad_Img.webp');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+    min-height: 600px;
+    justify-content: space-between;
+    width: 100%;
+    padding-top: 60px;
+    padding-left: 280px;
+    padding-right: 0;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    background-color: var(--dark-bg);
+    width: 280px;
+    min-width: 280px;
+    max-width: 330px;
+    padding: 10px;
+    border-right: 1px solid var(--accent);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    height: 100vh;
+    flex-shrink: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+/* Logo Section */
+.logo-section {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.squad-logo {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+.logo-section p {
+    font-size: 28px;
+    color: var(--accent);
+    font-family: sans-serif;
+    margin-top: -20px;
+}
+
+/* Common Section Styles */
+.selector-group, 
+.tool-row, 
+.icon-tools, 
+.text-tools, 
+.eraser-tools {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 8px;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+/* Headings */
+h2, h3 {
+    color: var(--accent);
+    margin-bottom: 2px;
+    font-weight: 500;
+    font-size: 18px;
+    font-style: bold;
+}
+
+/* Form Controls */
+select, 
+button, 
+.file-input, 
+.text-input {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    background-color: var(--darker-bg);
+    color: var(--text-color);
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    opacity: 0.75;
+    transition: all 0.2s ease;
+}
+
+/* Slider Controls */
+.width-slider, 
+.marker-size-control .width-slider {
+    flex: 1;
+    height: 4px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    outline: none;
+    min-width: 0;
+    transition: all 0.2s ease;
+}
+
+/* Slider Thumb Styles */
+.width-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 0 5px rgba(255, 196, 9, 0.5);
+}
+
+.width-slider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 0 5px rgba(255, 196, 9, 0.5);
+}
+
+/* Slider Hover Effects */
+.width-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    background: #ffd700;
+    box-shadow: 0 0 10px rgba(255, 196, 9, 0.7);
+}
+
+.width-slider::-moz-range-thumb:hover {
+    transform: scale(1.2);
+    background: #ffd700;
+    box-shadow: 0 0 10px rgba(255, 196, 9, 0.7);
+}
+
+.width-slider:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Value Display */
+.width-value, 
+.marker-size-value {
+    min-width: 28px;
+    color: #999;
+    font-size: 12px;
+    text-align: right;
+    padding: 0 4px;
+}
+
+/* Update color picker container styles */
+.color-picker-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.color-picker-container:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(255, 196, 9, 0.3);
+}
+
+.color-picker-container.active {
+    background: rgba(255, 196, 9, 0.2);
+    box-shadow: 0 0 12px rgba(255, 196, 9, 0.5);
+}
+
+/* Update color picker input styles */
+input[type="color"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background: none;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+    border: none;
+    border-radius: 4px;
+}
+
+input[type="color"]::-moz-color-swatch {
+    border: none;
+    border-radius: 4px;
+}
+
+.color-picker-label {
+    color: var(--text-color);
+    font-size: 14px;
+    opacity: 0.8;
+    pointer-events: none;
+}
+
+/* Remove old color button related styles */
+.marker-color-picker,
+.text-color-picker,
+.tint-color-picker,
+.color-btn,
+.tint-btn {
+    display: none;
+}
+
+/* Marker Grid */
+.marker-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 4px;
+    padding: 4px;
+}
+
+.marker-grid .icon-btn {
+    width: 100%;
+    aspect-ratio: 1;
+    padding: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--darker-bg);
+}
+
+.marker-icon {
+    width: 85%;
+    height: 85%;
+    object-fit: contain;
+    pointer-events: none;
+    transition: filter 0.3s ease;
+}
+
+/* Color filters for icons based on selected color */
+.drawing-tools .marker-color-picker input[type="radio"][value="red"]:checked ~ .icon-tools .marker-icon {
+    filter: sepia(1) saturate(10000%) hue-rotate(0deg) brightness(0.8);
+}
+
+.drawing-tools .marker-color-picker input[type="radio"][value="blue"]:checked ~ .icon-tools .marker-icon {
+    filter: sepia(1) saturate(10000%) hue-rotate(240deg) brightness(0.8);
+}
+
+.drawing-tools .marker-color-picker input[type="radio"][value="yellow"]:checked ~ .icon-tools .marker-icon {
+    filter: sepia(1) saturate(10000%) hue-rotate(60deg) brightness(1);
+}
+
+.drawing-tools .marker-color-picker input[type="radio"][value="white"]:checked ~ .icon-tools .marker-icon {
+    filter: brightness(2) saturate(0);
+}
+
+/* Hover effects */
+.marker-grid .icon-btn:hover .marker-icon {
+    filter: brightness(1.4);
+}
+
+/* Hover effects for colored icons */
+.drawing-tools .marker-color-picker input[type="radio"][value="red"]:checked ~ .icon-tools .icon-btn:hover .marker-icon {
+    filter: sepia(1) saturate(10000%) hue-rotate(0deg) brightness(1.2);
+}
+
+.drawing-tools .marker-color-picker input[type="radio"][value="blue"]:checked ~ .icon-tools .icon-btn:hover .marker-icon {
+    filter: sepia(1) saturate(10000%) hue-rotate(240deg) brightness(1.2);
+}
+
+.drawing-tools .marker-color-picker input[type="radio"][value="yellow"]:checked ~ .icon-tools .icon-btn:hover .marker-icon {
+    filter: sepia(1) saturate(10000%) hue-rotate(60deg) brightness(1.4);
+}
+
+.drawing-tools .marker-color-picker input[type="radio"][value="white"]:checked ~ .icon-tools .icon-btn:hover .marker-icon {
+    filter: brightness(2.4) saturate(0);
+}
+
+/* Canvas Area */
+.canvas-container {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background-color: rgba(43, 43, 43, 0.25);
+    margin: 0 20px 0 0;
+    order: 2;
+    margin-top: 10px;
+}
+
+#mapCanvas {
+    max-width: 100%;
+    max-height: 100%;
+    cursor: crosshair;
+}
+
+/* Tool Tips */
+.tool-tip {
+    font-size: 13px;
+    color: #999;
+    margin: 0;
+    text-align: center;
+}
+
+.tool-tip1 {
+    font-size: 17px;
+    color: #999;
+    margin: 0;
+    text-align: center;
+}
+
+/* Eraser Cursor */
+.eraser-cursor {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #ff0000;
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    display: none;
+    z-index: 1000;
+    background-color: rgba(255, 0, 0, 0.1);
+}
+
+/* Action Buttons */
+#downloadNow {
+    background: linear-gradient(45deg, var(--accent), #ffd700);
+    color: var(--darker-bg);
+    font-weight: bold;
+    padding: 15px 25px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 15px rgba(255, 196, 9, 0.3);
+    transition: all 0.3s ease;
+}
+
+#downloadNow:hover {
+    background: linear-gradient(45deg, #ffd700, var(--accent));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 196, 9, 0.5);
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+#downloadNow:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 10px rgba(255, 196, 9, 0.4);
+    background: linear-gradient(45deg, var(--accent), var(--accent));
+}
+
+#clearAll {
+    background-color: rgba(255, 68, 68, 0.2);
+    color: rgba(255, 255, 255, 0.7);
+    transition: all 0.3s ease;
+}
+
+#clearAll:hover {
+    background-color: rgba(255, 68, 68, 0.4);
+    color: rgba(255, 255, 255, 0.9);
+    transform: translateY(-1px);
+    box-shadow: 0 0 15px rgba(255, 68, 68, 0.3);
+}
+
+#clearAll:active {
+    background-color: rgba(255, 68, 68, 0.5);
+    color: white;
+    transform: translateY(1px);
+    box-shadow: 0 0 8px rgba(255, 68, 68, 0.5);
+}
+
+/* Top Navigation */
+.top-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to right, var(--dark-bg), var(--darker-bg));
+    border-bottom: 1px solid var(--accent);
+    padding: 0 20px;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    height: 60px;
+    display: flex;
+    align-items: center;
+}
+
+.nav-content {
+    max-width: 100%;
+    margin: 0;
+    margin-left: 280px;
+    padding-right: 20px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%;
+    width: calc(100% - 280px);
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    height: 100%;
+    margin-left: auto;
+}
+
+/* Update info-tip styling to match page theme */
+.info-tip {
+    display: flex;
+    align-items: center;
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: var(--text-color);
+    border-left: 2px solid var(--accent);
+    max-width: 300px;
+    transition: all 0.2s ease;
+}
+
+.info-tip:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(255, 196, 9, 0.3);
+}
+
+.bug-tip {
+    display: none;
+}
+
+/* Navigation Elements */
+.creator-info {
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    border-right: 1px solid var(--accent);
+    height: 100%;
+}
+
+.creator-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+}
+
+.signature {
+    color: var(--accent);
+    font-style: bold;
+    font-size: 14px;
+    margin: 0;
+}
+
+/* Social Links */
+.social-links {
+    display: flex;
+    gap: 12px;
+    height: 100%;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: fit-content;
+}
+
+.social-link {
+    opacity: 0.6;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--text-color);
+    padding: 6px 12px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    font-size: 14px;
+    height: 32px;
+    white-space: nowrap;
+}
+
+.social-link:hover {
+    opacity: 1;
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--accent);
+}
+
+.social-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+/* Hidden Elements Because if I use them the entire page breaks*/
+#deleteLineBtn, 
+#deleteMarkerBtn,
+#deleteTextBtn,
+#recenterBtn,
+.delete-btn {
+    display: none !important;
+}
+
+/* Update media queries for better text handling */
+@media screen and (max-width: 1200px) {
+    .nav-content {
+        margin-left: 290px;
+        width: calc(100% - 290px);
+    }
+
+    .social-link span {
+        display: none;
+    }
+
+    .social-link {
+        padding: 6px;
+        width: 32px;
+    }
+
+    .info-tip {
+        font-size: 11px;
+        padding: 6px 10px;
+        max-width: 250px;
+    }
+
+    .tool-tip {
+        font-size: 12px;
+    }
+
+    .tool-tip1 {
+        font-size: 12px;
+        max-width: 200px;
+    }
+
+    .signature {
+        font-size: 10px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .nav-content {
+        margin-left: 285px;
+        width: calc(100% - 285px);
+    }
+
+    .nav-right {
+        gap: 10px;
+    }
+
+    .info-tip {
+        display: none;
+    }
+
+    .creator-info {
+        padding: 0 8px;
+    }
+
+    .tool-tip {
+        font-size: 8px;
+    }
+
+    .tool-tip1 {
+        font-size: 8px;
+        max-width: 150px;
+    }
+
+    .signature {
+        font-size: 9px;
+    }
+}
+@media screen and (max-width: 480px) {
+    .nav-content {
+        margin-left: 282px;
+        margin-right: 5px;
+    }
+
+    .nav-right {
+        gap: 5px;
+    }
+
+    .info-tip {
+        font-size: 5px;
+        padding: 3px 5px;
+        max-width: 150px;
+        line-height: 1.1;
+    }
+
+    .creator-info {
+        padding: 0 5px;
+    }
+
+    .tool-tip {
+        font-size: 5cqb;
+        line-height: 1.1;
+    }
+
+    .tool-tip1 {
+        font-size: 5px;
+        line-height: 1.1;
+        max-width: 100px;
+    }
+
+    .signature {
+        font-size: 5px;
+    }
+
+    .social-links {
+        gap: 5px;
+    }
+
+    .social-link {
+        padding: 4px;
+    }
+
+    .social-icon {
+        width: 12px;
+        height: 12px;
+    }
+}
+
+/* Eraser Tool Button */
+#eraserBtn {
+    background-color: rgba(255, 68, 68, 0.4);
+    color: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+    text-shadow: 0 0 5px rgba(255, 68, 68, 0.3);
+}
+
+#eraserBtn:hover {
+    background-color: rgba(255, 68, 68, 0.6);
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 0 15px rgba(255, 68, 68, 0.4);
+}
+
+#eraserBtn.active {
+    background-color: rgb(255, 68, 68);
+    color: white;
+    box-shadow: 0 0 20px rgba(255, 68, 68, 0.5);
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+#eraserBtn:active {
+    transform: translateY(1px);
+    box-shadow: 0 0 10px rgba(255, 68, 68, 0.6);
+}
+
+/* Text Input Field */
+.text-input {
+    width: 100%;
+    padding: 8px;
+    background-color: var(--darker-bg);
+    color: var(--text-color);
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    opacity: 0.75;
+    transition: all 0.2s ease;
+}
+
+.text-input:focus {
+    opacity: 1;
+    border: 1px solid var(--accent);
+    box-shadow: 0 0 8px rgba(255, 196, 9, 0.3);
+    outline: none;
+}
+
+/* Add Text Button */
+#addTextBtn {
+    background-color: rgba(40, 167, 69, 0.3);
+    color: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+}
+
+#addTextBtn:hover {
+    background-color: rgba(40, 167, 69, 0.6);
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.5);
+}
+
+#addTextBtn.has-text {
+    background-color: rgba(40, 167, 69, 0.9);
+    color: white;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+    box-shadow: 0 0 20px rgba(40, 167, 69, 0.6);
+}
+
+#addTextBtn.has-text:hover {
+    background-color: rgb(50, 200, 83);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(40, 167, 69, 1),
+                0 0 30px rgba(40, 167, 69, 0.6);
+    text-shadow: 0 0 20px rgba(255, 255, 255, 1);
+}
+
+/* Icon Button Active State */
+.icon-btn.active {
+    background-color: var(--accent);
+    color: var(--darker-bg);
+    opacity: 1;
+    box-shadow: 0 0 12px rgba(255, 196, 9, 0.5);
+    z-index: 2;
+}
+
+.icon-btn:hover {
+    opacity: 1;
+    background-color: var(--dark-bg);
+    box-shadow: 0 0 8px rgba(255, 196, 9, 0.3);
+    z-index: 2;
+}
+
+/* Add this to your existing CSS */
+.placeholder-text {
+    color: var(--accent);
+    font-size: 24px;
+    line-height: 2;
+    text-align: left;
+    text-shadow: 0 0 10px rgba(255, 196, 9, 0.7),
+                 -1px -1px 0 #000,  
+                 1px -1px 0 #000,
+                 -1px 1px 0 #000,
+                 1px 1px 0 #000;
+    font-weight: bold;
+    pointer-events: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 800px;
+}
+
+/* Custom Icon Upload */
+.custom-icon-upload {
+    margin-bottom: 10px;
+    padding: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+.upload-icon-btn {
+    width: 100%;
+    padding: 8px;
+    background: linear-gradient(45deg, var(--accent), #ffd700);
+    color: var(--darker-bg);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    margin-bottom: 8px;
+}
+
+.upload-icon-btn:hover {
+    background: linear-gradient(45deg, #ffd700, var(--accent));
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(255, 196, 9, 0.3);
+}
+
+.custom-icons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    margin-top: 8px;
+}
+
+.custom-icon-btn {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    padding: 6px;
+    background-color: var(--darker-bg);
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.custom-icon-btn:hover {
+    background-color: rgba(255, 196, 9, 0.1);
+}
+
+.custom-icon-btn.active {
+    background-color: rgba(255, 196, 9, 0.2);
+    box-shadow: 0 0 8px rgba(255, 196, 9, 0.4);
+}
+
+.delete-custom-icon {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 16px;
+    height: 16px;
+    background: #ff4444;
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 12px;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.custom-icon-btn:hover .delete-custom-icon {
+    opacity: 1;
+}
+
+.delete-custom-icon:hover {
+    background: #ff6666;
+    transform: scale(1.1);
+}
+
+/* Hide the straight line button for now */
+.straight-line-btn {
+    display: none;
+}
+
+/* Update line type buttons styles */
+.line-type-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    margin: 8px 0;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.line-type-btn {
+    flex: 1;
+    min-width: 60px;
+    height: 32px;
+    padding: 4px 12px;
+    background-color: var(--darker-bg);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-color);
+    font-family: monospace;
+    font-size: 14px;
+}
+
+.line-type-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+}
+
+.line-type-btn.active {
+    background-color: var(--accent);
+    color: var(--darker-bg);
+}
+
+
+
+
