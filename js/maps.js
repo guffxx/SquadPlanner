@@ -160,133 +160,133 @@ export const maps = {
     // Skirmish Layers
     'AlBasrah_Skirmish_1': {
         name: 'Al Basrah: Skirmish v1',
-        path: 'assets/maps/skirmish/AlBasrah_Skirmish_1.png',
+        path: 'assets/maps/AlBasrah_Skirmish_1.png',
         category: 'Skirmish Layers',
         size: '2048x2048'
     },
     'Anvil_Skirmish_1': {
         name: 'Anvil: Skirmish v1',
-        path: 'assets/maps/skirmish/Anvil_Skirmish_1.png',
+        path: 'assets/maps/Anvil_Skirmish_1.png',
         category: 'Skirmish Layers',
         size: '4096x4096'
     },
     'BelayaPass_Skirmish_1': {
         name: 'Belaya Pass: Skirmish v1',
-        path: 'assets/maps/skirmish/BelayaPass_Skirmish_1.png',
+        path: 'assets/maps/BelayaPass_Skirmish_1.png',
         category: 'Skirmish Layers',
         size: '4096x4096'
     },
     'BlackCoast_Skirmish_1': {
         name: 'Black Coast: Skirmish v1',
-        path: 'assets/maps/skirmish/BlackCoast_Skirmish_1.png',
+        path: 'assets/maps/BlackCoast_Skirmish_1.png',
         category: 'Skirmish Layers',
         size: '4096x4096'
     },
     'Chora_Skirmish_1': {
         name: 'Chora: Skirmish v1',
-        path: 'assets/maps/skirmish/Chora_Skirmish_1.png',
+        path: 'assets/maps/Chora_Skirmish_1.png',
         category: 'Skirmish Layers',
         size: '2048x2048'
     },
     'Fallujah_Skirmish_1': {
         name: 'Fallujah: Skirmish v1',
-        path: 'assets/maps/skirmish/Fallujah_Skirmish_1.png',
+        path: 'assets/maps/Fallujah_Skirmish_1.png',
         category: 'Skirmish Layers',
         size: '4096x4096'
     },
     'Foolsroad_Skirmish_1': {
         name: 'Fools Road: Skirmish v1',
-        path: 'assets/maps/skirmish/Foolsroad_Skirmish_1.png',
+        path: 'assets/maps/Foolsroad_Skirmish_1.png',
         category: 'Skirmish Layers',
         size: '2048x2048'
     },
     'Goosebay_Skirmish_1': {
         name: 'Goose Bay: Skirmish v1',
-        path: 'assets/maps/skirmish/Goosebay_Skirmish_1.png',
+        path: 'assets/maps/Goosebay_Skirmish_1.png',
         category: 'Skirmish Layers',
         size: '4096x4096'
     },
     'Gorodok_Skirmish_1': {
         name: 'Gorodok: Skirmish v1',
-        path: 'assets/maps/skirmish/Gorodok_Skirmish_1.png',
+        path: 'assets/maps/Gorodok_Skirmish_1.png',
         category: 'Skirmish Layers',
         size: '4096x4096'
     },
     'Harju_Skirmish_1': {
         name: 'Harju: Skirmish v1',
-        path: 'assets/maps/skirmish/Harju_Skirmish_1.png',
+        path: 'assets/maps/Harju_Skirmish_1.png',
         category: 'Skirmish Layers',
         size: '4096x4096'
     },
     'Kamdesh_Skirmish_1': {
         name: 'Kamdesh: Skirmish v1',
-        path: 'assets/maps/skirmish/Kamdesh_Skirmish_1.png',
+        path: 'assets/maps/Kamdesh_Skirmish_1.png',
         category: 'Skirmish Layers',
         size: '4096x4096'
     },
     'Kohat_Skirmish_1': {
         name: 'Kohat: Skirmish v1',
-        path: 'assets/maps/skirmish/Kohat_Skirmish_1.png',
+        path: 'assets/maps/Kohat_Skirmish_1.png',
         category: 'Skirmish Layers',
         size: '4096x4096'
     },
     'Lashkar_Skirmish_1': {
         name: 'Lashkar Valley: Skirmish v1',
-        path: 'assets/maps/skirmish/Lashkar_Skirmish_1.png',
+        path: 'assets/maps/Lashkar_Skirmish_1.png',
         category: 'Skirmish Layers',
         size: '4096x4096'
     },
     'Logar_Skirmish_1': {
         name: 'Logar Valley: Skirmish v1',
-        path: 'assets/maps/skirmish/Logar_Skirmish_1.png',
+        path: 'assets/maps/Logar_Skirmish_1.png',
         category: 'Skirmish Layers',
         size: '2048x2048'
     },
     'Manic_Skirmish_1': {
         name: 'Manic-5: Skirmish v1',
-        path: 'assets/maps/skirmish/Manic_Skirmish_1.png',
+        path: 'assets/maps/Manic_Skirmish_1.png',
         category: 'Skirmish Layers',
         size: '4096x4096'
     },
     'Mestia_Skirmish_1': {
         name: 'Mestia: Skirmish v1',
-        path: 'assets/maps/skirmish/Mestia_Skirmish_1.png',
+        path: 'assets/maps/Mestia_Skirmish_1.png',
         category: 'Skirmish Layers',
         size: '4096x4096'
     },
     'Mutaha_Skirmish_1': {
         name: 'Mutaha: Skirmish v1',
-        path: 'assets/maps/skirmish/Mutaha_Skirmish_1.png',
+        path: 'assets/maps/Mutaha_Skirmish_1.png',
         category: 'Skirmish Layers',
         size: '4096x4096'
     },
     'Narva_Skirmish_1': {
         name: 'Narva: Skirmish v1',
-        path: 'assets/maps/skirmish/Narva_Skirmish_1.png',
+        path: 'assets/maps/Narva_Skirmish_1.png',
         category: 'Skirmish Layers',
         size: '4096x4096'
     },
     'Skorpo_Skirmish_1': {
         name: 'Skorpo: Skirmish v1',
-        path: 'assets/maps/skirmish/Skorpo_Skirmish_1.png',
+        path: 'assets/maps/Skorpo_Skirmish_1.png',
         category: 'Skirmish Layers',
         size: '4096x4096'
     },
     'Sumari_Skirmish_1': {
         name: 'Sumari: Skirmish v1',
-        path: 'assets/maps/skirmish/Sumari_Skirmish_1.png',
+        path: 'assets/maps/Sumari_Skirmish_1.png',
         category: 'Skirmish Layers',
         size: '2048x2048'
     },
     'Tallil_Skirmish_1': {
         name: 'Tallil Outskirts: Skirmish v1',
-        path: 'assets/maps/skirmish/Tallil_Skirmish_1.png',
+        path: 'assets/maps/Tallil_Skirmish_1.png',
         category: 'Skirmish Layers',
         size: '4096x4096'
     },
     'Yehorivka_Skirmish_1': {
         name: 'Yehorivka: Skirmish v1',
-        path: 'assets/maps/skirmish/Yehorivka_Skirmish_1.png',
+        path: 'assets/maps/Yehorivka_Skirmish_1.png',
         category: 'Skirmish Layers',
         size: '4096x4096'
     }
