@@ -1,7 +1,6 @@
 import { state } from './state.js';
 import { getMousePos } from './drawing.js';
 import { redrawCanvas } from './canvas.js';
-import { applyTint } from './imageHandling.js';
 
 export const markerButtons = {
     'habMarkerBtn': 'HAB',

@@ -91,6 +91,14 @@ function addIconToGrid(iconData) {
         document.getElementById('eraserBtn').classList.remove('active');
         
         state.canvas.style.cursor = 'crosshair';
+        
+        // Add event listener for placing marker
+        state.canvas.addEventListener('click', function onCanvasClick(e) {
+            if (state.isPlacingMarker && state.currentMarkerType === iconData.src) {
+                placeMarker(e, iconData.src);
+                state.canvas.removeEventListener('click', onCanvasClick);
+            }
+        });
     });
 }
 
