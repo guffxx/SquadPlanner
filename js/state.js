@@ -33,7 +33,7 @@ export const state = {
     lineWidth: 5,
     lastX: 0,
     lastY: 0,
-    textSize: 28,
+    textSize: 36,
     lastUsedMarker: null,
     isDrawingStraightLine: false,
     straightLineStart: null,
