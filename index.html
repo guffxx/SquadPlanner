@@ -24,7 +24,7 @@
                         <option value="custom">Upload Custom Map...</option>
                     </select>
                     <input type="file" id="imageUpload" accept="image/*" class="file-input" hidden>
-                    <p class="tool-tip">Select a map,or upload your own</p>
+                    <p class="tool-tip">Select a map, or upload your own</p>
                     <button id="downloadNow">DOWNLOAD MAP</button>
                 </div>
 
@@ -220,9 +220,15 @@
                 <p>Loading map...</p>
             </div>
 
+            <div class="error-message" style="display: none;">
+                <p>Failed to load map. Please try another.</p>
+            </div>
         </main>
 
     </div>
+
+    <div id="preloadContainer" style="display: none;"></div>
+
     <script type="module" src="js/main.js"></script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 /* CSS Variables */
 :root {
     --dark-bg: #2b2b2b;
-    --darker-bg: #1f1f1f;
+    --darker-bg: hwb(0 12% 88%);
     --accent: #ffc409;
     --text-color: #ffffff;
 }
@@ -19,7 +19,7 @@ body {
     color: var(--text-color);
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), 
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.8)), 
                       url('../assets/images/Squad_Img.webp');
     background-size: cover;
     background-position: center;
@@ -41,10 +41,9 @@ body {
 
 /* Sidebar Styles */
 .sidebar {
-    background-color: var(--dark-bg);
     width: 280px;
     min-width: 280px;
-    max-width: 330px;
+    max-width: 10%px;
     padding: 10px;
     display: flex;
     flex-direction: column;
@@ -343,8 +342,8 @@ input[type="color"]::-moz-color-swatch {
 }
 
 .tool-tip1 {
-    font-size: 17px;
-    color: #999;
+    font-size: 1.3rem;
+    color: #212121;
     margin: 0;
     text-align: center;
 }
@@ -410,13 +409,16 @@ input[type="color"]::-moz-color-swatch {
 .top-nav {
     position: fixed;
     top: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(to right, var(--dark-bg), var(--darker-bg));
+    left: 25%;
+    right: 20%;
     padding: 0 20px;
     z-index: 100;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     height: 60px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
 }
@@ -424,8 +426,8 @@ input[type="color"]::-moz-color-swatch {
 .nav-content {
     max-width: 100%;
     margin: 0;
-    margin-left: 280px;
-    padding-right: 20px;
+    margin-left: 20%;
+    padding-right: 0;
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -449,9 +451,9 @@ input[type="color"]::-moz-color-swatch {
 .creator-info {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
     gap: 40px;  /* Increased gap between text and social links */
-    padding-right: 20px;  /* Add padding on the right */
+    padding-right: 0px;  /* Add padding on the right */
 }
 
 .creator-text {
@@ -466,7 +468,7 @@ input[type="color"]::-moz-color-swatch {
 .signature {
     color: var(--accent);
     font-style: bold;
-    font-size: 14px;
+    font-size: 17px;
     margin: 0;
 }
 
@@ -520,6 +522,13 @@ input[type="color"]::-moz-color-swatch {
 }
 
 /* Update media queries for better text handling */
+
+@media screen and (max-width: 1415px) {
+    .top-nav {
+        display: none;
+    }
+}
+
 @media screen and (max-width: 1200px) {
     .nav-content {
         margin-left: 290px;
@@ -528,6 +537,10 @@ input[type="color"]::-moz-color-swatch {
 
     .social-link span {
         display: none;
+    }
+
+    .creator-info {
+        font-size: 1rem;
     }
 
     .social-link {
@@ -541,14 +554,18 @@ input[type="color"]::-moz-color-swatch {
         max-width: 250px;
     }
 
+    .top-nav {
+        display: none;
+    }
+
 
     .tool-tip1 {
-        font-size: 12px;
+        display: none;
        
     }
 
     .signature {
-        font-size: 10px;
+        display: none;
     }
 }
 
