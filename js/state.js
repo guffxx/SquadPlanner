@@ -29,7 +29,7 @@ export const state = {
     smoothedPoints: [],
     lastSmoothX: 0,
     lastSmoothY: 0,
-    markerSize: 48,
+    markerSize: 64,
     lineWidth: 5,
     lastX: 0,
     lastY: 0,

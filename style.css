@@ -97,14 +97,21 @@ body {
 .selector-group,
 .tool-row,
 .icon-tools,
-.text-tools,
-.eraser-tools {
+.text-tools {
     background: rgba(255, 255, 255, 0.12);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     border-radius: 8px;
     padding: 8px;
     margin-bottom: 10px;
+}
+
+.eraser-tools {
+    position: absolute;
+    top: 0;
+    bottom: 95%;
+    left: 40%;
+    right: 40%;
 }
 
 
@@ -275,18 +282,23 @@ input[type="color"]::-moz-color-swatch {
 }
 
 .marker-grid .icon-btn {
-    width: 100%;
-    aspect-ratio: 1;
-    padding: 6px;
+    width: 48px;
+    height: 48px;
+    padding: 4px;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     background-color: var(--darker-bg);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    opacity: 0.75;
+    transition: all 0.2s ease;
 }
 
 .marker-icon {
-    width: 85%;
-    height: 85%;
+    width: 44px;
+    height: 44px;
     object-fit: contain;
     pointer-events: none;
     transition: filter 0.3s ease;
@@ -403,16 +415,17 @@ input[type="color"]::-moz-color-swatch {
 }
 
 #clearAll {
-    background-color: rgba(255, 68, 68, 0.7);
+    background-color: rgba(240, 30, 30, 0.9);
     color: rgba(255, 255, 255, 1);
     transition: all 0.3s ease;
 }
 
 #clearAll:hover {
-    background-color: rgba(255, 68, 68, 1);
+    background-color: rgb(148, 0, 0);
     color: rgba(255, 255, 255, 0.9);
     transform: translateY(-1px);
-    box-shadow: 0 0 15px rgba(255, 68, 68, 0.3);
+    box-shadow: 0 0 20px rgba(255, 68, 68, 1);
+    
 }
 
 #clearAll:active {
@@ -423,7 +436,7 @@ input[type="color"]::-moz-color-swatch {
 }
 
 /* Top Navigation */
-footer {
+header {
     position: fixed;
     top: 10px;
     right: 30px;
@@ -561,7 +574,7 @@ footer {
         max-width: 250px;
     }
 
-    footer {
+    header {
         display: none;
     }
 
@@ -579,14 +592,14 @@ footer {
 
 /* Eraser Tool Button */
 #eraserBtn {
-    background-color: rgba(255, 68, 68, 0.6);
+    background-color: rgba(255, 48, 48, 0.9);
     color: rgba(255, 255, 255, 0.9);
     transition: all 0.3s ease;
     text-shadow: 0 0 5px rgba(255, 68, 68, 0.3);
 }
 
 #eraserBtn:hover {
-    background-color: rgba(255, 68, 68, 0.6);
+    background-color: rgb(148, 0, 0);
     color: white;
     transform: translateY(-1px);
     box-shadow: 0 0 15px rgba(255, 68, 68, 0.4);
@@ -826,7 +839,7 @@ footer {
 }
 
 .line-type-btn:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--accent);
     transform: translateY(-1px);
 }
 
