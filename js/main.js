@@ -17,23 +17,65 @@ document.addEventListener('DOMContentLoaded', () => {
     const mapSelect = document.getElementById('mapSelect');
     const imageUpload = document.getElementById('imageUpload');
 
-    mapSelect.addEventListener('change', function() {
-        if (this.value === 'custom') {
-            imageUpload.click();
-        } else if (this.value) {
-            const mapData = mapUtils.getMapData(this.value);
-            if (mapData) {
-                loadMap(mapData.path);
+    mapSelect.addEventListener('change', async function() {
+        try {
+            if (this.value === 'custom') {
+                imageUpload.click();
+                return;
             }
+            
+            if (this.value) {
+                state.isLoading = true;
+                state.currentMapKey = this.value;
+                redrawCanvas(); // Show loading state
+                
+                const mapData = mapUtils.getMapData(this.value);
+                if (mapData) {
+                    // Show loading state
+                    const placeholder = document.querySelector('.placeholder-text');
+                    if (placeholder) {
+                        placeholder.style.display = 'block';
+                        placeholder.textContent = 'Loading map...';
+                    }
+                    
+                    // Reset state for new map
+                    state.resetState();
+                    
+                    // Load map asynchronously
+                    await loadMap(mapData.path);
+                    
+                    // Update UI based on map size
+                    document.body.classList.toggle('large-map', 
+                        mapData.size === '4096x4096');
+                }
+            }
+        } catch (error) {
+            console.error('Error loading map:', error);
+            state.loadingError = error;
+            alert('Failed to load map. Please try another.');
+        } finally {
+            state.isLoading = false;
+            redrawCanvas();
         }
     });
 
-    imageUpload.addEventListener('change', function(e) {
+    // Handle custom map upload
+    imageUpload.addEventListener('change', async function(e) {
         const file = e.target.files[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onload = e => loadMap(e.target.result);
-            reader.readAsDataURL(file);
+            try {
+                const reader = new FileReader();
+                const imageData = await new Promise((resolve, reject) => {
+                    reader.onload = e => resolve(e.target.result);
+                    reader.onerror = e => reject(e);
+                    reader.readAsDataURL(file);
+                });
+                
+                await loadMap(imageData);
+            } catch (error) {
+                console.error('Error loading custom map:', error);
+                alert('Failed to load custom map. Please try another file.');
+            }
         }
     });
 

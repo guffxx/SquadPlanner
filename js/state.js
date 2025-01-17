@@ -38,7 +38,28 @@ export const state = {
     isDrawingStraightLine: false,
     straightLineStart: null,
     isDraggingHandle: null,
-    currentLineType: 'arrow'
+    currentLineType: 'arrow',
+    isLoading: false,
+    loadingError: null,
+    currentMapKey: null,
+    resetState() {
+        this.drawingHistory = [];
+        this.currentPath = [];
+        this.markers = [];
+        this.textAnnotations = [];
+        this.scale = 1;
+        this.offsetX = 0;
+        this.offsetY = 0;
+        this.isDrawing = false;
+        this.isPlacingMarker = false;
+        this.isPlacingText = false;
+        this.isErasing = false;
+        this.isDrawingStraightLine = false;
+        this.isDraggingHandle = false;
+        this.straightLineStart = null;
+        this.straightLineEnd = null;
+        this.loadingError = null;
+    }
 };
 
 // Initialize canvas size

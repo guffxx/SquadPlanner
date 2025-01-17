@@ -336,11 +336,37 @@ export const mapUtils = {
         return maps[key];
     },
 
-    // Initialize map selection
-    initializeMapSelect() {
+    // Add preload method
+    async preloadMap(mapKey) {
+        const mapData = this.getMapData(mapKey);
+        if (!mapData) return null;
+
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = () => resolve(img);
+            img.onerror = reject;
+            img.src = mapData.path;
+        });
+    },
+
+    // Initialize map selection with preloading
+    async initializeMapSelect() {
         const mapSelect = document.getElementById('mapSelect');
         if (!mapSelect) return;
         
         this.populateMapSelect(mapSelect);
+
+        // Preload first map of each category
+        try {
+            const categories = this.getCategories();
+            for (const category of categories) {
+                const firstMap = this.getMapsInCategory(category)[0];
+                if (firstMap) {
+                    await this.preloadMap(firstMap.key);
+                }
+            }
+        } catch (error) {
+            console.error('Error preloading maps:', error);
+        }
     }
 }; 
