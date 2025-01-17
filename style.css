@@ -19,8 +19,8 @@ body {
     color: var(--text-color);
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.8)), 
-                      url('../assets/images/Squad_Img.webp');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 1)),
+        url('../assets/images/Squad_Img.webp');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -36,7 +36,7 @@ body {
     width: 100%;
     padding-top: 60px;
     padding-left: 280px;
-    padding-right: 0;
+    padding-right: 280px;
 }
 
 /* Sidebar Styles */
@@ -53,6 +53,22 @@ body {
     position: fixed;
     top: 0;
     left: 0;
+    z-index: 1000;
+}
+
+.sidebar-right {
+    width: 280px;
+    min-width: 280px;
+    max-width: 10%px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    height: 100vh;
+    flex-shrink: 0;
+    position: fixed;
+    top: 20%;
+    right: 0;
     z-index: 1000;
 }
 
@@ -78,10 +94,10 @@ body {
 }
 
 /* Common Section Styles */
-.selector-group, 
-.tool-row, 
-.icon-tools, 
-.text-tools, 
+.selector-group,
+.tool-row,
+.icon-tools,
+.text-tools,
 .eraser-tools {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(5px);
@@ -92,7 +108,8 @@ body {
 }
 
 /* Headings */
-h2, h3 {
+h2,
+h3 {
     color: var(--accent);
     margin-bottom: 2px;
     font-weight: 500;
@@ -101,9 +118,9 @@ h2, h3 {
 }
 
 /* Form Controls */
-select, 
-button, 
-.file-input, 
+select,
+button,
+.file-input,
 .text-input {
     width: 100%;
     padding: 10px;
@@ -118,7 +135,7 @@ button,
 }
 
 /* Slider Controls */
-.width-slider, 
+.width-slider,
 .marker-size-control .width-slider {
     flex: 1;
     height: 4px;
@@ -173,7 +190,7 @@ button,
 }
 
 /* Value Display */
-.width-value, 
+.width-value,
 .marker-size-value {
     min-width: 28px;
     color: #999;
@@ -239,7 +256,7 @@ input[type="color"]::-moz-color-swatch {
     white-space: nowrap;
 }
 
-/* Remove old color button related styles */
+/* Remove old color button related styles because if I delete them THE WHOLE THING BREAKS FOR SOME REASON */
 .marker-color-picker,
 .text-color-picker,
 .tint-color-picker,
@@ -275,19 +292,19 @@ input[type="color"]::-moz-color-swatch {
 }
 
 /* Color filters for icons based on selected color */
-.drawing-tools .marker-color-picker input[type="radio"][value="red"]:checked ~ .icon-tools .marker-icon {
+.drawing-tools .marker-color-picker input[type="radio"][value="red"]:checked~.icon-tools .marker-icon {
     filter: sepia(1) saturate(10000%) hue-rotate(0deg) brightness(0.8);
 }
 
-.drawing-tools .marker-color-picker input[type="radio"][value="blue"]:checked ~ .icon-tools .marker-icon {
+.drawing-tools .marker-color-picker input[type="radio"][value="blue"]:checked~.icon-tools .marker-icon {
     filter: sepia(1) saturate(10000%) hue-rotate(240deg) brightness(0.8);
 }
 
-.drawing-tools .marker-color-picker input[type="radio"][value="yellow"]:checked ~ .icon-tools .marker-icon {
+.drawing-tools .marker-color-picker input[type="radio"][value="yellow"]:checked~.icon-tools .marker-icon {
     filter: sepia(1) saturate(10000%) hue-rotate(60deg) brightness(1);
 }
 
-.drawing-tools .marker-color-picker input[type="radio"][value="white"]:checked ~ .icon-tools .marker-icon {
+.drawing-tools .marker-color-picker input[type="radio"][value="white"]:checked~.icon-tools .marker-icon {
     filter: brightness(2) saturate(0);
 }
 
@@ -297,19 +314,19 @@ input[type="color"]::-moz-color-swatch {
 }
 
 /* Hover effects for colored icons */
-.drawing-tools .marker-color-picker input[type="radio"][value="red"]:checked ~ .icon-tools .icon-btn:hover .marker-icon {
+.drawing-tools .marker-color-picker input[type="radio"][value="red"]:checked~.icon-tools .icon-btn:hover .marker-icon {
     filter: sepia(1) saturate(10000%) hue-rotate(0deg) brightness(1.2);
 }
 
-.drawing-tools .marker-color-picker input[type="radio"][value="blue"]:checked ~ .icon-tools .icon-btn:hover .marker-icon {
+.drawing-tools .marker-color-picker input[type="radio"][value="blue"]:checked~.icon-tools .icon-btn:hover .marker-icon {
     filter: sepia(1) saturate(10000%) hue-rotate(240deg) brightness(1.2);
 }
 
-.drawing-tools .marker-color-picker input[type="radio"][value="yellow"]:checked ~ .icon-tools .icon-btn:hover .marker-icon {
+.drawing-tools .marker-color-picker input[type="radio"][value="yellow"]:checked~.icon-tools .icon-btn:hover .marker-icon {
     filter: sepia(1) saturate(10000%) hue-rotate(60deg) brightness(1.4);
 }
 
-.drawing-tools .marker-color-picker input[type="radio"][value="white"]:checked ~ .icon-tools .icon-btn:hover .marker-icon {
+.drawing-tools .marker-color-picker input[type="radio"][value="white"]:checked~.icon-tools .icon-btn:hover .marker-icon {
     filter: brightness(2.4) saturate(0);
 }
 
@@ -321,8 +338,7 @@ input[type="color"]::-moz-color-swatch {
     justify-content: center;
     align-items: center;
     position: relative;
-    background-color: rgba(43, 43, 43, 0.25);
-    margin: 0 20px 0 0;
+    margin: 0 20px;
     order: 2;
     margin-top: 10px;
 }
@@ -342,16 +358,16 @@ input[type="color"]::-moz-color-swatch {
 }
 
 .tool-tip1 {
-    font-size: 1.3rem;
-    color: #212121;
+    font-size: 1rem;
+    color: #d3d0d0;
     margin: 0;
     text-align: center;
 }
 
 /* Eraser Cursor */
 .eraser-cursor {
-    width: 40px;
-    height: 40px;
+    width: 45px;
+    height: 45px;
     border: 2px solid #ff0000;
     border-radius: 50%;
     position: fixed;
@@ -386,13 +402,13 @@ input[type="color"]::-moz-color-swatch {
 }
 
 #clearAll {
-    background-color: rgba(255, 68, 68, 0.2);
-    color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(255, 68, 68, 0.7);
+    color: rgba(255, 255, 255, 1);
     transition: all 0.3s ease;
 }
 
 #clearAll:hover {
-    background-color: rgba(255, 68, 68, 0.4);
+    background-color: rgba(255, 68, 68, 1);
     color: rgba(255, 255, 255, 0.9);
     transform: translateY(-1px);
     box-shadow: 0 0 15px rgba(255, 68, 68, 0.3);
@@ -406,33 +422,29 @@ input[type="color"]::-moz-color-swatch {
 }
 
 /* Top Navigation */
-.top-nav {
+footer {
     position: fixed;
-    top: 0;
-    left: 25%;
-    right: 20%;
-    padding: 0 20px;
+    top: 10px;
+    right: 30px;
+    padding: 10px 20px;
     z-index: 100;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
-    height: 60px;
     border-radius: 10px;
     display: flex;
     align-items: center;
+    max-width: 600px;
 }
 
 .nav-content {
     max-width: 100%;
     margin: 0;
-    margin-left: 20%;
     padding-right: 0;
     display: flex;
     justify-content: flex-end;
     align-items: center;
     height: 100%;
-    width: calc(100% - 280px);
 }
 
 .nav-right {
@@ -452,8 +464,10 @@ input[type="color"]::-moz-color-swatch {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 40px;  /* Increased gap between text and social links */
-    padding-right: 0px;  /* Add padding on the right */
+    gap: 40px;
+    /* Increased gap between text and social links */
+    padding-right: 0px;
+    /* Add padding on the right */
 }
 
 .creator-text {
@@ -513,7 +527,7 @@ input[type="color"]::-moz-color-swatch {
 }
 
 /* Hidden Elements Because if I use them the entire page breaks*/
-#deleteLineBtn, 
+#deleteLineBtn,
 #deleteMarkerBtn,
 #deleteTextBtn,
 #recenterBtn,
@@ -524,24 +538,16 @@ input[type="color"]::-moz-color-swatch {
 /* Update media queries for better text handling */
 
 @media screen and (max-width: 1415px) {
-    .top-nav {
-        display: none;
+
+
+    .container {
+        padding-right: 280px;
+        padding-left: 280px;
     }
 }
 
 @media screen and (max-width: 1200px) {
-    .nav-content {
-        margin-left: 290px;
-        width: calc(100% - 290px);
-    }
 
-    .social-link span {
-        display: none;
-    }
-
-    .creator-info {
-        font-size: 1rem;
-    }
 
     .social-link {
         padding: 6px;
@@ -554,100 +560,20 @@ input[type="color"]::-moz-color-swatch {
         max-width: 250px;
     }
 
-    .top-nav {
+    footer {
         display: none;
     }
 
 
-    .tool-tip1 {
-        display: none;
-       
-    }
-
-    .signature {
-        display: none;
-    }
 }
 
 @media screen and (max-width: 768px) {
-    .nav-content {
-        margin-left: 285px;
-        width: calc(100% - 285px);
-    }
-
-    .nav-right {
-        gap: 10px;
-    }
-
-    .info-tip {
+    .container {
         display: none;
     }
 
-    .creator-info {
-        padding: 0 8px;
-    }
 
-    .tool-tip {
-        font-size: 8px;
-    }
 
-    .tool-tip1 {
-        font-size: 8px;
-        max-width: 150px;
-    }
-
-    .signature {
-        font-size: 9px;
-    }
-}
-@media screen and (max-width: 480px) {
-    .nav-content {
-        margin-left: 282px;
-        margin-right: 5px;
-    }
-
-    .nav-right {
-        gap: 5px;
-    }
-
-    .info-tip {
-        font-size: 5px;
-        padding: 3px 5px;
-        max-width: 150px;
-        line-height: 1.1;
-    }
-
-    .creator-info {
-        padding: 0 5px;
-    }
-
-    .tool-tip {
-        font-size: 5cqb;
-        line-height: 1.1;
-    }
-
-    .tool-tip1 {
-        font-size: 5px;
-        line-height: 1.1;
-        max-width: 100px;
-    }
-
-    .signature {
-        font-size: 5px;
-    }
-
-    .social-links {
-        gap: 5px;
-    }
-
-    .social-link {
-        padding: 4px;
-    }
-
-    .social-icon {
-        width: 12px;
-        height: 12px;
-    }
 }
 
 /* Eraser Tool Button */
@@ -721,7 +647,7 @@ input[type="color"]::-moz-color-swatch {
     background-color: rgb(50, 200, 83);
     transform: translateY(-2px);
     box-shadow: 0 4px 20px rgba(40, 167, 69, 1),
-                0 0 30px rgba(40, 167, 69, 0.6);
+        0 0 30px rgba(40, 167, 69, 0.6);
     text-shadow: 0 0 20px rgba(255, 255, 255, 1);
 }
 
@@ -741,17 +667,17 @@ input[type="color"]::-moz-color-swatch {
     z-index: 2;
 }
 
-/* Add this to your existing CSS */
+/* MOTM Center text */
 .placeholder-text {
     color: var(--accent);
     font-size: 24px;
     line-height: 2;
     text-align: left;
     text-shadow: 0 0 10px rgba(255, 196, 9, 0.7),
-                 -1px -1px 0 #000,  
-                 1px -1px 0 #000,
-                 -1px 1px 0 #000,
-                 1px 1px 0 #000;
+        -1px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        1px 1px 0 #000;
     font-weight: bold;
     pointer-events: none;
     position: absolute;
@@ -903,7 +829,7 @@ input[type="color"]::-moz-color-swatch {
     cursor: pointer;
     padding: 0;
     transition: all 0.2s ease;
-    
+
 }
 
 .quick-color-btn:hover {
@@ -916,7 +842,3 @@ input[type="color"]::-moz-color-swatch {
     box-shadow: 0 0 8px var(--accent);
     transform: scale(1.1);
 }
-
-
-
-
