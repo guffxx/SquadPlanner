@@ -6,10 +6,14 @@ import { addTextAnnotation } from './annotations.js';
 import { initializeEraser, eraseElements, handleZoom } from './tools.js';
 import { redrawCanvas } from './canvas.js';
 import { initializeCustomIcons } from './customIcons.js';
+import { maps, mapUtils } from './maps.js';
 
-// Initialize event listeners
+// Initialize application
 document.addEventListener('DOMContentLoaded', () => {
-    // Map selection
+    // Initialize map selection
+    mapUtils.initializeMapSelect();
+
+    // Map selection handlers
     const mapSelect = document.getElementById('mapSelect');
     const imageUpload = document.getElementById('imageUpload');
 
@@ -17,7 +21,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (this.value === 'custom') {
             imageUpload.click();
         } else if (this.value) {
-            loadMap(this.value);
+            const mapData = mapUtils.getMapData(this.value);
+            if (mapData) {
+                loadMap(mapData.path);
+            }
         }
     });
 
@@ -25,9 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
-            reader.onload = function(event) {
-                loadMap(event.target.result);
-            };
+            reader.onload = e => loadMap(e.target.result);
             reader.readAsDataURL(file);
         }
     });

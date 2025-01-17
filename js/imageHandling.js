@@ -22,8 +22,21 @@ export function loadMap(src) {
     };
     
     state.currentImage.onerror = function(e) {
-        console.error('Error loading image:', e);
-        alert('Failed to load map image. Please check the console for details.');
+        console.error('Failed to load map:', src);
+        console.error('Error details:', {
+            path: src,
+            error: e
+        });
+        
+        // Show user-friendly error with path info
+        alert(`Failed to load map. Please check if the file exists at: ${src}`);
+        
+        // Show placeholder
+        const placeholder = document.querySelector('.placeholder-text');
+        if (placeholder) {
+            placeholder.style.display = 'block';
+            placeholder.textContent = 'Error loading map. Please try another.';
+        }
     };
     
     state.currentImage.src = src;
