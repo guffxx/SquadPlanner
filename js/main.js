@@ -1,89 +1,339 @@
-import { MapManager } from './mapManager.js';
-import { DrawingTools } from './drawingTools.js';
-import { MarkerTools } from './markerTools.js';
-import { TextTools } from './textTools.js';
-import { EraserTools } from './eraserTools.js';
-import { mapData } from './mapData.js';
+import { state } from './state.js';
+import { loadMap } from './imageHandling.js';
+import { startDrawing, draw, stopDrawing, getMousePos, startStraightLine, updateStraightLine, finishStraightLine } from './drawing.js';
+import { markerButtons, placeMarker } from './markers.js';
+import { addTextAnnotation } from './annotations.js';
+import { initializeEraser, eraseElements, handleZoom } from './tools.js';
+import { redrawCanvas } from './canvas.js';
+import { initializeCustomIcons } from './customIcons.js';
 
-document.addEventListener('DOMContentLoaded', async () => {
-    const canvas = document.getElementById('mapCanvas');
-    const ctx = canvas.getContext('2d');
-
-    // Initialize managers
-    const mapManager = new MapManager(canvas, ctx);
-    
-    // Preload maps
-    try {
-        mapManager.preloadedMaps = await mapManager.preloadMaps();
-    } catch (error) {
-        console.error('Error preloading maps:', error);
-    }
-
-    const drawingTools = new DrawingTools(canvas, ctx, mapManager);
-    const markerTools = new MarkerTools(canvas, ctx, mapManager);
-    const textTools = new TextTools(canvas, ctx, mapManager);
-    const eraserTools = new EraserTools(canvas, ctx, mapManager);
-
-    // Set tool references in mapManager
-    mapManager.setTools(drawingTools, markerTools, textTools, eraserTools);
-
-    // Initialize map selection
+// Initialize event listeners
+document.addEventListener('DOMContentLoaded', () => {
+    // Map selection
     const mapSelect = document.getElementById('mapSelect');
-    await initializeMapSelection(mapSelect, mapManager);
+    const imageUpload = document.getElementById('imageUpload');
 
-    // Initialize download functionality
-    const downloadBtn = document.getElementById('downloadNow');
-    downloadBtn.addEventListener('click', () => mapManager.downloadMap());
+    mapSelect.addEventListener('change', function() {
+        if (this.value === 'custom') {
+            imageUpload.click();
+        } else if (this.value) {
+            loadMap(this.value);
+        }
+    });
 
-    // Initialize recenter functionality
-    const recenterBtn = document.getElementById('recenterBtn');
-    recenterBtn.addEventListener('click', () => mapManager.recenterMap());
+    imageUpload.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                loadMap(event.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Canvas events
+    state.canvas.addEventListener('mousedown', handleCanvasClick);
+    state.canvas.addEventListener('mousemove', draw);
+    state.canvas.addEventListener('mouseup', stopDrawing);
+    state.canvas.addEventListener('mouseout', stopDrawing);
+    state.canvas.addEventListener('wheel', handleZoom);
+    state.canvas.addEventListener('contextmenu', e => e.preventDefault());
+
+    // Initialize tools
+    initializeEraser();
+    
+    // Initialize UI controls
+    initializeUIControls();
+
+    // Initialize custom icons
+    initializeCustomIcons();
 });
 
-async function initializeMapSelection(mapSelect, mapManager) {
-    try {
-        // Sort maps alphabetically by name
-        const sortedMaps = [...mapData].sort((a, b) => a.name.localeCompare(b.name));
-        
-        // Add map options
-        mapSelect.innerHTML = `
-            <option value="">Choose map...</option>
-            ${sortedMaps.map(map => `
-                <option value="${map.id}" ${mapManager.preloadedMaps?.has(map.id) ? '' : 'disabled'}>
-                    ${map.name}${mapManager.preloadedMaps?.has(map.id) ? '' : ' (Loading...)'}
-                </option>
-            `).join('')}
-            <option value="custom">Upload Custom Map...</option>
-        `;
-
-        // Handle map selection
-        mapSelect.addEventListener('change', async (e) => {
-            const selectedValue = e.target.value;
-            
-            if (selectedValue === 'custom') {
-                document.getElementById('imageUpload').click();
-            } else if (selectedValue) {
-                const selectedMap = mapData.find(map => map.id === selectedValue);
-                if (selectedMap) {
-                    await mapManager.loadMap(selectedMap.url, selectedMap.id);
-                }
-            }
-        });
-
-        // Handle custom map upload
-        document.getElementById('imageUpload').addEventListener('change', async (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                if (file.type.startsWith('image/')) {
-                    await mapManager.loadCustomMap(file);
-                } else {
-                    alert('Please upload an image file.');
-                }
-                e.target.value = ''; // Reset file input
-            }
-        });
-    } catch (error) {
-        console.error('Error initializing map selection:', error);
-        mapSelect.innerHTML = '<option value="">Error loading maps</option>';
+// Add this new function to handle canvas clicks
+function handleCanvasClick(e) {
+    if (state.isPlacingMarker && state.currentMarkerType) {
+        placeMarker(e, state.currentMarkerType);
+    } else if (state.isPlacingText) {
+        addTextAnnotation(e);
+    } else {
+        startDrawing(e);
     }
-} 
+}
+
+function initializeUIControls() {
+    // Line color picker and draw tool
+    const lineColorPicker = document.getElementById('lineColorPicker');
+    const lineColorContainer = document.querySelector('.line-tools-container .color-picker-container');
+    
+    lineColorPicker.addEventListener('input', function() {
+        state.currentColor = this.value;
+    });
+    
+    lineColorContainer.addEventListener('click', function(e) {
+        if (e.target === lineColorPicker) return;
+        state.canvas.style.cursor = 'crosshair';
+    });
+
+    // Marker color picker
+    const markerColorPicker = document.getElementById('markerColorPicker');
+    const markerColorContainer = document.querySelector('.tint-selector .color-picker-container');
+    
+    markerColorPicker.addEventListener('input', function() {
+        state.currentTint = this.value;
+    });
+    
+    markerColorContainer.addEventListener('click', function(e) {
+        if (e.target === markerColorPicker) {
+            markerColorPicker.click();
+        }
+    });
+
+    // Text color picker
+    const textColorPicker = document.getElementById('textColorPicker');
+    const textColorContainer = document.querySelector('.text-input-container .color-picker-container');
+    
+    textColorPicker.addEventListener('input', function() {
+        state.currentTextColor = this.value;
+    });
+    
+    textColorContainer.addEventListener('click', function(e) {
+        if (e.target === textColorPicker) {
+            textColorPicker.click();
+        }
+    });
+
+    // Marker buttons
+    Object.entries(markerButtons).forEach(([buttonId, markerType]) => {
+        const button = document.getElementById(buttonId);
+        if (button) {
+            button.addEventListener('click', function() {
+                deselectAllTools();
+                deselectDrawingTools();
+                
+                state.isPlacingMarker = true;
+                state.currentMarkerType = markerType;
+                state.lastUsedMarker = markerType;
+                this.classList.add('active');
+                state.canvas.style.cursor = 'crosshair';
+            });
+        }
+    });
+
+    // Text tools
+    const textInput = document.getElementById('annotationText');
+    const addTextBtn = document.getElementById('addTextBtn');
+
+    textInput.addEventListener('input', function() {
+        if (this.value.trim()) {
+            addTextBtn.classList.add('has-text');
+        } else {
+            addTextBtn.classList.remove('has-text');
+        }
+    });
+
+    addTextBtn.addEventListener('click', function() {
+        state.currentText = textInput.value.trim();
+        if (state.currentText) {
+            deselectAllTools();
+            
+            state.isPlacingText = true;
+            state.canvas.style.cursor = 'text';
+        }
+    });
+
+    // Eraser button
+    const eraserBtn = document.getElementById('eraserBtn');
+    eraserBtn.addEventListener('click', function() {
+        deselectAllTools();
+        
+        state.isErasing = true;
+        this.classList.add('active');
+        state.canvas.style.cursor = 'none';
+        if (state.eraserCursor) {
+            state.eraserCursor.style.display = 'block';
+        }
+    });
+
+    // Other controls
+    document.getElementById('clearAll').addEventListener('click', function() {
+        state.markers = [];
+        state.drawingHistory = [];
+        state.currentPath = [];
+        state.textAnnotations = [];
+        redrawCanvas();
+    });
+
+    document.getElementById('downloadNow').addEventListener('click', function() {
+        const link = document.createElement('a');
+        link.download = 'squad-map-plan.png';
+        link.href = state.canvas.toDataURL();
+        link.click();
+    });
+
+    // Initialize marker size slider
+    const markerSizeSlider = document.getElementById('markerSize');
+    const markerSizeValue = document.querySelector('.marker-size-value');
+    if (markerSizeSlider && markerSizeValue) {
+        markerSizeSlider.addEventListener('input', function() {
+            state.markerSize = this.value;
+            markerSizeValue.textContent = `${state.markerSize}px`;
+        });
+    }
+
+    // Initialize line width slider
+    const widthSlider = document.getElementById('lineWidth');
+    const widthValue = document.querySelector('.width-value');
+    if (widthSlider && widthValue) {
+        widthSlider.addEventListener('input', function() {
+            state.lineWidth = this.value;
+            widthValue.textContent = `${state.lineWidth}px`;
+        });
+    }
+
+    // Add text size slider handler
+    const textSizeSlider = document.getElementById('textSize');
+    const textSizeValue = document.querySelector('.text-size-value');
+    if (textSizeSlider && textSizeValue) {
+        textSizeSlider.addEventListener('input', function() {
+            state.textSize = this.value;
+            textSizeValue.textContent = `${state.textSize}px`;
+        });
+    }
+
+    // Straight line button
+    const straightLineBtn = document.getElementById('straightLineBtn');
+    straightLineBtn.addEventListener('click', function() {
+        deselectAllTools();
+        this.classList.add('active');
+        state.isDrawingStraightLine = true;
+        state.canvas.style.cursor = 'crosshair';
+    });
+
+    // Update canvas event listeners
+    state.canvas.addEventListener('mousedown', function(e) {
+        if (state.isDrawingStraightLine) {
+            startStraightLine(e);
+        } else if (state.isPlacingMarker && state.currentMarkerType) {
+            placeMarker(e, state.currentMarkerType);
+        } else if (state.isPlacingText) {
+            addTextAnnotation(e);
+        } else if (!state.isErasing) {
+            startDrawing(e);
+        }
+    });
+
+    state.canvas.addEventListener('mousemove', function(e) {
+        if (state.isDrawingStraightLine && state.isDraggingHandle) {
+            updateStraightLine(e);
+        } else if (!state.isErasing) {
+            draw(e);
+        }
+    });
+
+    state.canvas.addEventListener('mouseup', function(e) {
+        if (state.isDrawingStraightLine) {
+            finishStraightLine(e);
+        } else {
+            stopDrawing();
+        }
+    });
+
+    // Add this to initializeUIControls()
+    const lineTypeButtons = {
+        'arrowLineBtn': 'arrow',
+        'xLineBtn': 'x',
+        'plainLineBtn': 'plain'
+    };
+
+    Object.entries(lineTypeButtons).forEach(([buttonId, lineType]) => {
+        const button = document.getElementById(buttonId);
+        if (button) {
+            button.addEventListener('click', function() {
+                deselectAllTools();
+                deselectMarkerTools();
+                
+                // Remove active class from all line type buttons
+                document.querySelectorAll('.line-type-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                // Set the current line type
+                state.currentLineType = lineType;
+                state.canvas.style.cursor = 'crosshair';
+            });
+        }
+    });
+
+    // Update quick color button handler
+    document.querySelectorAll('.quick-color-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const color = this.dataset.color;
+            const container = this.closest('.color-picker-container');
+            const colorPicker = container.querySelector('input[type="color"]');
+            colorPicker.value = color;
+            
+            // Trigger a change event on the color picker
+            const event = new Event('input', { bubbles: true });
+            colorPicker.dispatchEvent(event);
+            
+            // Update active state of quick color buttons in this container
+            container.querySelectorAll('.quick-color-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+}
+
+function deselectDrawingTools() {
+    // Remove active class from line type buttons
+    document.querySelectorAll('.line-type-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // Reset drawing states
+    state.isDrawing = false;
+    state.isDrawingStraightLine = false;
+    state.currentLineType = null;
+}
+
+function deselectMarkerTools() {
+    // Remove active class from marker buttons
+    document.querySelectorAll('.icon-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // Reset marker states
+    state.isPlacingMarker = false;
+    state.currentMarkerType = null;
+}
+
+function deselectAllTools() {
+    // Reset all tool states except colors
+    state.isPlacingMarker = false;
+    state.currentMarkerType = null;
+    state.isPlacingText = false;
+    state.isErasing = false;
+    state.isDrawing = false;
+    state.isDrawingStraightLine = false;
+    state.currentLineType = null;
+
+    // Remove active class from all tool buttons
+    document.querySelectorAll('.icon-btn, .custom-icon-btn, .line-type-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+
+    // Hide eraser cursor and deactivate eraser button
+    if (state.eraserCursor) {
+        state.eraserCursor.style.display = 'none';
+    }
+    document.getElementById('eraserBtn').classList.remove('active');
+
+    // Reset cursor
+    state.canvas.style.cursor = 'default';
+
+    // Remove active class from straight line button
+    document.getElementById('straightLineBtn')?.classList.remove('active');
+}
