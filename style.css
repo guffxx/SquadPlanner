@@ -98,7 +98,7 @@ body {
 .icon-tools,
 .text-tools,
 .eraser-tools {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.12);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     border-radius: 8px;
@@ -671,7 +671,7 @@ footer {
     color: var(--accent);
     font-size: 24px;
     line-height: 2;
-    text-align: left;
+    text-align: center;
     text-shadow: 0 0 10px rgba(255, 196, 9, 0.7),
         -1px -1px 0 #000,
         1px -1px 0 #000,
