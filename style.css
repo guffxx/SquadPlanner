@@ -218,6 +218,7 @@ button,
     transition: all 0.3s ease;
     margin-bottom: 4px;
     height: 22px;
+    margin-top: 8px;
 }
 
 .color-picker-container:hover {
