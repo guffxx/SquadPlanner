@@ -3,22 +3,30 @@ import { getMousePos } from './drawing.js';
 import { redrawCanvas } from './canvas.js';
 
 export const markerButtons = {
-    'habMarkerBtn': 'HAB',
-    'heliMarkerBtn': 'heli',
-    'lavMarkerBtn': 'lav',
-    'logiMarkerBtn': 'logi',
-    'matvMarkerBtn': 'matv',
+    'heliMarkerBtn': 'transporthelo',
+    'lavMarkerBtn': 'ifv',
+    'logiMarkerBtn': 'truck_logistics',
+    'matvMarkerBtn': 'jeep_turret',
     'tankMarkerBtn': 'tank',
     'apcMarkerBtn': 'apc',
-    'ifvMarkerBtn': 'ifv',
-    'mortarMarkerBtn': 'mortar',
-    'radioMarkerBtn': 'radio',
-    'repStationMarkerBtn': 'rep',
+    'ifvMarkerBtn': 'trackedifv',
+    'mortarMarkerBtn': 'MORTAR',
+    'habMarkerBtn': 'hab',
+    'repStationMarkerBtn': 'REP',
     'rallyMarkerBtn': 'rally',
     'towMarkerBtn': 'TOW',
-    'hatMarkerBtn': 'HAT',
-    'mgMarkerBtn': 'MG',
-    'hmgMarkerBtn': 'HMG'
+    'AAMarkerBtn': 'antiair',
+    'mgMarkerBtn': 'mgs',
+    'hmgMarkerBtn': 'mgbunker',
+    'mortarBoomMarkerBtn': 'MORT',
+    'boatlogiMarkerBtn': 'boalogistics',
+    'msvMarkerBtn': 'trackedapc_msv',
+    'jeepantitankMarkerBtn': 'jeep_antitank',
+    'heavyantitankMarkerBtn': 'heavyantitank',
+    'minesMarkerBtn': 'MINES',
+    'boaopenturretMarkerBtn': 'boaopenturret',
+    'trackedjeepMarkerBtn': 'trackedjeep',
+    'truck_transportMarkerBtn': 'truck_transport',
 };
 
 export function placeMarker(event, markerType) {
@@ -28,7 +36,7 @@ export function placeMarker(event, markerType) {
     const marker = new Image();
     
     // Handle both built-in and custom icons
-    marker.src = markerType.includes('data:') ? markerType : `assets/icons/${markerType.toLowerCase()}.png`;
+    marker.src = markerType.includes('data:') ? markerType : `assets/icons/${markerType}.png`;
     
     marker.onload = function() {
         let markerWidth, markerHeight;

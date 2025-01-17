@@ -66,26 +66,27 @@
                     <input type="range" id="markerSize" min="30" max="80" value="48" class="width-slider">
                     <span class="width-value marker-size-value">48px</span>
                 </div>
-                <div class="custom-icon-upload">
-                    <div class="icon-upload-controls">
-                        <button id="uploadIconBtn" class="upload-icon-btn">Upload Custom Icon</button>
-                        <button id="clearIconsBtn" class="clear-icons-btn">Clear All Icons</button>
-                    </div>
-                    <input type="file" id="customIconUpload" accept="image/*" hidden>
-                    <div id="customIconsGrid" class="custom-icons"></div>
-                </div>
                 <div class="marker-grid">
                     <button id="heliMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/heli.png" alt="Heli" class="marker-icon">
-                    </button>
-                    <button id="lavMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/lav.png" alt="LAV" class="marker-icon">
+                        <img src="assets/icons/transporthelo.png" alt="Heli" class="marker-icon">
                     </button>
                     <button id="logiMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/logi.png" alt="Logi" class="marker-icon">
+                        <img src="assets/icons/truck_logistics.png" alt="Logi" class="marker-icon">
+                    </button>
+                    <button id="truck_transportMarkerBtn" class="icon-btn">
+                        <img src="assets/icons/truck_transport.png" alt="Truck Transport" class="marker-icon">
                     </button>
                     <button id="matvMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/matv.png" alt="MATV" class="marker-icon">
+                        <img src="assets/icons/jeep_turret.png" alt="MATV" class="marker-icon">
+                    </button>
+                    <button id="lavMarkerBtn" class="icon-btn">
+                        <img src="assets/icons/ifv.png" alt="LAV" class="marker-icon">
+                    </button>
+                    <button id="boatlogiMarkerBtn" class="icon-btn">
+                        <img src="assets/icons/boalogistics.png" alt="Boa Logistics" class="marker-icon">
+                    </button>
+                    <button id="boaopenturretMarkerBtn" class="icon-btn">
+                        <img src="assets/icons/boaopenturret.png" alt="Boa Open Turret" class="marker-icon">
                     </button>
                     <button id="tankMarkerBtn" class="icon-btn">
                         <img src="assets/icons/tank.png" alt="Tank" class="marker-icon">
@@ -94,36 +95,60 @@
                         <img src="assets/icons/apc.png" alt="APC" class="marker-icon">
                     </button>
                     <button id="ifvMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/ifv.png" alt="IFV" class="marker-icon">
+                        <img src="assets/icons/trackedifv.png" alt="IFV" class="marker-icon">
                     </button>
-                    <button id="mortarMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/mortar.png" alt="MORTAR" class="marker-icon">
+                    <button id="AAMarkerBtn" class="icon-btn">
+                        <img src="assets/icons/antiair.png" alt="AA" class="marker-icon">
                     </button>
-                    <button id="radioMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/radio.png" alt="Radio" class="marker-icon">
-                    </button>
-                    <button id="repStationMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/rep.png" alt="Repair Station" class="marker-icon">
-                    </button>
-                    <button id="rallyMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/RALLY.png" alt="Rally Point" class="marker-icon">
+
+                    <button id="mgMarkerBtn" class="icon-btn">
+                        <img src="assets/icons/mgs.png" alt="MGS" class="marker-icon">
                     </button>
                     <button id="habMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/hab.png" alt="HAB" class="marker-icon">
+                        <img src="assets/icons/hab.png" alt="Radio" class="marker-icon">
+                    </button>
+                    <button id="msvMarkerBtn" class="icon-btn">
+                        <img src="assets/icons/trackedapc_msv.png" alt="MSV" class="marker-icon">
+                    </button>
+                    <button id="trackedjeepMarkerBtn" class="icon-btn">
+                        <img src="assets/icons/trackedjeep.png" alt="Tracked Jeep" class="marker-icon">
+                    </button>
+                    <button id="jeepantitankMarkerBtn" class="icon-btn">
+                        <img src="assets/icons/jeep_antitank.png" alt="Jeep Anti-Tank" class="marker-icon">
+                    </button>
+                    <button id="mortarMarkerBtn" class="icon-btn">
+                        <img src="assets/icons/MORTAR.png" alt="MORTAR" class="marker-icon">
+                    </button>
+                    <button id="repStationMarkerBtn" class="icon-btn">
+                        <img src="assets/icons/REP.png" alt="Repair Station" class="marker-icon">
+                    </button>
+                    <button id="rallyMarkerBtn" class="icon-btn">
+                        <img src="assets/icons/rally.png" alt="Rally Point" class="marker-icon">
                     </button>
                     <button id="towMarkerBtn" class="icon-btn">
                         <img src="assets/icons/TOW.png" alt="TOW" class="marker-icon">
                     </button>
-                    <button id="hatMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/HAT.png" alt="HAT" class="marker-icon">
-                    </button>
-                    <button id="mgMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/MG.png" alt="MG" class="marker-icon">
-                    </button>
                     <button id="hmgMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/HMG.png" alt="HMG" class="marker-icon">
+                        <img src="assets/icons/mgbunker.png" alt="HMG" class="marker-icon">
+                    </button>
+                    <button id="mortarBoomMarkerBtn" class="icon-btn">
+                        <img src="assets/icons/MORT.png" alt="MortarBoom" class="marker-icon">
+                    </button>
+                    <button id="heavyantitankMarkerBtn" class="icon-btn">
+                        <img src="assets/icons/heavyantitank.png" alt="Heavy Anti-Tank" class="marker-icon">
+                    </button>
+                    <button id="minesMarkerBtn" class="icon-btn">
+                        <img src="assets/icons/MINES.png" alt="Mines" class="marker-icon">
                     </button>
                     <button id="deleteMarkerBtn" class="icon-btn delete-btn">Delete Last</button>
+                </div>
+                <div class="custom-icon-upload">
+                    <div class="icon-upload-controls">
+                        <button id="uploadIconBtn" class="upload-icon-btn">Upload Custom Icon</button>
+                        <button id="clearIconsBtn" class="clear-icons-btn">Clear All Icons</button>
+                    </div>
+                    <input type="file" id="customIconUpload" accept="image/*" hidden>
+                    <div id="customIconsGrid" class="custom-icons"></div>
                 </div>
                 <p class="tool-tip">Select a color, marker, left click to place it on the map</p>
             </section>
@@ -270,11 +295,11 @@
                     </div>
                     <div class="social-links">
                         <a href="https://codeofguff.github.io" target="_blank" class="social-link">
-                            <img src="assets/icons/github.png" alt="GitHub" class="social-icon">
+                            <img src="assets/images/github.png" alt="GitHub" class="social-icon">
                             <span>Github.io</span>
                         </a>
                         <a href="https://www.paypal.com/donate/?hosted_button_id=Z825KBBR8BYNS" target="_blank" class="social-link">
-                            <img src="assets/icons/paypal.png" alt="PayPal" class="social-icon">
+                            <img src="assets/images/paypal.png" alt="PayPal" class="social-icon">
                             <span>Donate</span>
                         </a>
                     </div>
