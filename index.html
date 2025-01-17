@@ -67,11 +67,12 @@
                     <span class="width-value marker-size-value">48px</span>
                 </div>
                 <div class="custom-icon-upload">
-                    <input type="file" id="customIconUpload" accept="image/*" hidden>
-                    <button id="uploadIconBtn" class="upload-icon-btn">Upload Custom Icon</button>
-                    <div id="customIconsGrid" class="marker-grid custom-icons">
-                        <!-- Custom icons will be added here -->
+                    <div class="icon-upload-controls">
+                        <button id="uploadIconBtn" class="upload-icon-btn">Upload Custom Icon</button>
+                        <button id="clearIconsBtn" class="clear-icons-btn">Clear All Icons</button>
                     </div>
+                    <input type="file" id="customIconUpload" accept="image/*" hidden>
+                    <div id="customIconsGrid" class="custom-icons"></div>
                 </div>
                 <div class="marker-grid">
                     <button id="heliMarkerBtn" class="icon-btn">

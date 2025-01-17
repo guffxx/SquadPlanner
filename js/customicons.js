@@ -3,10 +3,12 @@ import { placeMarker } from './markers.js';
 
 export function initializeCustomIcons() {
     const uploadBtn = document.getElementById('uploadIconBtn');
+    const clearBtn = document.getElementById('clearIconsBtn');
     const fileInput = document.getElementById('customIconUpload');
     const customIconsGrid = document.getElementById('customIconsGrid');
 
     uploadBtn.addEventListener('click', () => fileInput.click());
+    clearBtn.addEventListener('click', clearCustomIcons);
     fileInput.addEventListener('change', handleIconUpload);
 
     // Load saved custom icons from localStorage
@@ -96,4 +98,11 @@ function deleteCustomIcon(iconId) {
     const savedIcons = JSON.parse(localStorage.getItem('customIcons') || '[]');
     const updatedIcons = savedIcons.filter(icon => icon.id !== iconId);
     localStorage.setItem('customIcons', JSON.stringify(updatedIcons));
+}
+
+// Add this function to handle clearing icons
+function clearCustomIcons() {
+    localStorage.removeItem('customIcons');
+    const customIconsGrid = document.getElementById('customIconsGrid');
+    customIconsGrid.innerHTML = '';
 } 

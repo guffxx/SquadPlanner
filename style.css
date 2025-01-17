@@ -47,10 +47,10 @@ body {
     padding: 10px;
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
     height: 100vh;
     flex-shrink: 0;
     position: fixed;
+    overflow-y: auto;
     top: 0;
     left: 0;
     z-index: 1000;
@@ -63,7 +63,6 @@ body {
     padding: 10px;
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
     height: 100vh;
     flex-shrink: 0;
     position: fixed;
@@ -578,7 +577,7 @@ footer {
 
 /* Eraser Tool Button */
 #eraserBtn {
-    background-color: rgba(255, 68, 68, 0.4);
+    background-color: rgba(255, 68, 68, 0.6);
     color: rgba(255, 255, 255, 0.9);
     transition: all 0.3s ease;
     text-shadow: 0 0 5px rgba(255, 68, 68, 0.3);
@@ -689,16 +688,18 @@ footer {
 }
 
 /* Custom Icon Upload */
+
 .custom-icon-upload {
     margin-bottom: 10px;
     padding: 4px;
     background: rgba(255, 255, 255, 0.05);
     border-radius: 4px;
+
 }
 
 .upload-icon-btn {
-    width: 100%;
-    padding: 8px;
+    width: 49%;
+    padding: 0.8rem;
     background: linear-gradient(45deg, var(--accent), #ffd700);
     color: var(--darker-bg);
     border: none;
@@ -706,7 +707,7 @@ footer {
     cursor: pointer;
     font-weight: bold;
     transition: all 0.3s ease;
-    margin-bottom: 8px;
+    margin-bottom: 1px;
 }
 
 .upload-icon-btn:hover {
@@ -714,12 +715,31 @@ footer {
     transform: translateY(-1px);
     box-shadow: 0 2px 8px rgba(255, 196, 9, 0.3);
 }
+.clear-icons-btn {
+    width: 49%;
+    padding: 0.8rem;
+    background: rgba(255, 68, 68, 0.6);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    margin-bottom: 1px;
+
+}
+.clear-icons-btn:hover {
+    background: linear-gradient(45deg, #5e0000);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    color: rgb(175, 175, 175);
+}
 
 .custom-icons {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 4px;
-    margin-top: 8px;
+    margin-top: 2px;
 }
 
 .custom-icon-btn {
