@@ -1,7 +1,7 @@
 import { state } from './state.js';
 import { loadMap } from './imageHandling.js';
 import { startDrawing, draw, stopDrawing, getMousePos, startStraightLine, updateStraightLine, finishStraightLine } from './drawing.js';
-import { markerButtons, placeMarker } from './markers.js';
+import { markerButtons, placeMarker, handleMarkerDrag, updateMarkerDrag, stopMarkerDrag } from './markers.js';
 import { addTextAnnotation } from './annotations.js';
 import { initializeEraser, eraseElements, handleZoom } from './tools.js';
 import { redrawCanvas } from './canvas.js';
@@ -32,11 +32,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Canvas events
+    // Canvas events - consolidate into handleCanvasClick
     state.canvas.addEventListener('mousedown', handleCanvasClick);
-    state.canvas.addEventListener('mousemove', draw);
-    state.canvas.addEventListener('mouseup', stopDrawing);
-    state.canvas.addEventListener('mouseout', stopDrawing);
+    state.canvas.addEventListener('mousemove', handleMouseMove);
+    state.canvas.addEventListener('mouseup', handleMouseUp);
+    state.canvas.addEventListener('mouseout', handleMouseUp);
     state.canvas.addEventListener('wheel', handleZoom);
     state.canvas.addEventListener('contextmenu', e => e.preventDefault());
 
@@ -48,17 +48,65 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize custom icons
     initializeCustomIcons();
+
+   
 });
 
-// Add this new function to handle canvas clicks
+// Consolidated mouse handlers
 function handleCanvasClick(e) {
-    if (state.isPlacingMarker && state.currentMarkerType) {
-        placeMarker(e, state.currentMarkerType);
-    } else if (state.isPlacingText) {
-        addTextAnnotation(e);
-    } else {
-        startDrawing(e);
+    // Handle right-click for marker dragging
+    if (e.button === 2) { 
+        e.preventDefault();
+        
+        // Check if we're clicking on an existing marker
+        const pos = getMousePos(e);
+        for (let i = state.markers.length - 1; i >= 0; i--) {
+            const marker = state.markers[i];
+            const dx = pos.x - marker.x;
+            const dy = pos.y - marker.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance < marker.width / 2) {
+                state.isDraggingMarker = true;
+                state.draggedMarkerIndex = i;
+                state.canvas.style.cursor = 'move';
+                return;
+            }
+        }
+        return;
     }
+
+    // Handle left click
+    if (e.button === 0) {
+        // If we're not dragging, handle normal clicks
+        if (!state.isDraggingMarker) {
+            if (state.isPlacingMarker && state.currentMarkerType) {
+                placeMarker(e, state.currentMarkerType);
+            } else if (state.isPlacingText) {
+                addTextAnnotation(e);
+            } else {
+                startDrawing(e);
+            }
+        }
+    }
+}
+
+function handleMouseMove(e) {
+    if (state.isDraggingMarker) {
+        e.preventDefault();
+        updateMarkerDrag(e);
+        return;
+    }
+    draw(e);
+}
+
+function handleMouseUp(e) {
+    if (state.isDraggingMarker) {
+        stopMarkerDrag();
+        // Keep marker placement mode active after dragging
+        state.canvas.style.cursor = 'crosshair';
+    }
+    stopDrawing(e);
 }
 
 function initializeUIControls() {
@@ -284,6 +332,19 @@ function initializeUIControls() {
             container.querySelectorAll('.quick-color-btn').forEach(b => b.classList.remove('active'));
             this.classList.add('active');
         });
+    });
+
+    // Add undo functionality
+    const undoBtn = document.getElementById('undoBtn');
+    undoBtn.addEventListener('click', () => {
+        if (state.markers.length > 0) {
+            state.markers.pop();
+        } else if (state.drawingHistory.length > 0) {
+            state.drawingHistory.pop();
+        } else if (state.textAnnotations.length > 0) {
+            state.textAnnotations.pop();
+        }
+        redrawCanvas();
     });
 }
 

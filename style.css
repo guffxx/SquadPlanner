@@ -112,8 +112,15 @@ body {
     bottom: 95%;
     left: 40%;
     right: 40%;
+    display: flex;
+    gap: 4px;
 }
 
+.eraser-tools button {
+    flex: 1;
+    font-size: 14px;
+    padding: 8px;
+}
 
 /* Headings */
 h2,
@@ -877,4 +884,24 @@ header {
     border-color: var(--accent);
     box-shadow: 0 0 8px var(--accent);
     transform: scale(1.1);
+}
+
+
+#undoBtn {
+    background-color: rgba(255, 48, 48, 0.9);
+    color: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+    text-shadow: 0 0 5px rgba(255, 68, 68, 0.3);
+}
+
+#undoBtn:hover {
+    background-color: rgb(148, 0, 0);
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 0 15px rgba(255, 68, 68, 0.4);
+}
+
+#undoBtn:active {
+    transform: translateY(1px);
+    background-color: rgba(255, 68, 68, 0.5);
 }

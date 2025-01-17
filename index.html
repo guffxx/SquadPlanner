@@ -1,341 +1,705 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Map Planning Tool</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <div class="container">
-      
-        <aside class="sidebar">
-            <section class="logo-section">
-                <a href="https://www.joinsquad.com/" target="_blank">
-                    <img src="https://cdn.prod.website-files.com/651dd1cea3817995c17fa3c1/6557ac7dc67898168bff58dd_squadlogo_white_gold_hires-p-800.png" alt="Squad Logo" class="squad-logo">
-                </a>
-                <p>PLANNER</p>
-            </section>
-            
-            
+      <aside class="sidebar">
+        <section class="logo-section">
+          <a href="https://www.joinsquad.com/" target="_blank">
+            <img
+              src="https://cdn.prod.website-files.com/651dd1cea3817995c17fa3c1/6557ac7dc67898168bff58dd_squadlogo_white_gold_hires-p-800.png"
+              alt="Squad Logo"
+              class="squad-logo"
+            />
+          </a>
+          <p>PLANNER</p>
+        </section>
 
-            <section class="icon-tools">
-                <div class="tint-selector">
-                    <h3>Icons: </h3>
-                    <div class="color-picker-container">
-                        <input type="color" id="markerColorPicker" value="#ff0000">
-                        <label for="markerColorPicker" class="color-picker-label">Custom Color</label>
-                        <div class="quick-colors">
-                            <button class="quick-color-btn" style="background-color: #ff0000;" data-color="#ff0000"></button>
-                            <button class="quick-color-btn" style="background-color: #00ff00;" data-color="#00ff00"></button>
-                            <button class="quick-color-btn" style="background-color: #0000ff;" data-color="#0000ff"></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="marker-size-control">
-                    <input type="range" id="markerSize" min="40" max="75" value="56" class="width-slider">
-                    <span class="width-value marker-size-value">56px</span>
-                </div>
-                <div class="marker-grid">
-                    <button id="heliMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/transporthelo.png" alt="Heli" class="marker-icon">
-                    </button>
-                    <button id="logiMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/truck_logistics.png" alt="Logi" class="marker-icon">
-                    </button>
-                    <button id="truck_transportMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/truck_transport.png" alt="Truck Transport" class="marker-icon">
-                    </button>
-                    <button id="matvMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/jeep_turret.png" alt="MATV" class="marker-icon">
-                    </button>
-                    <button id="lavMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/ifv.png" alt="LAV" class="marker-icon">
-                    </button>
-                    <button id="boatlogiMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/boalogistics.png" alt="Boa Logistics" class="marker-icon">
-                    </button>
-                    <button id="boaopenturretMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/boaopenturret.png" alt="Boa Open Turret" class="marker-icon">
-                    </button>
-                    <button id="tankMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/tank.png" alt="Tank" class="marker-icon">
-                    </button>
-                    <button id="apcMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/apc.png" alt="APC" class="marker-icon">
-                    </button>
-                    <button id="ifvMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/trackedifv.png" alt="IFV" class="marker-icon">
-                    </button>
-                    <button id="AAMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/antiair.png" alt="AA" class="marker-icon">
-                    </button>
+        <section class="icon-tools">
+          <div class="tint-selector">
+            <h3>Icons:</h3>
 
-                    <button id="mgMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/mgs.png" alt="MGS" class="marker-icon">
-                    </button>
-                    <button id="habMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/hab.png" alt="Radio" class="marker-icon">
-                    </button>
-                    <button id="msvMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/trackedapc_msv.png" alt="MSV" class="marker-icon">
-                    </button>
-                    <button id="trackedjeepMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/trackedjeep.png" alt="Tracked Jeep" class="marker-icon">
-                    </button>
-                    <button id="jeepantitankMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/jeep_antitank.png" alt="Jeep Anti-Tank" class="marker-icon">
-                    </button>
-                    <button id="mortarMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/MORTAR.png" alt="MORTAR" class="marker-icon">
-                    </button>
-                    <button id="repStationMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/REP.png" alt="Repair Station" class="marker-icon">
-                    </button>
-                    <button id="rallyMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/rally.png" alt="Rally Point" class="marker-icon">
-                    </button>
-                    <button id="towMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/TOW.png" alt="TOW" class="marker-icon">
-                    </button>
-                    <button id="hmgMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/mgbunker.png" alt="HMG" class="marker-icon">
-                    </button>
-                    <button id="mortarBoomMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/MORT.png" alt="MortarBoom" class="marker-icon">
-                    </button>
-                    <button id="heavyantitankMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/heavyantitank.png" alt="Heavy Anti-Tank" class="marker-icon">
-                    </button>
-                    <button id="minesMarkerBtn" class="icon-btn">
-                        <img src="assets/icons/MINES.png" alt="Mines" class="marker-icon">
-                    </button>
-                    <button id="deleteMarkerBtn" class="icon-btn delete-btn">Delete Last</button>
+            <div class="color-picker-container">
+              <input type="color" id="markerColorPicker" value="#ff0000" />
+              <label for="markerColorPicker" class="color-picker-label"
+                >Custom Color</label
+              >
+              <div class="quick-colors">
+                <button
+                  class="quick-color-btn"
+                  style="background-color: #ff0000"
+                  data-color="#ff0000"
+                ></button>
+                <button
+                  class="quick-color-btn"
+                  style="background-color: #00ff00"
+                  data-color="#00ff00"
+                ></button>
+                <button
+                  class="quick-color-btn"
+                  style="background-color: #0000ff"
+                  data-color="#0000ff"
+                ></button>
+              </div>
+            </div>
+          </div>
+          <div class="marker-size-control">
+            <input
+              type="range"
+              id="markerSize"
+              min="40"
+              max="75"
+              value="56"
+              class="width-slider"
+            />
+            <span class="width-value marker-size-value">56px</span>
+          </div>
+
+          <div class="marker-grid">
+            
+            <button id="heliMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/transporthelo.png"
+                alt="Heli"
+                class="marker-icon"
+              />
+            </button>
+            <button id="logiMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/truck_logistics.png"
+                alt="Logi"
+                class="marker-icon"
+              />
+            </button>
+            <button id="truck_transportMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/truck_transport.png"
+                alt="Truck Transport"
+                class="marker-icon"
+              />
+            </button>
+            <button id="matvMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/jeep_turret.png"
+                alt="MATV"
+                class="marker-icon"
+              />
+            </button>
+            <button id="lavMarkerBtn" class="icon-btn">
+              <img src="assets/icons/ifv.png" alt="LAV" class="marker-icon" />
+            </button>
+            <button id="boatlogiMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/boalogistics.png"
+                alt="Boa Logistics"
+                class="marker-icon"
+              />
+            </button>
+            <button id="boaopenturretMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/boaopenturret.png"
+                alt="Boa Open Turret"
+                class="marker-icon"
+              />
+            </button>
+            <button id="tankMarkerBtn" class="icon-btn">
+              <img src="assets/icons/tank.png" alt="Tank" class="marker-icon" />
+            </button>
+            <button id="apcMarkerBtn" class="icon-btn">
+              <img src="assets/icons/apc.png" alt="APC" class="marker-icon" />
+            </button>
+            <button id="ifvMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/trackedifv.png"
+                alt="IFV"
+                class="marker-icon"
+              />
+            </button>
+            <button id="AAMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/antiair.png"
+                alt="AA"
+                class="marker-icon"
+              />
+            </button>
+
+            <button id="mgMarkerBtn" class="icon-btn">
+              <img src="assets/icons/mgs.png" alt="MGS" class="marker-icon" />
+            </button>
+            <button id="habMarkerBtn" class="icon-btn">
+              <img src="assets/icons/hab.png" alt="Radio" class="marker-icon" />
+            </button>
+            <button id="msvMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/trackedapc_msv.png"
+                alt="MSV"
+                class="marker-icon"
+              />
+            </button>
+            <button id="trackedjeepMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/trackedjeep.png"
+                alt="Tracked Jeep"
+                class="marker-icon"
+              />
+            </button>
+            <button id="jeepantitankMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/jeep_antitank.png"
+                alt="Jeep Anti-Tank"
+                class="marker-icon"
+              />
+            </button>
+            <button id="mortarMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/MORTAR.png"
+                alt="MORTAR"
+                class="marker-icon"
+              />
+            </button>
+            <button id="repStationMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/REP.png"
+                alt="Repair Station"
+                class="marker-icon"
+              />
+            </button>
+            <button id="rallyMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/rally.png"
+                alt="Rally Point"
+                class="marker-icon"
+              />
+            </button>
+            <button id="towMarkerBtn" class="icon-btn">
+              <img src="assets/icons/TOW.png" alt="TOW" class="marker-icon" />
+            </button>
+            <button id="hmgMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/mgbunker.png"
+                alt="HMG"
+                class="marker-icon"
+              />
+            </button>
+            <button id="mortarBoomMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/MORT.png"
+                alt="MortarBoom"
+                class="marker-icon"
+              />
+            </button>
+            <button id="heavyantitankMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/heavyantitank.png"
+                alt="Heavy Anti-Tank"
+                class="marker-icon"
+              />
+            </button>
+            <button id="minesMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/MINES.png"
+                alt="Mines"
+                class="marker-icon"
+              />
+            </button>
+            <button id="deleteMarkerBtn" class="icon-btn delete-btn">
+              Delete Last
+            </button>
+          </div>
+          <div class="custom-icon-upload">
+            <div class="icon-upload-controls">
+              <button id="uploadIconBtn" class="upload-icon-btn">
+                Upload Custom Icon
+              </button>
+              <button id="clearIconsBtn" class="clear-icons-btn">
+                Clear Custom Icons
+              </button>
+            </div>
+            <input type="file" id="customIconUpload" accept="image/*" hidden />
+            <div id="customIconsGrid" class="custom-icons"></div>
+          </div>
+          <p class="tool-tip"></p>
+        </section>
+
+        <div class="button-container">
+          <button id="recenterBtn">RECENTER MAP</button>
+        </div>
+      </aside>
+      <aside class="sidebar-right">
+        <section class="map-selection">
+          <div class="selector-group">
+            <h3>Select Map:</h3>
+            <select id="mapSelect">
+              <option value="">Choose map...</option>
+              <option value="custom">Upload Custom Map...</option>
+              <optgroup label="AAS Layers">
+                <option value="assets/maps/AlBasrah_AAS_1.png">
+                  Al Basrah: AAS v1
+                </option>
+                <option value="assets/maps/Anvil_AAS_1.png">
+                  Anvil: AAS v1
+                </option>
+                <option value="assets/maps/BelayaPass_AAS_1.png">
+                  Belaya Pass: AAS v1
+                </option>
+                <option value="assets/maps/BelayaPass_AAS_2.png">
+                  Belaya Pass: AAS v2
+                </option>
+                <option value="assets/maps/BelayaPass_AAS_3.png">
+                  Belaya Pass: AAS v3
+                </option>
+                <option value="assets/maps/BlackCoast_AAS_1.png">
+                  Black Coast: AAS v1
+                </option>
+                <option value="assets/maps/BlackCoast_AAS_2.png">
+                  Black Coast: AAS v2
+                </option>
+                <option value="assets/maps/Chora_AAS_1.png">
+                  Chora: AAS v1
+                </option>
+                <option value="assets/maps/Chora_AAS_2.png">
+                  Chora: AAS v2
+                </option>
+                <option value="assets/maps/Chora_AAS_3.png">
+                  Chora: AAS v3
+                </option>
+                <option value="assets/maps/Fallujah_AAS_1.png">
+                  Fallujah: AAS v1
+                </option>
+                <option value="assets/maps/FoolsRoad_AAS_1.png">
+                  Fool's Road: AAS v1
+                </option>
+                <option value="assets/maps/FoolsRoad_AAS_2.png">
+                  Fool's Road: AAS v2
+                </option>
+                <option value="assets/maps/GooseBay_AAS_1.png">
+                  Goose Bay: AAS v1
+                </option>
+                <option value="assets/maps/Gorodok_AAS_1.png">
+                  Gorodok: AAS v1
+                </option>
+                <option value="assets/maps/Harju_AAS_1.png">
+                  Harju: AAS v1
+                </option>
+                <option value="assets/maps/Harju_AAS_2.png">
+                  Harju: AAS v2
+                </option>
+                <option value="assets/maps/Harju_AAS_3.png">
+                  Harju: AAS v3
+                </option>
+                <option value="assets/maps/KamdeshHighlands_AAS_1.png">
+                  Kamdesh Highlands: AAS v1
+                </option>
+                <option value="assets/maps/KohatToi_AAS_1.png">
+                  Kohat Toi: AAS v1
+                </option>
+                <option value="assets/maps/Kokan_AAS_1.png">
+                  Kokan: AAS v1
+                </option>
+                <option value="assets/maps/Kokan_AAS_2.png">
+                  Kokan: AAS v2
+                </option>
+                <option value="assets/maps/LashkarValley_AAS_1.png">
+                  Lashkar Valley: AAS v1
+                </option>
+                <option value="assets/maps/LashkarValey_AAS_2.png">
+                  Lashkar Valley: AAS v2
+                </option>
+                <option value="assets/maps/LogarValley_AAS_1.png">
+                  Logar Valley: AAS v1
+                </option>
+                <option value="assets/maps/Manicougan_AAS_1.png">
+                  Manicougan: AAS v1
+                </option>
+                <option value="assets/maps/Manicougan_AAS_2.png">
+                  Manicougan: AAS v2
+                </option>
+                <option value="assets/maps/Manicougan_AAS_3.png">
+                  Manicougan: AAS v3
+                </option>
+                <option value="assets/maps/Mestia_AAS_1.png">
+                  Mestia: AAS v1
+                </option>
+                <option value="assets/maps/Mestia_AAS_2.png">
+                  Mestia: AAS v2
+                </option>
+                <option value="assets/maps/Mutaha_AAS_1.png">
+                  Mutaha: AAS v1
+                </option>
+                <option value="assets/maps/Mutaha_AAS_2.png">
+                  Mutaha: AAS v2
+                </option>
+                <option value="assets/maps/Narva_AAS_1.png">
+                  Narva: AAS v1
+                </option>
+                <option value="assets/maps/Narva_AAS_2.png">
+                  Narva: AAS v2
+                </option>
+                <option value="assets/maps/Narva_AAS_3.png">
+                  Narva: AAS v3
+                </option>
+                <option value="assets/maps/SanxianIslands_AAS_1.png">
+                  Sanxian Islands: AAS v1
+                </option>
+                <option value="assets/maps/SanxianIslands_AAS_2.png">
+                  Sanxian Islands: AAS v2
+                </option>
+                <option value="assets/maps/SanxianIslands_AAS_3.png">
+                  Sanxian Islands: AAS v3
+                </option>
+                <option value="assets/maps/SumariBala_AAS_1.png">
+                  Sumari Bala: AAS v1
+                </option>
+                <option value="assets/maps/SumariBala_AAS_2.png">
+                  Sumari Bala: AAS v2
+                </option>
+                <option value="assets/maps/SumariBala_AAS_3.png">
+                  Sumari Bala: AAS v3
+                </option>
+                <option value="assets/maps/TalilOutskirts_AAS_1.png">
+                  Talil Outskirts: AAS v1
+                </option>
+                <option value="assets/maps/Yehorivka_AAS_1.png">
+                  Yehorivka: AAS v1
+                </option>
+                <option value="assets/maps/Yehorivka_AAS_2.png">
+                  Yehorivka: AAS v2
+                </option>
+              </optgroup>
+              <optgroup label="Skirmish Layers">
+                <option value="assets/maps/SkirmishLayers/AlBasrah_Skirm_1.png">
+                  Al Basrah: Skirmish v1
+                </option>
+                <option value="assets/maps/SkirmishLayers/AlBasrah_Skirm_2.png">
+                  Al Basrah: Skirmish v2
+                </option>
+                <option value="assets/maps/SkirmishLayers/Anvil_Skirm.png">
+                  Anvil: Skirmish
+                </option>
+                <option value="assets/maps/SkirmishLayers/BelayaPass_Skirm.png">
+                  Belaya Pass: Skirmish
+                </option>
+                <option value="assets/maps/SkirmishLayers/BlackCoast_Skirm.png">
+                  Black Coast: Skirmish
+                </option>
+                <option value="assets/maps/SkirmishLayers/Chora_Skirm.png">
+                  Chora: Skirmish
+                </option>
+                <option value="assets/maps/SkirmishLayers/Fallujah_Skirm_2.png">
+                  Fallujah: Skirmish v2
+                </option>
+                <option
+                  value="assets/maps/SkirmishLayers/FoolsRoad_Skirm_1.png"
+                >
+                  Fool's Road: Skirmish v1
+                </option>
+                <option
+                  value="assets/maps/SkirmishLayers/FoolsRoad_Skirm_2.png"
+                >
+                  Fool's Road: Skirmish v2
+                </option>
+                <option
+                  value="assets/maps/SkirmishLayers/GooseBay_Skirmish.png"
+                >
+                  Goose Bay: Skirmish
+                </option>
+                <option value="assets/maps/SkirmishLayers/Gorodock_Skirm.png">
+                  Gorodok: Skirmish
+                </option>
+                <option value="assets/maps/SkirmishLayers/Harju_Skirm_1.png">
+                  Harju: Skirmish v1
+                </option>
+                <option value="assets/maps/SkirmishLayers/Harju_Skrim_2.png">
+                  Harju: Skirmish v2
+                </option>
+                <option
+                  value="assets/maps/SkirmishLayers/KamdeshHighlands_Skirm.png"
+                >
+                  Kamdesh Highlands: Skirmish
+                </option>
+                <option value="assets/maps/SkirmishLayers/KohatToi_Skirm.png">
+                  Kohat Toi: Skirmish
+                </option>
+                <option value="assets/maps/SkirmishLayers/Kokan_Skirm.png">
+                  Kokan: Skirmish
+                </option>
+                <option
+                  value="assets/maps/SkirmishLayers/LashkarValley_Skirm.png"
+                >
+                  Lashkar Valley: Skirmish
+                </option>
+                <option
+                  value="assets/maps/SkirmishLayers/LogarValley_Skirm.png"
+                >
+                  Logar Valley: Skirmish
+                </option>
+                <option
+                  value="assets/maps/SkirmishLayers/Manicougan_Skirm_1.png"
+                >
+                  Manicougan: Skirmish v1
+                </option>
+                <option
+                  value="assets/maps/SkirmishLayers/Manicougan_Skirm_2.png"
+                >
+                  Manicougan: Skirmish v2
+                </option>
+                <option
+                  value="assets/maps/SkirmishLayers/Manicougan_Skirm_3.png"
+                >
+                  Manicougan: Skirmish v3
+                </option>
+                <option value="assets/maps/SkirmishLayers/Mestia_Skirm.png">
+                  Mestia: Skirmish
+                </option>
+                <option value="assets/maps/SkirmishLayers/Mutaha_Skirm.png">
+                  Mutaha: Skirmish
+                </option>
+                <option value="assets/maps/SkirmishLayers/Narva_Skirm.png">
+                  Narva: Skirmish
+                </option>
+                <option value="assets/maps/SkirmishLayers/Sanxian_Skirm.png">
+                  Sanxian: Skirmish
+                </option>
+                <option value="assets/maps/SkirmishLayers/Skorpo_Skirm.png">
+                  Skorpo: Skirmish
+                </option>
+                <option value="assets/maps/SkirmishLayers/SumariBala_Skirm.png">
+                  Sumari Bala: Skirmish
+                </option>
+                <option
+                  value="assets/maps/SkirmishLayers/TalilOutskirts_Skirm_1.png"
+                >
+                  Talil Outskirts: Skirmish v1
+                </option>
+                <option
+                  value="assets/maps/SkirmishLayers/TalilOutskirts_Skirm_2.png"
+                >
+                  Talil Outskirts: Skirmish v2
+                </option>
+                <option
+                  value="assets/maps/SkirmishLayers/TalilOutskirts_Skirm_3.png"
+                >
+                  Talil Outskirts: Skirmish v3
+                </option>
+                <option
+                  value="assets/maps/SkirmishLayers/Yehorivka_Skirmish_1.png"
+                >
+                  Yehorivka: Skirmish v1
+                </option>
+                <option
+                  value="assets/maps/SkirmishLayers/Yehorivka_Skirmish_2.png"
+                >
+                  Yehorivka: Skirmish v2
+                </option>
+              </optgroup>
+            </select>
+            <input
+              type="file"
+              id="imageUpload"
+              accept="image/*"
+              class="file-input"
+              hidden
+            />
+            <button id="downloadNow">DOWNLOAD MAP</button>
+            <div class="tool-controls">
+              <button id="clearAll" class="eraser-btn">CLEAR MAP</button>
+              <button id="eraserBtn" class="eraser-btn">Eraser Tool</button>
+              <button id="undoBtn" class="eraser-btn">UNDO LAST</button>
+
+            </div>
+          </div>
+        </section>
+
+        <section class="drawing-tools">
+          <div class="tool-row">
+            <h3>Line drawing:</h3>
+            <div class="line-tools-container">
+              <div class="color-picker-container">
+                <input type="color" id="lineColorPicker" value="#ff0000" />
+                <label for="lineColorPicker" class="color-picker-label"
+                  >Custom Color</label
+                >
+                <div class="quick-colors">
+                  <button
+                    class="quick-color-btn"
+                    style="background-color: #ff0000"
+                    data-color="#ff0000"
+                  ></button>
+                  <button
+                    class="quick-color-btn"
+                    style="background-color: #00ff00"
+                    data-color="#00ff00"
+                  ></button>
+                  <button
+                    class="quick-color-btn"
+                    style="background-color: #0000ff"
+                    data-color="#0000ff"
+                  ></button>
                 </div>
-                <div class="custom-icon-upload">
-                    <div class="icon-upload-controls">
-                        <button id="uploadIconBtn" class="upload-icon-btn">Upload Custom Icon</button>
-                        <button id="clearIconsBtn" class="clear-icons-btn">Clear Custom Icons</button>
-                    </div>
-                    <input type="file" id="customIconUpload" accept="image/*" hidden>
-                    <div id="customIconsGrid" class="custom-icons"></div>
-                </div>
-                <p class="tool-tip"></p>
-            </section>
+              </div>
+              <div class="line-width-control">
+                <input
+                  type="range"
+                  id="lineWidth"
+                  min="1"
+                  max="8"
+                  value="5"
+                  class="width-slider"
+                />
+                <span class="width-value">5px</span>
+              </div>
+
+              <div class="line-type-buttons">
+                <button
+                  id="arrowLineBtn"
+                  class="line-type-btn active"
+                  title="Arrow Line"
+                >
+                  -->
+                </button>
+                <button id="xLineBtn" class="line-type-btn" title="X Line">
+                  --X
+                </button>
+                <button
+                  id="plainLineBtn"
+                  class="line-type-btn"
+                  title="Plain Line"
+                >
+                  ---
+                </button>
+              </div>
 
     
-            
-            <div class="button-container">
-                <button id="recenterBtn">RECENTER MAP</button>
+
+              <button id="straightLineBtn" class="straight-line-btn">
+                200px Line
+              </button>
             </div>
-        </aside>
-        <aside class="sidebar-right">
-            <section class="map-selection">
-                <div class="selector-group">
-                    <h3>Select Map:</h3>
-                    <select id="mapSelect">
-                        <option value="">Choose map...</option>
-                        <option value="custom">Upload Custom Map...</option>
-                        <optgroup label="AAS Layers">
-                            <option value="assets/maps/AlBasrah_AAS_1.png">Al Basrah: AAS v1</option>
-                            <option value="assets/maps/Anvil_AAS_1.png">Anvil: AAS v1</option>
-                            <option value="assets/maps/BelayaPass_AAS_1.png">Belaya Pass: AAS v1</option>
-                            <option value="assets/maps/BelayaPass_AAS_2.png">Belaya Pass: AAS v2</option>
-                            <option value="assets/maps/BelayaPass_AAS_3.png">Belaya Pass: AAS v3</option>
-                            <option value="assets/maps/BlackCoast_AAS_1.png">Black Coast: AAS v1</option>
-                            <option value="assets/maps/BlackCoast_AAS_2.png">Black Coast: AAS v2</option>
-                            <option value="assets/maps/Chora_AAS_1.png">Chora: AAS v1</option>
-                            <option value="assets/maps/Chora_AAS_2.png">Chora: AAS v2</option>
-                            <option value="assets/maps/Chora_AAS_3.png">Chora: AAS v3</option>
-                            <option value="assets/maps/Fallujah_AAS_1.png">Fallujah: AAS v1</option>
-                            <option value="assets/maps/FoolsRoad_AAS_1.png">Fool's Road: AAS v1</option>
-                            <option value="assets/maps/FoolsRoad_AAS_2.png">Fool's Road: AAS v2</option>
-                            <option value="assets/maps/GooseBay_AAS_1.png">Goose Bay: AAS v1</option>
-                            <option value="assets/maps/Gorodok_AAS_1.png">Gorodok: AAS v1</option>
-                            <option value="assets/maps/Harju_AAS_1.png">Harju: AAS v1</option>
-                            <option value="assets/maps/Harju_AAS_2.png">Harju: AAS v2</option>
-                            <option value="assets/maps/Harju_AAS_3.png">Harju: AAS v3</option>
-                            <option value="assets/maps/KamdeshHighlands_AAS_1.png">Kamdesh Highlands: AAS v1</option>
-                            <option value="assets/maps/KohatToi_AAS_1.png">Kohat Toi: AAS v1</option>
-                            <option value="assets/maps/Kokan_AAS_1.png">Kokan: AAS v1</option>
-                            <option value="assets/maps/Kokan_AAS_2.png">Kokan: AAS v2</option>
-                            <option value="assets/maps/LashkarValley_AAS_1.png">Lashkar Valley: AAS v1</option>
-                            <option value="assets/maps/LashkarValey_AAS_2.png">Lashkar Valley: AAS v2</option>
-                            <option value="assets/maps/LogarValley_AAS_1.png">Logar Valley: AAS v1</option>
-                            <option value="assets/maps/Manicougan_AAS_1.png">Manicougan: AAS v1</option>
-                            <option value="assets/maps/Manicougan_AAS_2.png">Manicougan: AAS v2</option>
-                            <option value="assets/maps/Manicougan_AAS_3.png">Manicougan: AAS v3</option>
-                            <option value="assets/maps/Mestia_AAS_1.png">Mestia: AAS v1</option>
-                            <option value="assets/maps/Mestia_AAS_2.png">Mestia: AAS v2</option>
-                            <option value="assets/maps/Mutaha_AAS_1.png">Mutaha: AAS v1</option>
-                            <option value="assets/maps/Mutaha_AAS_2.png">Mutaha: AAS v2</option>
-                            <option value="assets/maps/Narva_AAS_1.png">Narva: AAS v1</option>
-                            <option value="assets/maps/Narva_AAS_2.png">Narva: AAS v2</option>
-                            <option value="assets/maps/Narva_AAS_3.png">Narva: AAS v3</option>
-                            <option value="assets/maps/SanxianIslands_AAS_1.png">Sanxian Islands: AAS v1</option>
-                            <option value="assets/maps/SanxianIslands_AAS_2.png">Sanxian Islands: AAS v2</option>
-                            <option value="assets/maps/SanxianIslands_AAS_3.png">Sanxian Islands: AAS v3</option>
-                            <option value="assets/maps/SumariBala_AAS_1.png">Sumari Bala: AAS v1</option>
-                            <option value="assets/maps/SumariBala_AAS_2.png">Sumari Bala: AAS v2</option>
-                            <option value="assets/maps/SumariBala_AAS_3.png">Sumari Bala: AAS v3</option>
-                            <option value="assets/maps/TalilOutskirts_AAS_1.png">Talil Outskirts: AAS v1</option>
-                            <option value="assets/maps/Yehorivka_AAS_1.png">Yehorivka: AAS v1</option>
-                            <option value="assets/maps/Yehorivka_AAS_2.png">Yehorivka: AAS v2</option>
-                        </optgroup>
-                        <optgroup label="Skirmish Layers">
-                            <option value="assets/maps/SkirmishLayers/AlBasrah_Skirm_1.png">Al Basrah: Skirmish v1</option>
-                            <option value="assets/maps/SkirmishLayers/AlBasrah_Skirm_2.png">Al Basrah: Skirmish v2</option>
-                            <option value="assets/maps/SkirmishLayers/Anvil_Skirm.png">Anvil: Skirmish</option>
-                            <option value="assets/maps/SkirmishLayers/BelayaPass_Skirm.png">Belaya Pass: Skirmish</option>
-                            <option value="assets/maps/SkirmishLayers/BlackCoast_Skirm.png">Black Coast: Skirmish</option>
-                            <option value="assets/maps/SkirmishLayers/Chora_Skirm.png">Chora: Skirmish</option>
-                            <option value="assets/maps/SkirmishLayers/Fallujah_Skirm_2.png">Fallujah: Skirmish v2</option>
-                            <option value="assets/maps/SkirmishLayers/FoolsRoad_Skirm_1.png">Fool's Road: Skirmish v1</option>
-                            <option value="assets/maps/SkirmishLayers/FoolsRoad_Skirm_2.png">Fool's Road: Skirmish v2</option>
-                            <option value="assets/maps/SkirmishLayers/GooseBay_Skirmish.png">Goose Bay: Skirmish</option>
-                            <option value="assets/maps/SkirmishLayers/Gorodock_Skirm.png">Gorodok: Skirmish</option>
-                            <option value="assets/maps/SkirmishLayers/Harju_Skirm_1.png">Harju: Skirmish v1</option>
-                            <option value="assets/maps/SkirmishLayers/Harju_Skrim_2.png">Harju: Skirmish v2</option>
-                            <option value="assets/maps/SkirmishLayers/KamdeshHighlands_Skirm.png">Kamdesh Highlands: Skirmish</option>
-                            <option value="assets/maps/SkirmishLayers/KohatToi_Skirm.png">Kohat Toi: Skirmish</option>
-                            <option value="assets/maps/SkirmishLayers/Kokan_Skirm.png">Kokan: Skirmish</option>
-                            <option value="assets/maps/SkirmishLayers/LashkarValley_Skirm.png">Lashkar Valley: Skirmish</option>
-                            <option value="assets/maps/SkirmishLayers/LogarValley_Skirm.png">Logar Valley: Skirmish</option>
-                            <option value="assets/maps/SkirmishLayers/Manicougan_Skirm_1.png">Manicougan: Skirmish v1</option>
-                            <option value="assets/maps/SkirmishLayers/Manicougan_Skirm_2.png">Manicougan: Skirmish v2</option>
-                            <option value="assets/maps/SkirmishLayers/Manicougan_Skirm_3.png">Manicougan: Skirmish v3</option>
-                            <option value="assets/maps/SkirmishLayers/Mestia_Skirm.png">Mestia: Skirmish</option>
-                            <option value="assets/maps/SkirmishLayers/Mutaha_Skirm.png">Mutaha: Skirmish</option>
-                            <option value="assets/maps/SkirmishLayers/Narva_Skirm.png">Narva: Skirmish</option>
-                            <option value="assets/maps/SkirmishLayers/Sanxian_Skirm.png">Sanxian: Skirmish</option>
-                            <option value="assets/maps/SkirmishLayers/Skorpo_Skirm.png">Skorpo: Skirmish</option>
-                            <option value="assets/maps/SkirmishLayers/SumariBala_Skirm.png">Sumari Bala: Skirmish</option>
-                            <option value="assets/maps/SkirmishLayers/TalilOutskirts_Skirm_1.png">Talil Outskirts: Skirmish v1</option>
-                            <option value="assets/maps/SkirmishLayers/TalilOutskirts_Skirm_2.png">Talil Outskirts: Skirmish v2</option>
-                            <option value="assets/maps/SkirmishLayers/TalilOutskirts_Skirm_3.png">Talil Outskirts: Skirmish v3</option>
-                            <option value="assets/maps/SkirmishLayers/Yehorivka_Skirmish_1.png">Yehorivka: Skirmish v1</option>
-                            <option value="assets/maps/SkirmishLayers/Yehorivka_Skirmish_2.png">Yehorivka: Skirmish v2</option>
-                        </optgroup>
-                    </select>
-                    <input type="file" id="imageUpload" accept="image/*" class="file-input" hidden>
-                    <button id="downloadNow">DOWNLOAD MAP</button>
-                    <button id="clearAll" class="eraser-btn">CLEAR MAP</button>
-                    <button id="eraserBtn" class="eraser-btn">Eraser Tool</button>
-                    
-                </div>
-            </section>
-            
-           
-            <section class="drawing-tools">
-                <div class="tool-row">
-                    <h3>Line drawing:</h3>
+            <button id="deleteLineBtn" class="compact-btn">Delete Last</button>
+          </div>
+        </section>
 
-                    <div class="line-tools-container">
-                        <div class="color-picker-container">
-                            <input type="color" id="lineColorPicker" value="#ff0000">
-                            <label for="lineColorPicker" class="color-picker-label">Custom Color</label>
-                            <div class="quick-colors">
-                                <button class="quick-color-btn" style="background-color: #ff0000;" data-color="#ff0000"></button>
-                                <button class="quick-color-btn" style="background-color: #00ff00;" data-color="#00ff00"></button>
-                                <button class="quick-color-btn" style="background-color: #0000ff;" data-color="#0000ff"></button>
-                            </div>
-                        </div>
-                        
-                        <div class="line-type-buttons">
-                            <button id="arrowLineBtn" class="line-type-btn active" title="Arrow Line">--></button>
-                            <button id="xLineBtn" class="line-type-btn" title="X Line">--X</button>
-                            <button id="plainLineBtn" class="line-type-btn" title="Plain Line">---</button>
-                        </div>
-
-                        <div class="line-width-control">
-                            <input type="range" id="lineWidth" min="1" max="8" value="5" class="width-slider">
-                            <span class="width-value">5px</span>
-                        </div>
-
-                        <button id="straightLineBtn" class="straight-line-btn">200px Line</button>
-                    </div>
-                    <button id="deleteLineBtn" class="compact-btn">Delete Last</button>
-                    
-                </div>
-            </section>
-
-            <section class="text-tools">
-                <div class="text-input-container">
-                    <h3>Text:</h3>
-                    <div class="color-picker-container">
-                        <input type="color" id="textColorPicker" value="#ff0000">
-                        <label for="textColorPicker" class="color-picker-label">Custom Color</label>
-                        <div class="quick-colors">
-                            <button class="quick-color-btn" style="background-color: #ff0000;" data-color="#ff0000"></button>
-                            <button class="quick-color-btn" style="background-color: #00ff00;" data-color="#00ff00"></button>
-                            <button class="quick-color-btn" style="background-color: #0000ff;" data-color="#0000ff"></button>
-                        </div>
-                    </div>
-                    <div class="text-size-control">
-                        <input type="range" id="textSize" min="16" max="64" value="36" class="width-slider">
-                        <span class="width-value text-size-value">26px</span>
-                    </div>
-                    <input type="text" id="annotationText" placeholder="Enter text" class="text-input">
-                    <button id="addTextBtn" class="text-btn">Add Text</button>
-                    <button id="deleteTextBtn" class="delete-btn">Delete Last</button>
-                    <p class="tool-tip">Select a color, adjust text size, enter your text, click Add Text, click on the map</p>
-                </div>
-            </section>
-            
-            
-            <div class="button-container">
-                <button id="recenterBtn">RECENTER MAP</button>
+        <section class="text-tools">
+          <div class="text-input-container">
+            <h3>Text:</h3>
+            <div class="color-picker-container">
+              <input type="color" id="textColorPicker" value="#ff0000" />
+              <label for="textColorPicker" class="color-picker-label"
+                >Custom Color</label
+              >
+              <div class="quick-colors">
+                <button
+                  class="quick-color-btn"
+                  style="background-color: #ff0000"
+                  data-color="#ff0000"
+                ></button>
+                <button
+                  class="quick-color-btn"
+                  style="background-color: #00ff00"
+                  data-color="#00ff00"
+                ></button>
+                <button
+                  class="quick-color-btn"
+                  style="background-color: #0000ff"
+                  data-color="#0000ff"
+                ></button>
+              </div>
             </div>
-        </aside>
-        <header>
-            <div class="nav-content">
-                <div class="creator-info">
-                        <div class="creator-text">
-                            <p class="tool-tip1">Created for the community</p>
-                            <p class="signature">- guFF</p>
-                    </div>
-                    <div class="social-links">
-                        <a href="https://codeofguff.github.io" target="_blank" class="social-link">
-                            <img src="assets/images/github.png" alt="GitHub" class="social-icon">
-                            <span>Github.io</span>
-                        </a>
-                        <a href="https://www.paypal.com/donate/?hosted_button_id=Z825KBBR8BYNS" target="_blank" class="social-link">
-                            <img src="assets/images/paypal.png" alt="PayPal" class="social-icon">
-                            <span>Donate</span>
-                        </a>
-                    </div>
-                </div>
+            <div class="text-size-control">
+              <input
+                type="range"
+                id="textSize"
+                min="16"
+                max="64"
+                value="36"
+                class="width-slider"
+              />
+              <span class="width-value text-size-value">26px</span>
             </div>
-        </header>
-       
-        <main class="canvas-container">
-            <canvas id="mapCanvas">
-                
+            <input
+              type="text"
+              id="annotationText"
+              placeholder="Enter text"
+              class="text-input"
+            />
+            <button id="addTextBtn" class="text-btn">Add Text</button>
+            <button id="deleteTextBtn" class="delete-btn">Delete Last</button>
+            <p class="tool-tip">
+              Select a color, adjust text size, enter your text, click Add Text,
+              click on the map
+            </p>
+          </div>
+        </section>
 
-            </canvas>
-            <div class="placeholder-text">
-                <b>UPDATES FOR 2025:</b> 
-                <br>
-                <b>HQ Maps, Toggle POIs, Radio Circles, Collaboration/Chat</b>
-                <br>
-    
-                <br>
-                - Select a map from the right -
-                <br>
-                - Draw arrow lines -
-                <br>
-                - Mark the map with the icons -
-                <br>
-                - Add your own text to the map -
-                <br>
-                - Erase the icons, lines, and text with the eraser tools -
-                <br>
-                - Download the finished Map when complete -
+        <div class="button-container">
+          <button id="recenterBtn">RECENTER MAP</button>
+        </div>
+      </aside>
+      <header>
+        <div class="nav-content">
+          <div class="creator-info">
+            <div class="creator-text">
+              <p class="tool-tip1">Created for the community</p>
+              <p class="signature">- guFF</p>
             </div>
+            <div class="social-links">
+              <a
+                href="https://codeofguff.github.io"
+                target="_blank"
+                class="social-link"
+              >
+                <img
+                  src="assets/images/github.png"
+                  alt="GitHub"
+                  class="social-icon"
+                />
+                <span>Github.io</span>
+              </a>
+              <a
+                href="https://www.paypal.com/donate/?hosted_button_id=Z825KBBR8BYNS"
+                target="_blank"
+                class="social-link"
+              >
+                <img
+                  src="assets/images/paypal.png"
+                  alt="PayPal"
+                  class="social-icon"
+                />
+                <span>Donate</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </header>
 
-        </main>
+      <main class="canvas-container">
+        <canvas id="mapCanvas"> </canvas>
+        <div class="placeholder-text">
+          <b>UPDATES FOR 2025:</b>
+          <br />
+          <b>HQ Maps, Toggle POIs, Radio Circles, Collaboration/Chat</b>
+          <br />
 
+          <br />
+          - Select a map from the right -
+          <br />
+          - Draw arrow lines -
+          <br />
+          - Mark the map with the icons -
+          <br />
+          - Add your own text to the map -
+          <br />
+          - Erase the icons, lines, and text with the eraser tools -
+          <br />
+          - Download the finished Map when complete -
+        </div>
+      </main>
     </div>
     <script type="module" src="js/main.js"></script>
-</body>
+  </body>
 </html>
