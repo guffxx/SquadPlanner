@@ -28,6 +28,9 @@ body {
     overflow: hidden;
 }
 
+
+
+
 .container {
     display: flex;
     height: 100vh;
@@ -88,7 +91,7 @@ body {
 .logo-section p {
     font-size: 28px;
     color: var(--accent);
-    font-family: sans-serif;
+    font-family: 'poppins', sans-serif;
     margin-top: -20px;
     font-size: 28px;
 }
@@ -708,6 +711,12 @@ header {
     transform: translate(-50%, -50%);
     width: 80%;
     max-width: 800px;
+}
+
+.placeholder-text h1 {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
 
 /* Custom Icon Upload */
