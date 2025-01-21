@@ -124,7 +124,7 @@ h3 {
     color: var(--accent);
     margin-bottom: 2px;
     font-weight: 500;
-    font-size: 18px;
+    font-size: 22px;
 }
 
 /* Form Controls */
@@ -185,6 +185,13 @@ button,
     font-size: 12px;
     text-align: right;
     padding: 0 4px;
+}
+
+/* Fix text size value display */
+.width-value.text-size-value {
+    font-size: 12px;
+    color: var(--text-color);
+    opacity: 0.8;
 }
 
 /* Color Picker Styles */
@@ -317,10 +324,10 @@ input[type="color"]::-moz-color-swatch {
 
 /* Icon Button Active State */
 .icon-btn.active {
-    background-color: var(--accent);
-    color: var(--darker-bg);
-    opacity: 1;
+    background-color: var(--accent) !important;
+    opacity: 1 !important;
     box-shadow: 0 0 12px rgba(255, 196, 9, 0.5);
+    transform: translateY(-2px);
     z-index: 2;
 }
 
@@ -328,6 +335,7 @@ input[type="color"]::-moz-color-swatch {
     opacity: 1;
     background-color: var(--dark-bg);
     box-shadow: 0 0 8px rgba(255, 196, 9, 0.3);
+    transform: translateY(-1px);
     z-index: 2;
 }
 
@@ -343,9 +351,9 @@ input[type="color"]::-moz-color-swatch {
 
 .line-type-btn {
     flex: 1;
-    min-width: 60px;
-    height: 32px;
-    padding: 4px 12px;
+    min-width: 40px;
+    padding: 4px;
+    aspect-ratio: 2/1;
     background-color: var(--darker-bg);
     border: none;
     border-radius: 4px;
@@ -356,7 +364,7 @@ input[type="color"]::-moz-color-swatch {
     justify-content: center;
     color: var(--text-color);
     font-family: monospace;
-    font-size: 14px;
+    font-size: clamp(12px, 1.2vw, 14px);
 }
 
 .line-type-btn:hover,
@@ -549,7 +557,7 @@ input[type="color"]::-moz-color-swatch {
 .placeholder-text h1 {
     font-size: 32px;
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 70px;
 }
 
 
@@ -790,6 +798,18 @@ h2.hidden {
     background-color: rgba(255, 68, 68, 0.5);
 }
 
+/* Text Size Control */
+.text-size-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.text-size-value {
+    min-width: 45px;
+    text-align: right;
+}
 
 /* Media Queries */
 @media screen and (max-width: 1415px) {
