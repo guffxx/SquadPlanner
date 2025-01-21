@@ -10,6 +10,7 @@
     <h2 class="hidden">
       Currently not mobile friendly, please open in a Desktop browser
     </h2>
+
     <div class="container">
       <aside class="sidebar">
         <section class="logo-section">
@@ -23,216 +24,6 @@
           <p>PLANNER</p>
         </section>
 
-        <section class="icon-tools">
-          <div class="tint-selector">
-            <h3>Icons:</h3>
-
-            <div class="color-picker-container">
-              <input type="color" id="markerColorPicker" value="#ff0000" />
-              <label for="markerColorPicker" class="color-picker-label"
-                >Custom Color</label
-              >
-              <div class="quick-colors">
-                <button
-                  class="quick-color-btn"
-                  style="background-color: #ff0000"
-                  data-color="#ff0000"
-                ></button>
-                <button
-                  class="quick-color-btn"
-                  style="background-color: #00ff00"
-                  data-color="#00ff00"
-                ></button>
-                <button
-                  class="quick-color-btn"
-                  style="background-color: #0000ff"
-                  data-color="#0000ff"
-                ></button>
-              </div>
-            </div>
-          </div>
-          <div class="marker-size-control">
-            <input
-              type="range"
-              id="markerSize"
-              min="40"
-              max="75"
-              value="56"
-              class="width-slider"
-            />
-            <span class="width-value marker-size-value">56px</span>
-          </div>
-
-          <div class="marker-grid">
-            <button id="heliMarkerBtn" class="icon-btn">
-              <img
-                src="assets/icons/transporthelo.png"
-                alt="Heli"
-                class="marker-icon"
-              />
-            </button>
-            <button id="logiMarkerBtn" class="icon-btn">
-              <img
-                src="assets/icons/truck_logistics.png"
-                alt="Logi"
-                class="marker-icon"
-              />
-            </button>
-            <button id="truck_transportMarkerBtn" class="icon-btn">
-              <img
-                src="assets/icons/truck_transport.png"
-                alt="Truck Transport"
-                class="marker-icon"
-              />
-            </button>
-            <button id="matvMarkerBtn" class="icon-btn">
-              <img
-                src="assets/icons/jeep_turret.png"
-                alt="MATV"
-                class="marker-icon"
-              />
-            </button>
-            <button id="lavMarkerBtn" class="icon-btn">
-              <img src="assets/icons/ifv.png" alt="LAV" class="marker-icon" />
-            </button>
-            <button id="boatlogiMarkerBtn" class="icon-btn">
-              <img
-                src="assets/icons/boalogistics.png"
-                alt="Boa Logistics"
-                class="marker-icon"
-              />
-            </button>
-            <button id="boaopenturretMarkerBtn" class="icon-btn">
-              <img
-                src="assets/icons/boaopenturret.png"
-                alt="Boa Open Turret"
-                class="marker-icon"
-              />
-            </button>
-            <button id="tankMarkerBtn" class="icon-btn">
-              <img src="assets/icons/tank.png" alt="Tank" class="marker-icon" />
-            </button>
-            <button id="apcMarkerBtn" class="icon-btn">
-              <img src="assets/icons/apc.png" alt="APC" class="marker-icon" />
-            </button>
-            <button id="ifvMarkerBtn" class="icon-btn">
-              <img
-                src="assets/icons/trackedifv.png"
-                alt="IFV"
-                class="marker-icon"
-              />
-            </button>
-            <button id="AAMarkerBtn" class="icon-btn">
-              <img
-                src="assets/icons/antiair.png"
-                alt="AA"
-                class="marker-icon"
-              />
-            </button>
-
-            <button id="mgMarkerBtn" class="icon-btn">
-              <img src="assets/icons/mgs.png" alt="MGS" class="marker-icon" />
-            </button>
-            <button id="habMarkerBtn" class="icon-btn">
-              <img src="assets/icons/hab.png" alt="Radio" class="marker-icon" />
-            </button>
-            <button id="msvMarkerBtn" class="icon-btn">
-              <img
-                src="assets/icons/trackedapc_msv.png"
-                alt="MSV"
-                class="marker-icon"
-              />
-            </button>
-            <button id="trackedjeepMarkerBtn" class="icon-btn">
-              <img
-                src="assets/icons/trackedjeep.png"
-                alt="Tracked Jeep"
-                class="marker-icon"
-              />
-            </button>
-            <button id="jeepantitankMarkerBtn" class="icon-btn">
-              <img
-                src="assets/icons/jeep_antitank.png"
-                alt="Jeep Anti-Tank"
-                class="marker-icon"
-              />
-            </button>
-            <button id="mortarMarkerBtn" class="icon-btn">
-              <img
-                src="assets/icons/MORTAR.png"
-                alt="MORTAR"
-                class="marker-icon"
-              />
-            </button>
-            <button id="repStationMarkerBtn" class="icon-btn">
-              <img
-                src="assets/icons/REP.png"
-                alt="Repair Station"
-                class="marker-icon"
-              />
-            </button>
-            <button id="rallyMarkerBtn" class="icon-btn">
-              <img
-                src="assets/icons/rally.png"
-                alt="Rally Point"
-                class="marker-icon"
-              />
-            </button>
-            <button id="towMarkerBtn" class="icon-btn">
-              <img src="assets/icons/TOW.png" alt="TOW" class="marker-icon" />
-            </button>
-            <button id="hmgMarkerBtn" class="icon-btn">
-              <img
-                src="assets/icons/mgbunker.png"
-                alt="HMG"
-                class="marker-icon"
-              />
-            </button>
-            <button id="mortarBoomMarkerBtn" class="icon-btn">
-              <img
-                src="assets/icons/MORT.png"
-                alt="MortarBoom"
-                class="marker-icon"
-              />
-            </button>
-            <button id="heavyantitankMarkerBtn" class="icon-btn">
-              <img
-                src="assets/icons/heavyantitank.png"
-                alt="Heavy Anti-Tank"
-                class="marker-icon"
-              />
-            </button>
-            <button id="minesMarkerBtn" class="icon-btn">
-              <img
-                src="assets/icons/MINES.png"
-                alt="Mines"
-                class="marker-icon"
-              />
-            </button>
-            <button id="deleteMarkerBtn" class="icon-btn delete-btn">
-              Delete Last
-            </button>
-          </div>
-          <div class="custom-icon-upload">
-            <div class="icon-upload-controls">
-              <button id="uploadIconBtn" class="upload-icon-btn">
-                Upload Custom Icon
-              </button>
-              <button id="clearIconsBtn" class="clear-icons-btn">
-                Clear Custom Icons
-              </button>
-            </div>
-            <input type="file" id="customIconUpload" accept="image/*" hidden />
-            <div id="customIconsGrid" class="custom-icons"></div>
-          </div>
-          <p class="tool-tip"></p>
-        </section>
-
-        <div class="button-container">
-          <button id="recenterBtn">RECENTER MAP</button>
-        </div>
-      </aside>
-      <aside class="sidebar-right">
         <section class="map-selection">
           <div class="selector-group">
             <h3>Select Map:</h3>
@@ -514,6 +305,216 @@
               <button id="undoBtn" class="eraser-btn">UNDO LAST</button>
             </div>
           </div>
+        </section>
+
+        <div class="button-container">
+          <button id="recenterBtn">RECENTER MAP</button>
+        </div>
+      </aside>
+      <aside class="sidebar-right">
+        <section class="icon-tools">
+          <div class="tint-selector">
+            <h3>Icons:</h3>
+
+            <div class="color-picker-container">
+              <input type="color" id="markerColorPicker" value="#ff0000" />
+              <label for="markerColorPicker" class="color-picker-label"
+                >Custom Color</label
+              >
+              <div class="quick-colors">
+                <button
+                  class="quick-color-btn"
+                  style="background-color: #ff0000"
+                  data-color="#ff0000"
+                ></button>
+                <button
+                  class="quick-color-btn"
+                  style="background-color: #00ff00"
+                  data-color="#00ff00"
+                ></button>
+                <button
+                  class="quick-color-btn"
+                  style="background-color: #0000ff"
+                  data-color="#0000ff"
+                ></button>
+              </div>
+            </div>
+          </div>
+          <div class="marker-size-control">
+            <input
+              type="range"
+              id="markerSize"
+              min="40"
+              max="75"
+              value="56"
+              class="width-slider"
+            />
+            <span class="width-value marker-size-value">56px</span>
+          </div>
+
+          <div class="marker-grid">
+            <button id="heliMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/transporthelo.png"
+                alt="Heli"
+                class="marker-icon"
+              />
+            </button>
+            <button id="logiMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/truck_logistics.png"
+                alt="Logi"
+                class="marker-icon"
+              />
+            </button>
+            <button id="truck_transportMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/truck_transport.png"
+                alt="Truck Transport"
+                class="marker-icon"
+              />
+            </button>
+            <button id="matvMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/jeep_turret.png"
+                alt="MATV"
+                class="marker-icon"
+              />
+            </button>
+            <button id="lavMarkerBtn" class="icon-btn">
+              <img src="assets/icons/ifv.png" alt="LAV" class="marker-icon" />
+            </button>
+            <button id="boatlogiMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/boalogistics.png"
+                alt="Boa Logistics"
+                class="marker-icon"
+              />
+            </button>
+            <button id="boaopenturretMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/boaopenturret.png"
+                alt="Boa Open Turret"
+                class="marker-icon"
+              />
+            </button>
+            <button id="tankMarkerBtn" class="icon-btn">
+              <img src="assets/icons/tank.png" alt="Tank" class="marker-icon" />
+            </button>
+            <button id="apcMarkerBtn" class="icon-btn">
+              <img src="assets/icons/apc.png" alt="APC" class="marker-icon" />
+            </button>
+            <button id="ifvMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/trackedifv.png"
+                alt="IFV"
+                class="marker-icon"
+              />
+            </button>
+            <button id="AAMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/antiair.png"
+                alt="AA"
+                class="marker-icon"
+              />
+            </button>
+
+            <button id="mgMarkerBtn" class="icon-btn">
+              <img src="assets/icons/mgs.png" alt="MGS" class="marker-icon" />
+            </button>
+            <button id="habMarkerBtn" class="icon-btn">
+              <img src="assets/icons/hab.png" alt="Radio" class="marker-icon" />
+            </button>
+            <button id="msvMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/trackedapc_msv.png"
+                alt="MSV"
+                class="marker-icon"
+              />
+            </button>
+            <button id="trackedjeepMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/trackedjeep.png"
+                alt="Tracked Jeep"
+                class="marker-icon"
+              />
+            </button>
+            <button id="jeepantitankMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/jeep_antitank.png"
+                alt="Jeep Anti-Tank"
+                class="marker-icon"
+              />
+            </button>
+            <button id="mortarMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/MORTAR.png"
+                alt="MORTAR"
+                class="marker-icon"
+              />
+            </button>
+            <button id="repStationMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/REP.png"
+                alt="Repair Station"
+                class="marker-icon"
+              />
+            </button>
+            <button id="rallyMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/rally.png"
+                alt="Rally Point"
+                class="marker-icon"
+              />
+            </button>
+            <button id="towMarkerBtn" class="icon-btn">
+              <img src="assets/icons/TOW.png" alt="TOW" class="marker-icon" />
+            </button>
+            <button id="hmgMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/mgbunker.png"
+                alt="HMG"
+                class="marker-icon"
+              />
+            </button>
+            <button id="mortarBoomMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/MORT.png"
+                alt="MortarBoom"
+                class="marker-icon"
+              />
+            </button>
+            <button id="heavyantitankMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/heavyantitank.png"
+                alt="Heavy Anti-Tank"
+                class="marker-icon"
+              />
+            </button>
+            <button id="minesMarkerBtn" class="icon-btn">
+              <img
+                src="assets/icons/MINES.png"
+                alt="Mines"
+                class="marker-icon"
+              />
+            </button>
+            <button id="deleteMarkerBtn" class="icon-btn delete-btn">
+              Delete Last
+            </button>
+          </div>
+          <div class="custom-icon-upload">
+            <div class="icon-upload-controls">
+              <button id="uploadIconBtn" class="upload-icon-btn">
+                Upload Custom Icon
+              </button>
+              <button id="clearIconsBtn" class="clear-icons-btn">
+                Clear Custom Icons
+              </button>
+            </div>
+            <input type="file" id="customIconUpload" accept="image/*" hidden />
+            <div id="customIconsGrid" class="custom-icons"></div>
+          </div>
+          <p class="tool-tip"></p>
         </section>
 
         <section class="drawing-tools">

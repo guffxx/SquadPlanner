@@ -40,15 +40,15 @@ body {
     min-height: 600px;
     justify-content: space-between;
     width: 100%;
-    padding: 60px 280px 0;
+    padding: 60px 20% 0;
 }
 
 /* Sidebar Styles */
 .sidebar,
 .sidebar-right {
-    width: 280px;
-    min-width: 280px;
-    max-width: 10%;
+    width: 20%;
+    min-width: 200px;
+    max-width: 280px;
     padding: 10px;
     display: flex;
     flex-direction: column;
@@ -65,7 +65,7 @@ body {
 }
 
 .sidebar-right {
-    top: 10%;
+    top: 5%;
     right: 0;
 }
 
@@ -190,6 +190,7 @@ button,
 /* Color Picker Styles */
 .color-picker-container {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 4px;
     padding: 2px 4px;
@@ -197,15 +198,16 @@ button,
     cursor: pointer;
     transition: var(--transition-default);
     margin: 8px 0 4px;
-    height: 22px;
+    width: 100%;
 }
 
 input[type="color"] {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    width: 32px;
-    height: 32px;
+    width: 15%;
+    min-width: 32px;
+    aspect-ratio: 1;
     padding: 0;
     border: none;
     border-radius: 3px;
@@ -371,13 +373,15 @@ input[type="color"]::-moz-color-swatch {
 .quick-colors {
     display: flex;
     gap: 2px;
-    margin-left: 4px;
-    border-left: 30px solid transparent;
+    margin-left: auto;
+    flex: 1;
+    justify-content: flex-end;
 }
 
 .quick-color-btn {
-    width: 30px;
-    height: 30px;
+    width: 15%;
+    min-width: 24px;
+    aspect-ratio: 1;
     border-radius: 2px;
     cursor: pointer;
     padding: 0;
@@ -553,7 +557,8 @@ input[type="color"]::-moz-color-swatch {
 header {
     position: absolute;
     top: 10px;
-    right: 30px;
+    left: 50%;
+    transform: translateX(-50%);
     padding: 2px 20px;
     z-index: 100;
     background: rgba(255, 255, 255, 0.2);
@@ -718,11 +723,12 @@ h2.hidden {
     grid-template-columns: repeat(4, 1fr);
     gap: 4px;
     padding: 4px;
+    width: 100%;
 }
 
 .marker-grid .icon-btn {
-    width: 48px;
-    height: 48px;
+    width: 100%;
+    aspect-ratio: 1;
     padding: 4px;
     display: flex;
     align-items: center;
@@ -736,8 +742,8 @@ h2.hidden {
 }
 
 .marker-icon {
-    width: 44px;
-    height: 44px;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
     pointer-events: none;
     transition: filter 0.3s ease;
@@ -788,8 +794,7 @@ h2.hidden {
 /* Media Queries */
 @media screen and (max-width: 1415px) {
     .container {
-        padding-right: 280px;
-        padding-left: 280px;
+        padding: 60px 22% 0;
     }
 }
 
@@ -813,7 +818,8 @@ h2.hidden {
 @media screen and (max-width: 768px) {
     .sidebar,
     .sidebar-right,
-    .placeholder-text {
+    .placeholder-text,
+    .canvas-container {
         display: none;
     }
     
