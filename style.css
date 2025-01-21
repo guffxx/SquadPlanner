@@ -67,6 +67,30 @@ body {
 .sidebar-right {
     top: 5%;
     right: 0;
+    direction: rtl;
+}
+
+.sidebar-right > * {
+    direction: ltr;
+}
+
+/* Scrollbar Styles for sidebar-right */
+.sidebar-right::-webkit-scrollbar {
+    width: 8px;
+}
+
+.sidebar-right::-webkit-scrollbar-track {
+    background: var(--accent);
+    border-radius: 4px;
+}
+
+.sidebar-right::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border-radius: 4px;
+}
+
+.sidebar-right::-webkit-scrollbar-thumb:hover {
+    background: #ffd700;
 }
 
 /* Logo Section */
