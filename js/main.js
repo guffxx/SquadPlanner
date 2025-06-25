@@ -1,4 +1,5 @@
 import { state } from "./state.js";
+import { mapData } from "./maps.js";
 import { loadMap } from "./imageHandling.js";
 import {
   startDrawing,
@@ -28,6 +29,9 @@ import { initializeCustomIcons } from "./customIcons.js";
 
 // Initialize event listeners
 document.addEventListener("DOMContentLoaded", () => {
+  // Populate map selection dropdown
+  populateMapSelection();
+
   // Map selection
   const mapSelect = document.getElementById("mapSelect");
   const imageUpload = document.getElementById("imageUpload");
@@ -68,6 +72,24 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initialize custom icons
   initializeCustomIcons();
 });
+
+function populateMapSelection() {
+  const mapSelect = document.getElementById("mapSelect");
+
+  Object.entries(mapData).forEach(([groupLabel, maps]) => {
+    const optgroup = document.createElement("optgroup");
+    optgroup.label = groupLabel;
+
+    maps.forEach((map) => {
+      const option = document.createElement("option");
+      option.value = map.value;
+      option.textContent = map.text;
+      optgroup.appendChild(option);
+    });
+
+    mapSelect.appendChild(optgroup);
+  });
+}
 
 // Consolidated mouse handlers
 function handleCanvasClick(e) {

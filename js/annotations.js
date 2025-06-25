@@ -2,6 +2,11 @@ import { state } from "./state.js";
 import { getMousePos } from "./drawing.js";
 import { redrawCanvas } from "./canvas.js";
 
+/**
+ * Adds or updates a text annotation on the canvas.
+ * If the click is near an existing annotation, it updates it; otherwise, it creates a new one.
+ * @param {MouseEvent} e - The mouse event.
+ */
 export function addTextAnnotation(e) {
   if (!state.currentText) return;
 
@@ -42,6 +47,10 @@ export function addTextAnnotation(e) {
   redrawCanvas();
 }
 
+/**
+ * Handles the start of a text drag operation on right-click.
+ * @param {MouseEvent} e - The mouse event.
+ */
 export function handleTextDrag(e) {
   if (e.button === 2) {
     // Right click
@@ -81,6 +90,10 @@ export function handleTextDrag(e) {
   }
 }
 
+/**
+ * Updates the position of the currently dragged text annotation.
+ * @param {MouseEvent} e - The mouse event.
+ */
 export function updateTextDrag(e) {
   if (state.isDraggingText && state.draggedTextIndex !== null) {
     const pos = getMousePos(e);
@@ -91,6 +104,9 @@ export function updateTextDrag(e) {
   }
 }
 
+/**
+ * Stops the text drag operation and restores the default cursor.
+ */
 export function stopTextDrag() {
   if (state.isDraggingText) {
     state.isDraggingText = false;

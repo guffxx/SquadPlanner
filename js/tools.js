@@ -3,6 +3,16 @@ import { redrawCanvas } from './canvas.js';
 import { getMousePos } from './drawing.js';
 import { markerButtons } from './markers.js';
 
+/**
+ * Calculates the shortest distance from a point to a line segment.
+ * @param {number} px - The x-coordinate of the point.
+ * @param {number} py - The y-coordinate of the point.
+ * @param {number} x1 - The x-coordinate of the first point of the line segment.
+ * @param {number} y1 - The y-coordinate of the first point of the line segment.
+ * @param {number} x2 - The x-coordinate of the second point of the line segment.
+ * @param {number} y2 - The y-coordinate of the second point of the line segment.
+ * @returns {number} The distance from the point to the line segment.
+ */
 export function pointToLineDistance(px, py, x1, y1, x2, y2) {
     const A = px - x1;
     const B = py - y1;
@@ -33,6 +43,10 @@ export function pointToLineDistance(px, py, x1, y1, x2, y2) {
     return Math.sqrt(dx * dx + dy * dy);
 }
 
+/**
+ * Erases elements (markers, text, drawings) within a specified radius of the mouse position.
+ * @param {MouseEvent} e - The mouse event.
+ */
 export function eraseElements(e) {
     const pos = getMousePos(e);
     const eraseRadius = 40 / state.scale;
@@ -69,6 +83,9 @@ export function eraseElements(e) {
     redrawCanvas();
 }
 
+/**
+ * Initializes the eraser tool, including its cursor and event listeners.
+ */
 export function initializeEraser() {
     state.eraserCursor = document.createElement('div');
     state.eraserCursor.className = 'eraser-cursor';
@@ -120,6 +137,10 @@ export function initializeEraser() {
     });
 }
 
+/**
+ * Handles the zoom functionality on the canvas.
+ * @param {WheelEvent} e - The wheel event.
+ */
 export function handleZoom(e) {
     e.preventDefault();
     

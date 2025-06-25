@@ -2,8 +2,15 @@ import { state } from './state.js';
 import { drawArrow, drawX } from './drawing.js';
 import { applyTint } from './imageHandling.js';
 
+/**
+ * A cache for storing loaded marker images to avoid reloading them.
+ * @type {Map<string, HTMLImageElement>}
+ */
 const markerImageCache = new Map();
 
+/**
+ * Redraws the entire canvas, including the map, drawings, markers, and annotations.
+ */
 export function redrawCanvas() {
     if (!state.currentImage) return;
     
@@ -103,6 +110,11 @@ export function redrawCanvas() {
     state.ctx.restore();
 }
 
+/**
+ * Draws a single marker on the canvas.
+ * @param {object} marker - The marker object to draw.
+ * @param {HTMLImageElement} markerImage - The image element for the marker.
+ */
 function drawMarker(marker, markerImage) {
     state.ctx.save();
     // Reset the transformation for markers

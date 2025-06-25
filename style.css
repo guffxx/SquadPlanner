@@ -280,7 +280,6 @@ input[type="color"]::-moz-color-swatch {
     display: none !important;
 }
 
-
 /* Eraser Tool Button */
 #eraserBtn {
     background-color: var(--error-light);
@@ -583,7 +582,6 @@ input[type="color"]::-moz-color-swatch {
     font-weight: bold;
     margin-bottom: 70px;
 }
-
 
 /* Navigation and Header */
 header {

@@ -2,6 +2,10 @@ import { state } from "./state.js";
 import { getMousePos } from "./drawing.js";
 import { redrawCanvas } from "./canvas.js";
 
+/**
+ * A map of marker button IDs to their corresponding marker image filenames.
+ * @type {Object.<string, string>}
+ */
 export const markerButtons = {
   heliMarkerBtn: "transporthelo",
   lavMarkerBtn: "ifv",
@@ -29,6 +33,11 @@ export const markerButtons = {
   truck_transportMarkerBtn: "truck_transport",
 };
 
+/**
+ * Places a marker on the canvas at the specified position.
+ * @param {MouseEvent} event - The mouse event.
+ * @param {string} markerType - The type of marker to place (filename or data URL).
+ */
 export function placeMarker(event, markerType) {
   // Only place markers on left click and when not dragging
   if (!markerType || !state.currentImage) return;
@@ -76,7 +85,10 @@ export function placeMarker(event, markerType) {
   };
 }
 
-// Add drag functionality to markers
+/**
+ * Handles the start of a marker drag operation on right-click.
+ * @param {MouseEvent} e - The mouse event.
+ */
 export function handleMarkerDrag(e) {
   if (e.button === 2) {
     // Right click
@@ -101,6 +113,10 @@ export function handleMarkerDrag(e) {
   }
 }
 
+/**
+ * Updates the position of the currently dragged marker.
+ * @param {MouseEvent} e - The mouse event.
+ */
 export function updateMarkerDrag(e) {
   if (state.isDraggingMarker && state.draggedMarkerIndex !== null) {
     const pos = getMousePos(e);
@@ -111,6 +127,9 @@ export function updateMarkerDrag(e) {
   }
 }
 
+/**
+ * Stops the marker drag operation and restores the cursor.
+ */
 export function stopMarkerDrag() {
   if (state.isDraggingMarker) {
     state.isDraggingMarker = false;

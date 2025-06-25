@@ -1,6 +1,11 @@
 import { state } from './state.js';
 import { redrawCanvas } from './canvas.js';
 
+/**
+ * Loads a map image onto the canvas and resets the application state.
+ * @param {string} src - The source URL of the map image.
+ * @returns {Promise<void>} A promise that resolves when the map is loaded and the canvas is redrawn.
+ */
 export function loadMap(src) {
     return new Promise((resolve, reject) => {
         if (state.currentImage) {
@@ -44,6 +49,12 @@ export function loadMap(src) {
     });
 }
 
+/**
+ * Applies a color tint to an image.
+ * @param {HTMLImageElement} image - The image to tint.
+ * @param {string} tint - The color to apply as a tint.
+ * @returns {HTMLCanvasElement} A new canvas element with the tinted image.
+ */
 export function applyTint(image, tint) {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
