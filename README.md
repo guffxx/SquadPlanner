@@ -2,6 +2,8 @@
 
 An interactive web-based tool for planning Squad game strategies. Create, annotate, and share tactical map plans with your team.
 
+I am continuing to work on this project, and I will be adding more features in the future.
+
 ## Features
 
 - Load official Squad maps or upload custom maps
@@ -28,30 +30,6 @@ An interactive web-based tool for planning Squad game strategies. Create, annota
 5. Use the eraser tool to remove specific elements
 6. Click "CLEAR MAP" to start over
 7. Download your finished plan
-
-## Technical Details
-
-The tool is built using vanilla JavaScript with a modular architecture:
-- MapManager: Handles map loading, pan/zoom, and coordinates
-- DrawingTools: Manages tactical line drawing
-- MarkerTools: Handles icon placement and management
-- TextTools: Controls text annotations
-- EraserTools: Manages element removal
-
-## Setup
-
-1. Clone the repository
-2. Ensure all assets are in their correct directories
-3. Serve the files using a web server
-4. Open index.html in a modern browser
-
-## Browser Support
-
-Tested and supported in:
-- Chrome (latest)
-- Firefox (latest)
-- Edge (latest)
-- Safari (latest)
 
 ## Contributing
 
