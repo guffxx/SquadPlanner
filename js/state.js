@@ -44,6 +44,13 @@
  * @property {number|null} draggedMarkerIndex - The index of the marker being dragged.
  * @property {boolean} isDraggingText - Flag indicating if a text annotation is being dragged.
  * @property {number|null} draggedTextIndex - The index of the text annotation being dragged.
+ * @property {boolean} isMortarMode - Flag indicating if mortar calculator mode is active.
+ * @property {object|null} mortarPosition - The position of the mortar on the map.
+ * @property {object|null} targetPosition - The position of the target on the map.
+ * @property {number|null} currentMapSize - The size of the current map in meters.
+ * @property {boolean} showMortarRadius - Whether to show the maximum mortar range circle.
+ * @property {boolean} showCoordinates - Whether to show grid coordinates on the map.
+ * @property {boolean} highQualityMode - Whether to use high-quality image rendering.
  */
 export const state = {
   canvas: document.getElementById("mapCanvas"),
@@ -58,7 +65,7 @@ export const state = {
   currentPath: [],
   scale: 1,
   minScale: 1,
-  maxScale: 2.5,
+  maxScale: 5, // Increased max zoom for higher detail
   offsetX: 0,
   offsetY: 0,
   isDragging: false,
@@ -89,6 +96,17 @@ export const state = {
   draggedMarkerIndex: null,
   isDraggingText: false,
   draggedTextIndex: null,
+  
+  // Mortar Calculator related properties
+  isMortarMode: false,
+  mortarPosition: null,
+  targetPosition: null,
+  currentMapSize: null, // Will be set when loading a map
+  showMortarRadius: true,
+  showCoordinates: true,
+  
+  // High-quality rendering
+  highQualityMode: true
 };
 
 // Initialize canvas size
