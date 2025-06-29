@@ -599,14 +599,6 @@ header {
     padding-right: 0;
 }
 
-.creator-text {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 2px;
-    text-align: right;
-}
 
 .signature {
     color: var(--accent);
@@ -814,19 +806,17 @@ h2.hidden {
         max-width: 250px;
     }
 
-    .social-links .span {
-        display: none;
-    }
 
 }
 
 @media screen and (max-width: 768px) {
     .sidebar,
     .placeholder-text,
-    .canvas-container {
+    .canvas-container,
+    header {
         display: none;
     }
-    
+   
     h2.hidden {
         display: block;
         text-align: center;
