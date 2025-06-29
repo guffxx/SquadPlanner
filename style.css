@@ -3,7 +3,7 @@
     --dark-bg: #2b2b2b;
     --darker-bg: hwb(0 12% 88%);
     --accent: #ffc409;
-    --text-color: #ffffff;
+    --text-color: #f0f0f0;
     --error-color: rgb(148, 0, 0);
     --error-light: rgba(255, 48, 48, 0.9);
     --success-color: rgba(40, 167, 69, 0.9);
@@ -155,8 +155,8 @@ button,
     height: 4px;
     -webkit-appearance: none;
     -moz-appearance: none;
-    appearance: auto;
-    background: rgba(255, 255, 255, 0.1);
+    appearance: none;
+    border: 2px solid rgba(255, 203, 32, 0.7);
     border-radius: 2px;
     outline: none;
     min-width: 0;
@@ -167,8 +167,10 @@ button,
 .width-slider::-moz-range-thumb {
     width: 16px;
     height: 16px;
-    background: var(--accent);
+    border-radius: 50%;
+    background: #999;
     cursor: pointer;
+    border: 2px solid var(--darker-bg);
     transition: var(--transition-default);
     box-shadow: var(--shadow-accent);
 }
@@ -180,21 +182,31 @@ button,
     box-shadow: 0 0 10px rgba(255, 196, 9, 0.7);
 }
 
+/* Text Size Control */
+.text-size-control,
+.marker-size-control,
+.line-width-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
 /* Value Display */
 .width-value,
 .marker-size-value {
     min-width: 28px;
-    color: #999;
-    font-size: 12px;
-    text-align: right;
+    color: var(--text-color);
+    font-size: 13px;
     padding: 0 4px;
 }
 
-/* Fix text size value display */
-.width-value.text-size-value {
-    font-size: 12px;
-    color: var(--text-color);
-    opacity: 0.8;
+.width-value-text {
+    min-width: 28px;
+    color: #bababa;
+    font-size: 14px;
+    padding: 0 4px;
+    margin-right: -12px;
 }
 
 /* Color Picker Styles */
@@ -787,21 +799,6 @@ h2.hidden {
 #undoBtn:active {
     transform: translateY(1px);
     background-color: rgba(255, 68, 68, 0.5);
-}
-
-/* Text Size Control */
-.text-size-control,
-.marker-size-control,
-.line-width-control {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 8px;
-}
-
-.text-size-value {
-    min-width: 45px;
-    text-align: right;
 }
 
 
