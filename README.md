@@ -34,6 +34,7 @@ I am continuing to work on this project, and I will be adding more features in t
 ## Contributing
 
 Feel free to submit issues and enhancement requests.
+I am taking this project as a solo learning/practice/passion project. 
 
 ## License
 
