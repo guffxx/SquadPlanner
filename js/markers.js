@@ -34,6 +34,71 @@ export const markerButtons = {
 };
 
 /**
+ * Creates and appends marker buttons to the marker grid.
+ * This function dynamically generates buttons based on the markerButtons object.
+ * Ensures buttons are sized appropriately for the sidebar.
+ */
+export function generateMarkerButtons() {
+  const markerGrid = document.querySelector('.marker-grid');
+  
+  // Clear any existing buttons
+  markerGrid.innerHTML = '';
+  
+  // Update grid layout to fit more items per row
+  markerGrid.style.gridTemplateColumns = 'repeat(5, 1fr)';
+  
+  // Generate buttons for each marker type
+  Object.entries(markerButtons).forEach(([buttonId, markerType]) => {
+    const button = document.createElement('button');
+    button.id = buttonId;
+    button.className = 'icon-btn';
+    button.title = markerType.replace(/([A-Z])/g, ' $1')
+      .replace(/_/g, ' ')
+      .replace(/^./, str => str.toUpperCase());
+    
+    // Create image element for the button with explicit size constraints
+    const img = document.createElement('img');
+    img.src = `assets/icons/${markerType}.png`;
+    img.alt = button.title;
+    img.className = 'icon-image';
+    img.style.maxWidth = '100%';
+    img.style.maxHeight = '100%';
+    
+    // Append image to button and button to grid
+    button.appendChild(img);
+    markerGrid.appendChild(button);
+  });
+
+  // Add a style element to ensure proper sizing
+  const styleEl = document.createElement('style');
+  styleEl.innerHTML = `
+    .marker-grid .icon-btn {
+      width: 100%;
+      aspect-ratio: 1;
+      padding: 2px;
+      margin: 1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--darker-bg);
+      border-radius: 4px;
+      cursor: pointer;
+      opacity: 0.75;
+      transition: all 0.2s ease;
+    }
+    
+    .icon-image {
+      width: auto;
+      height: auto;
+      max-width: 95%;
+      max-height: 95%;
+      object-fit: contain;
+    }
+  `;
+  document.head.appendChild(styleEl);
+}
+
+/**
  * Places a marker on the canvas at the specified position.
  * @param {MouseEvent} event - The mouse event.
  * @param {string} markerType - The type of marker to place (filename or data URL).

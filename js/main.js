@@ -16,6 +16,7 @@ import {
   handleMarkerDrag,
   updateMarkerDrag,
   stopMarkerDrag,
+  generateMarkerButtons,
 } from "./markers.js";
 import {
   addTextAnnotation,
@@ -25,12 +26,15 @@ import {
 } from "./annotations.js";
 import { initializeEraser, eraseElements, handleZoom } from "./tools.js";
 import { redrawCanvas } from "./canvas.js";
-import { initializeCustomIcons } from "./customIcons.js";
+import { initializeCustomIcons } from "./customicons.js";
 
 // Initialize event listeners
 document.addEventListener("DOMContentLoaded", () => {
   // Populate map selection dropdown
   populateMapSelection();
+
+  // Generate marker buttons
+  generateMarkerButtons();
 
   // Map selection
   const mapSelect = document.getElementById("mapSelect");
