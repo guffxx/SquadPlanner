@@ -45,7 +45,7 @@ export function generateMarkerButtons() {
   markerGrid.innerHTML = '';
   
   // Update grid layout to fit more items per row
-  markerGrid.style.gridTemplateColumns = 'repeat(5, 1fr)';
+  markerGrid.style.gridTemplateColumns = 'repeat(4, 1fr)';
   
   // Generate buttons for each marker type
   Object.entries(markerButtons).forEach(([buttonId, markerType]) => {

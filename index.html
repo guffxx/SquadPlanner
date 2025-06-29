@@ -40,14 +40,15 @@
                         />
                         <button id="downloadNow">DOWNLOAD MAP</button>
                         <div class="tool-controls">
-                            <button id="clearAll" class="eraser-btn">
-                                CLEAR MAP
-                            </button>
+
                             <button id="eraserBtn" class="eraser-btn">
-                                Eraser Tool
+                                ERASER TOOL
                             </button>
                             <button id="undoBtn" class="eraser-btn">
                                 UNDO LAST
+                            </button>
+                            <button id="clearAll" class="eraser-btn">
+                                CLEAR MAP
                             </button>
                         </div>
                     </div>
@@ -132,150 +133,144 @@
                             </button>
                         </div>
                     </section>
-                </section>
-
-                <div class="button-container">
-                    <button id="recenterBtn">RECENTER MAP</button>
-                </div>
-            </aside>
-            <aside class="sidebar-right">
-                <section class="icon-tools">
-                    <div class="tint-selector">
-                        <h3>Icons:</h3>
-
-                        <div class="color-picker-container">
-                            <input
-                                type="color"
-                                id="markerColorPicker"
-                                value="#ff0000"
-                            />
-                            <label
-                                for="markerColorPicker"
-                                class="color-picker-label"
-                                >Custom Color</label
-                            >
-                            <div class="quick-colors">
-                                <button
-                                    class="quick-color-btn"
-                                    style="background-color: #ff0000"
-                                    data-color="#ff0000"
-                                ></button>
-                                <button
-                                    class="quick-color-btn"
-                                    style="background-color: #00ff00"
-                                    data-color="#00ff00"
-                                ></button>
-                                <button
-                                    class="quick-color-btn"
-                                    style="background-color: #0000ff"
-                                    data-color="#0000ff"
-                                ></button>
+                    <section class="icon-tools">
+                        <div class="tint-selector">
+                            <h3>Icons:</h3>
+    
+                            <div class="color-picker-container">
+                                <input
+                                    type="color"
+                                    id="markerColorPicker"
+                                    value="#ff0000"
+                                />
+                                <label
+                                    for="markerColorPicker"
+                                    class="color-picker-label"
+                                    >Custom Color</label
+                                >
+                                <div class="quick-colors">
+                                    <button
+                                        class="quick-color-btn"
+                                        style="background-color: #ff0000"
+                                        data-color="#ff0000"
+                                    ></button>
+                                    <button
+                                        class="quick-color-btn"
+                                        style="background-color: #00ff00"
+                                        data-color="#00ff00"
+                                    ></button>
+                                    <button
+                                        class="quick-color-btn"
+                                        style="background-color: #0000ff"
+                                        data-color="#0000ff"
+                                    ></button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="marker-size-control">
-                        <input
-                            type="range"
-                            id="markerSize"
-                            min="10"
-                            max="75"
-                            value="40"
-                            class="width-slider"
-                        />
-                        <span class="width-value marker-size-value">40px</span>
-                    </div>
-
-                    <div class="marker-grid">
-                        <!-- Marker grid will be dynamically generated by JavaScript -->
-                    </div>
-                    <div class="custom-icon-upload">
-                        <div class="icon-upload-controls">
-                            <button id="uploadIconBtn" class="upload-icon-btn">
-                                Upload Custom Icon
-                            </button>
-                            <button id="clearIconsBtn" class="clear-icons-btn">
-                                Clear Custom Icons
-                            </button>
-                        </div>
-                        <input
-                            type="file"
-                            id="customIconUpload"
-                            accept="image/*"
-                            hidden
-                        />
-                        <div id="customIconsGrid" class="custom-icons"></div>
-                    </div>
-                    <p class="tool-tip"></p>
-                </section>
-
-                <section class="text-tools">
-                    <div class="text-input-container">
-                        <h3>Text:</h3>
-                        <div class="color-picker-container">
-                            <input
-                                type="color"
-                                id="textColorPicker"
-                                value="#ff0000"
-                            />
-                            <label
-                                for="textColorPicker"
-                                class="color-picker-label"
-                                >Custom Color</label
-                            >
-                            <div class="quick-colors">
-                                <button
-                                    class="quick-color-btn"
-                                    style="background-color: #ff0000"
-                                    data-color="#ff0000"
-                                ></button>
-                                <button
-                                    class="quick-color-btn"
-                                    style="background-color: #00ff00"
-                                    data-color="#00ff00"
-                                ></button>
-                                <button
-                                    class="quick-color-btn"
-                                    style="background-color: #0000ff"
-                                    data-color="#0000ff"
-                                ></button>
-                            </div>
-                        </div>
-                        <div class="text-size-control">
+                        <div class="marker-size-control">
                             <input
                                 type="range"
-                                id="textSize"
+                                id="markerSize"
                                 min="10"
-                                max="64"
-                                value="36"
+                                max="75"
+                                value="40"
                                 class="width-slider"
                             />
-                            <span class="width-value text-size-value"
-                                >36px</span
-                            >
+                            <span class="width-value marker-size-value">40px</span>
                         </div>
-                        <input
-                            type="text"
-                            id="annotationText"
-                            placeholder="Enter text"
-                            class="text-input"
-                        />
-                        <button id="addTextBtn" class="text-btn">
-                            Add Text
-                        </button>
-                        <button id="deleteTextBtn" class="delete-btn">
-                            Delete Last
-                        </button>
-                        <p class="tool-tip">
-                            Select a color, adjust text size, enter your text,
-                            click Add Text, click on the map, double-click-hold to drag text
-                        </p>
-                    </div>
+    
+                        <div class="marker-grid">
+                            <!-- Marker grid will be dynamically generated by JavaScript -->
+                        </div>
+                        <div class="custom-icon-upload">
+                            <div class="icon-upload-controls">
+                                <button id="uploadIconBtn" class="upload-icon-btn">
+                                    Upload Custom Icon
+                                </button>
+                                <button id="clearIconsBtn" class="clear-icons-btn">
+                                    Clear Custom Icons
+                                </button>
+                            </div>
+                            <input
+                                type="file"
+                                id="customIconUpload"
+                                accept="image/*"
+                                hidden
+                            />
+                            <div id="customIconsGrid" class="custom-icons"></div>
+                        </div>
+                        <p class="tool-tip"></p>
+                    </section>
+                    <section class="text-tools">
+                        <div class="text-input-container">
+                            <h3>Text:</h3>
+                            <div class="color-picker-container">
+                                <input
+                                    type="color"
+                                    id="textColorPicker"
+                                    value="#ff0000"
+                                />
+                                <label
+                                    for="textColorPicker"
+                                    class="color-picker-label"
+                                    >Custom Color</label
+                                >
+                                <div class="quick-colors">
+                                    <button
+                                        class="quick-color-btn"
+                                        style="background-color: #ff0000"
+                                        data-color="#ff0000"
+                                    ></button>
+                                    <button
+                                        class="quick-color-btn"
+                                        style="background-color: #00ff00"
+                                        data-color="#00ff00"
+                                    ></button>
+                                    <button
+                                        class="quick-color-btn"
+                                        style="background-color: #0000ff"
+                                        data-color="#0000ff"
+                                    ></button>
+                                </div>
+                            </div>
+                            <div class="text-size-control">
+                                <input
+                                    type="range"
+                                    id="textSize"
+                                    min="10"
+                                    max="64"
+                                    value="36"
+                                    class="width-slider"
+                                />
+                                <span class="width-value text-size-value"
+                                    >36px</span
+                                >
+                            </div>
+                            <input
+                                type="text"
+                                id="annotationText"
+                                placeholder="Enter text"
+                                class="text-input"
+                            />
+                            <button id="addTextBtn" class="text-btn">
+                                Add Text
+                            </button>
+                            <button id="deleteTextBtn" class="delete-btn">
+                                Delete Last
+                            </button>
+                            <p class="tool-tip">
+                                Select a color, adjust text size, enter your text,
+                                click Add Text, click on the map, double-click-hold to drag text
+                            </p>
+                        </div>
+                    </section>
                 </section>
 
                 <div class="button-container">
                     <button id="recenterBtn">RECENTER MAP</button>
                 </div>
             </aside>
+            
             <header>
                 <div class="nav-content">
                     <div class="creator-info">
@@ -317,19 +312,9 @@
                 <canvas id="mapCanvas"> </canvas>
 
                 <div class="placeholder-text">
-                    <h1>SQUAD PLANNING TOOL</h1>
                     <h2>This is a Work in Progress. There may be bugs.</h2>
-
-                    <br />
-                    <b><em>UPDATES FOR 2025:</em></b>
-                    <br />
-                    <b
-                        >- HQ Maps, Toggle POIs, Radio Circles,
-                        Collaboration/Chat-
-                    </b>
                     <br />
 
-                    <br />
                     <b><em>HOW TO USE:</em></b>
                     <br />
                     - Select a map from the right -
@@ -345,6 +330,13 @@
                     - Right click to drag icons and text -
                     <br />
                     - Download the finished Map when complete -
+                    <br />
+                    <br />
+                    <b>UPDATES FOR 2025:</b>
+                    <br />
+                    <b>- HQ Maps, Toggle POIs, Radio Circles, Collaboration/Chat</b>
+                    <br />
+
                 </div>
             </main>
         </div>
