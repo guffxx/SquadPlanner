@@ -155,7 +155,7 @@ button,
     height: 4px;
     -webkit-appearance: none;
     -moz-appearance: none;
-    appearance: none;
+    appearance: auto;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 2px;
     outline: none;
@@ -167,10 +167,8 @@ button,
 .width-slider::-moz-range-thumb {
     width: 16px;
     height: 16px;
-    border-radius: 50%;
     background: var(--accent);
     cursor: pointer;
-    border: none;
     transition: var(--transition-default);
     box-shadow: var(--shadow-accent);
 }
@@ -436,23 +434,21 @@ input[type="color"]::-moz-color-swatch {
 
 /* Custom Icon Upload */
 .custom-icon-upload {
-    margin-bottom: 10px;
-    padding: 4px;
+    margin-bottom: 5px;
+    padding: 20px;
     background: rgba(255, 255, 255, 0.05);
     border-radius: 4px;
 }
 
 .icon-upload-controls {
     display: flex;
-    gap: 2%;
+    gap: 5%;
 }
 
 .upload-icon-btn,
 .clear-icons-btn {
-    width: 49%;
-    padding: 0.8rem;
-    border: none;
-    border-radius: 4px;
+    width: 50%;
+    padding: 0.5rem;
     cursor: pointer;
     font-weight: bold;
     transition: var(--transition-default);
@@ -794,7 +790,9 @@ h2.hidden {
 }
 
 /* Text Size Control */
-.text-size-control {
+.text-size-control,
+.marker-size-control,
+.line-width-control {
     display: flex;
     align-items: center;
     gap: 8px;
