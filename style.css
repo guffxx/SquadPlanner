@@ -457,9 +457,8 @@ input[type="color"]::-moz-color-swatch {
     gap: 5%;
 }
 
-.upload-icon-btn,
-.clear-icons-btn {
-    width: 50%;
+.upload-icon-btn {
+    width: 100%;
     padding: 0.5rem;
     cursor: pointer;
     font-weight: bold;
@@ -478,17 +477,6 @@ input[type="color"]::-moz-color-swatch {
     box-shadow: var(--shadow-accent);
 }
 
-.clear-icons-btn {
-    background: rgba(255, 68, 68, 0.6);
-    color: white;
-}
-
-.clear-icons-btn:hover {
-    background: linear-gradient(45deg, #5e0000);
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    color: rgb(175, 175, 175);
-}
 
 /* Custom Icons Grid */
 .custom-icons {
