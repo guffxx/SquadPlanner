@@ -273,7 +273,7 @@ function initializeUIControls() {
   if (markerSizeSlider && markerSizeValue) {
     markerSizeSlider.addEventListener("input", function () {
       state.markerSize = this.value;
-      markerSizeValue.textContent = `${state.markerSize}px`;
+      markerSizeValue.textContent = `${state.markerSize}`;
     });
   }
 
@@ -283,7 +283,7 @@ function initializeUIControls() {
   if (widthSlider && widthValue) {
     widthSlider.addEventListener("input", function () {
       state.lineWidth = this.value;
-      widthValue.textContent = `${state.lineWidth}px`;
+      widthValue.textContent = `${state.lineWidth}`;
     });
   }
 
@@ -293,7 +293,7 @@ function initializeUIControls() {
   if (textSizeSlider && textSizeValue) {
     textSizeSlider.addEventListener("input", function () {
       state.textSize = this.value;
-      textSizeValue.textContent = `${state.textSize}px`;
+      textSizeValue.textContent = `${state.textSize}`;
     });
   }
 

@@ -37,7 +37,7 @@ function handleIconUpload(event) {
 }
 
 function loadSavedIcons() {
-    const savedIcons = JSON.parse(localStorage.getItem('customIcons') || '[]');
+    const savedIcons = JSON.parse(localStorage.get.Item('customIcons') || '[]');
     savedIcons.forEach(iconData => addIconToGrid(iconData));
 }
 

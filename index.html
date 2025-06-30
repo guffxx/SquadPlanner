@@ -8,10 +8,12 @@
     </head>
     <body>
         <h2 class="hidden">
-            Currently not mobile friendly, please open in a Desktop browser
+            Apologies but this porject is not currently supported on smaller devices.<br> 
+            Please open in a larger resolution / desktop browser.<br>
+            I will not be supporting smaller resolutions at this time.  
         </h2>
 
-        <div class="container">
+        
             <aside class="sidebar">
                 <section class="logo-section">
                     <a href="https://www.joinsquad.com/" target="_blank">
@@ -87,13 +89,13 @@
                                 </div>
                                 <div class="line-width-control">
                                     <span class="width-value-text">Size:</span>
-                                    <span class="width-value">5px</span>
+                                    <span class="width-value">5</span>
 
                                     <input
                                         type="range"
                                         id="lineWidth"
                                         min="1"
-                                        max="8"
+                                        max="10"
                                         value="5"
                                         class="width-slider"
                                     />
@@ -130,9 +132,6 @@
                                     200px Line
                                 </button>
                             </div>
-                            <button id="deleteLineBtn" class="compact-btn">
-                                Delete Last
-                            </button>
                         </div>
                     </section>
                     <section class="icon-tools">
@@ -171,12 +170,12 @@
                         </div>
                         <div class="marker-size-control">
                             <span class="width-value-text">Size:</span>
-                            <span class="width-value marker-size-value">40px</span>
+                            <span class="width-value marker-size-value">40</span>
                             <input
                                 type="range"
                                 id="markerSize"
                                 min="10"
-                                max="75"
+                                max="100"
                                 value="40"
                                 class="width-slider"
                             />
@@ -235,13 +234,13 @@
                             </div>
                             <div class="text-size-control">
                                 <span class="width-value-text">Size:</span>
-                                <span class="width-value text-size-value">36px</span>
+                                <span class="width-value text-size-value">25</span>
                                 <input
                                     type="range"
                                     id="textSize"
-                                    min="10"
-                                    max="64"
-                                    value="36"
+                                    min="10".
+                                    max="100"
+                                    value="25"
                                     class="width-slider"
                                 />
                                
@@ -255,9 +254,6 @@
                             <button id="addTextBtn" class="text-btn">
                                 Add Text
                             </button>
-                            <button id="deleteTextBtn" class="delete-btn">
-                                Delete Last
-                            </button>
                             <p class="tool-tip">
                                 Select a color, adjust text size, enter your text,
                                 click Add Text, click on the map
@@ -265,10 +261,6 @@
                         </div>
                     </section>
                 </section>
-
-                <div class="button-container">
-                    <button id="recenterBtn">RECENTER MAP</button>
-                </div>
             </aside>
             
             <header>
@@ -312,9 +304,8 @@
                 <canvas id="mapCanvas"> </canvas>
 
                 <div class="placeholder-text">
-                    <h2>This is a Work in Progress. There may be bugs.</h2>
+                    <h2>This is a work in progress. There may be bugs.</h2>
                     <br />
-
                     <b><em>HOW TO USE:</em></b>
                     <br />
                     - Select a map
@@ -332,14 +323,14 @@
                     - Download the finished Map when complete
                     <br />
                     <br />
-                    <b>UPDATES FOR 2025:</b>
+                    <b><em> UPDATES FOR 2025 / UE5:</em></b>
                     <br />
-                    <b>- HQ Maps, Toggle POIs, Radio Circles, Collaboration/Chat</b>
+                    <p  >- HQ Maps, Toggle POIs, Radio Circles, Collaboration/Chat</p>
                     <br />
 
                 </div>
             </main>
-        </div>
+        
         <script type="module" src="js/maps.js"></script>
         <script type="module" src="js/main.js"></script>
     </body>
