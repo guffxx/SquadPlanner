@@ -327,7 +327,7 @@ input[type="color"]::-moz-color-swatch {
 }
 
 #undoBtn {
-    max-width: 95%;
+    max-width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
