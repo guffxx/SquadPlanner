@@ -52,17 +52,9 @@ function addIconToGrid(iconData) {
     img.className = 'marker-icon';
     img.alt = 'Custom Icon';
 
-    const deleteBtn = document.createElement('button');
-    deleteBtn.className = 'delete-custom-icon';
-    deleteBtn.innerHTML = '×';
-    deleteBtn.onclick = (e) => {
-        e.stopPropagation();
-        deleteCustomIcon(iconData.id);
-        iconBtn.remove();
-    };
 
     iconBtn.appendChild(img);
-    iconBtn.appendChild(deleteBtn);
+   
     customIconsGrid.appendChild(iconBtn);
 
     // Add click handler for placing custom icon

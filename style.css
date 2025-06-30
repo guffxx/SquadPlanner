@@ -316,15 +316,35 @@ input[type="color"]::-moz-color-swatch {
     display: none !important;
 }
 
-/* Eraser Tool Button */
-#eraserBtn {
+/* Tool Buttons */
+#eraserBtn,
+#undoBtn,
+#clearAll {
     background-color: var(--error-light);
     color: var(--text-color);
     transition: var(--transition-default);
     text-shadow: 0 0 5px rgba(255, 68, 68, 0.3);
 }
 
-#eraserBtn:hover {
+#undoBtn {
+    max-width: 95%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1px auto;
+}
+
+#clearAll {
+    max-width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 4px auto;
+}
+
+#eraserBtn:hover,
+#undoBtn:hover,
+#clearAll:hover {
     background-color: var(--error-color);
     color: white;
     transform: translateY(-1px);
@@ -388,6 +408,14 @@ input[type="color"]::-moz-color-swatch {
     box-shadow: 0 0 12px rgba(255, 196, 9, 0.5);
     transform: translateY(-2px);
     z-index: 2;
+}
+
+.icon-btn {
+    width: 32px;
+    height: 32px;
+    padding: 2px !important;
+    min-width: 0;
+    min-height: 0;
 }
 
 .icon-btn:hover {
@@ -527,7 +555,7 @@ input[type="color"]::-moz-color-swatch {
 /* Custom Icons Grid */
 .custom-icons {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 4px;
     margin-top: 1px;
     max-width: 10%;
@@ -536,9 +564,10 @@ input[type="color"]::-moz-color-swatch {
 
 .custom-icon-btn {
     position: relative;
-    width: 100%;
+    width: 45px;
+    height: 45px;
     aspect-ratio: 1;
-    padding: 6px;
+    padding: 2px;
     background-color: var(--darker-bg);
     border: 1px solid var(--accent);
     border-radius: 4px;
@@ -711,23 +740,7 @@ h2.hidden {
     background: linear-gradient(45deg, var(--accent), var(--accent));
 }
 
-#clearAll {
-    background-color: rgba(240, 30, 30, 0.9);
-    color: white;
-    transition: var(--transition-default);
-}
 
-#clearAll:hover {
-    background-color: var(--error-color);
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-error);
-}
-
-#clearAll:active {
-    background-color: rgba(255, 68, 68, 0.5);
-    transform: translateY(1px);
-    box-shadow: 0 0 8px rgba(255, 68, 68, 0.5);
-}
 
 /* Marker Grid */
 .marker-grid {
@@ -782,25 +795,6 @@ h2.hidden {
     background-color: rgba(255, 0, 0, 0.1);
 }
 
-/* Add missing styles for #undoBtn */
-#undoBtn {
-    background-color: var(--error-light);
-    color: var(--text-color);
-    transition: var(--transition-default);
-    text-shadow: 0 0 5px rgba(255, 68, 68, 0.3);
-}
-
-#undoBtn:hover {
-    background-color: var(--error-color);
-    color: white;
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-error);
-}
-
-#undoBtn:active {
-    transform: translateY(1px);
-    background-color: rgba(255, 68, 68, 0.5);
-}
 
 
 
